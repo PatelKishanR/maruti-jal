@@ -27,7 +27,30 @@
     "never": "ક્યારેય નહીં",
     "notFound": "તે રેકોર્ડ મળ્યો નથી.",
     "insufficientStock": "તેના માટે પૂરતો સ્ટોક નથી.",
-    "invalidRequest": "તે વિનંતી માન્ય ન હતી."
+    "invalidRequest": "તે વિનંતી માન્ય ન હતી.",
+    "today": "આજે",
+    "yesterday": "ગઈકાલે",
+    "addNew": "નવું ઉમેરો",
+    "notApplicable": "—",
+    "increased": "વધ્યું",
+    "decreased": "ઘટ્યું",
+    "unchanged": "યથાવત",
+    "overpaid": "વધુ ચૂકવાયું",
+    "partiallyPaid": "આંશિક ચૂકવાયું",
+    "refundDue": "રિફંડ બાકી",
+    "empty": {
+      "noDataTitle": "હજી કંઈ નથી",
+      "noDataBody": "તમે ઉમેરેલા રેકોર્ડ અહીં દેખાશે.",
+      "noResultsTitle": "કોઈ મેળ નથી",
+      "noResultsBody": "તમારા ફિલ્ટર સાથે કોઈ રેકોર્ડ મેળ ખાતો નથી. ફિલ્ટર પહોળા કરો.",
+      "activeFilters": "સક્રિય ફિલ્ટર: {filters}"
+    },
+    "errorState": {
+      "title": "આ લોડ કરી શકાયું નહીં"
+    },
+    "kpi": {
+      "nothingYet": "હજી કંઈ નોંધાયું નથી"
+    }
   },
   "auth": {
     "signIn": {
@@ -153,5 +176,12 @@
     "title": "ડેશબોર્ડ",
     "subtitle": "તમારો આખો વ્યવસાય, અત્યારે",
     "comingSoon": "ડેશબોર્ડ તબક્કા 8 માં આવશે. તેને ડેટા આપતા મોડ્યુલ પહેલાં બનાવવામાં આવે છે."
+  },
+  "table": {
+    "showing": "{total} માંથી {from}–{to} બતાવી રહ્યા છીએ",
+    "rowsPerPage": "પંક્તિઓ",
+    "pagination": "પેજિનેશન",
+    "previous": "પાછલું પૃષ્ઠ",
+    "next": "આગલું પૃષ્ઠ"
   }
 }

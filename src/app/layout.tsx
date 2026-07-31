@@ -4,6 +4,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "@/components/layout/theme-provider";
+import { Toaster } from "@/components/ui/toast";
 import "./globals.css";
 
 const inter = Inter({
@@ -58,7 +59,11 @@ export default async function RootLayout({
             is signed out. */}
         <SessionProvider>
           <NextIntlClientProvider messages={messages}>
-            <ThemeProvider>{children}</ThemeProvider>
+            <ThemeProvider>
+              {children}
+              {/* Inside ThemeProvider so toasts follow light/dark. */}
+              <Toaster />
+            </ThemeProvider>
           </NextIntlClientProvider>
         </SessionProvider>
       </body>

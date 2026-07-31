@@ -27,7 +27,30 @@
     "never": "Never",
     "notFound": "That record could not be found.",
     "insufficientStock": "There isn't enough stock for that.",
-    "invalidRequest": "That request wasn't valid."
+    "invalidRequest": "That request wasn't valid.",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "addNew": "Add new",
+    "notApplicable": "—",
+    "increased": "increased",
+    "decreased": "decreased",
+    "unchanged": "unchanged",
+    "overpaid": "Overpaid",
+    "partiallyPaid": "Partially paid",
+    "refundDue": "Refund due",
+    "empty": {
+      "noDataTitle": "Nothing here yet",
+      "noDataBody": "Records you add will appear here.",
+      "noResultsTitle": "No matches",
+      "noResultsBody": "No records match your filters. Try widening them.",
+      "activeFilters": "Active filters: {filters}"
+    },
+    "errorState": {
+      "title": "Couldn't load this"
+    },
+    "kpi": {
+      "nothingYet": "Nothing recorded yet"
+    }
   },
   "auth": {
     "signIn": {
@@ -153,5 +176,12 @@
     "title": "Dashboard",
     "subtitle": "Your whole business, right now",
     "comingSoon": "Dashboard arrives in Phase 8. The modules that feed it are built first."
+  },
+  "table": {
+    "showing": "Showing {from}–{to} of {total}",
+    "rowsPerPage": "Rows",
+    "pagination": "Pagination",
+    "previous": "Previous page",
+    "next": "Next page"
   }
 }
