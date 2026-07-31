@@ -1,0 +1,52 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "jsx": "preserve",
+    "allowJs": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "incremental": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+
+    /* ---- TypeORM ----
+     * experimentalDecorators + emitDecoratorMetadata are belt-and-braces only.
+     * Nothing may DEPEND on emitted metadata: esbuild (which runs the migration
+     * CLI and tsx scripts) has never implemented it and states it as a non-goal.
+     * Every @Column/@ManyToOne must therefore declare its type explicitly.
+     * See .claude/ARCHITECTURE.md §1.1
+     */
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
+    /* REQUIRED, NOT OPTIONAL.
+     * At target ES2022 this defaults to TRUE, which makes `foo!: string` emit a
+     * defineProperty that OVERWRITES whatever TypeORM assigns. Symptom: entities
+     * load but every property is undefined. See .claude/ARCHITECTURE.md §1.2
+     */
+    "useDefineForClassFields": false,
+
+    "strict": true,
+    /* Entity properties are assigned by the ORM, not the constructor. */
+    "strictPropertyInitialization": false,
+    "noUncheckedIndexedAccess": false,
+
+    "plugins": [{ "name": "next" }],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "db/**/*.ts"
+  ],
+  "exclude": ["node_modules"]
+}

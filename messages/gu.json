@@ -1,0 +1,153 @@
+{
+  "brand": {
+    "name": "મારુતિ જળ",
+    "tagline": "વોટર સપ્લાય"
+  },
+  "common": {
+    "save": "સાચવો",
+    "saveChanges": "ફેરફારો સાચવો",
+    "saving": "સાચવી રહ્યું છે…",
+    "cancel": "રદ કરો",
+    "close": "બંધ કરો",
+    "edit": "ફેરફાર કરો",
+    "delete": "કાઢી નાખો",
+    "confirm": "પુષ્ટિ કરો",
+    "search": "શોધો",
+    "filters": "ફિલ્ટર",
+    "clearFilters": "ફિલ્ટર સાફ કરો",
+    "tryAgain": "ફરી પ્રયાસ કરો",
+    "gotIt": "સમજાયું",
+    "loading": "લોડ થઈ રહ્યું છે…",
+    "unsavedChanges": "સાચવ્યા વગરના ફેરફારો",
+    "somethingWentWrong": "કંઈક ખોટું થયું. ફરી પ્રયાસ કરો.",
+    "notSignedIn": "તમે સાઇન ઇન નથી.",
+    "noAccess": "તમને આ ક્રિયાની પરવાનગી નથી.",
+    "fixHighlighted": "કૃપા કરીને દર્શાવેલ ક્ષેત્રો સુધારો",
+    "copied": "કૉપી થયું",
+    "never": "ક્યારેય નહીં",
+    "notFound": "તે રેકોર્ડ મળ્યો નથી.",
+    "insufficientStock": "તેના માટે પૂરતો સ્ટોક નથી."
+  },
+  "auth": {
+    "signIn": {
+      "title": "સાઇન ઇન કરો",
+      "subtitle": "ચાલુ રાખવા માટે તમારી વિગતો દાખલ કરો",
+      "emailLabel": "ઈમેલ",
+      "emailPlaceholder": "owner@marutijal.com",
+      "passwordLabel": "પાસવર્ડ",
+      "keepSignedIn": "મને સાઇન ઇન રાખો",
+      "submit": "સાઇન ઇન કરો",
+      "submitting": "સાઇન ઇન થઈ રહ્યું છે…",
+      "forgotPassword": "પાસવર્ડ ભૂલી ગયા?",
+      "showPassword": "પાસવર્ડ બતાવો",
+      "hidePassword": "પાસવર્ડ છુપાવો",
+      "redirectedNotice": "તે પૃષ્ઠ પર જવા માટે સાઇન ઇન કરો."
+    },
+    "errors": {
+      "invalidCredentials": "ઈમેલ અથવા પાસવર્ડ ખોટો છે.",
+      "emailRequired": "તમારું ઈમેલ સરનામું દાખલ કરો",
+      "emailInvalid": "માન્ય ઈમેલ સરનામું દાખલ કરો, જેમ કે owner@marutijal.com",
+      "passwordRequired": "તમારો પાસવર્ડ દાખલ કરો",
+      "rateLimited": "ઘણા નિષ્ફળ પ્રયાસો. {minutes} મિનિટ પછી ફરી પ્રયાસ કરો.",
+      "accountInactive": "આ ખાતું બંધ કરવામાં આવ્યું છે. ખાતાના માલિકનો સંપર્ક કરો.",
+      "network": "સર્વર સુધી પહોંચી શકાતું નથી. તમારું કનેક્શન તપાસો અને ફરી પ્રયાસ કરો."
+    },
+    "forgot": {
+      "title": "તમારો પાસવર્ડ રીસેટ કરવો",
+      "body": "આ એપ હજી પાસવર્ડ રીસેટ ઈમેલ મોકલતી નથી. કારણ કે એક જ માલિક ખાતું છે, રીસેટ સર્વર પરથી કરવામાં આવે છે.",
+      "afterCommand": "તે સર્વર પર ચલાવો અને સૂચનાઓ અનુસરો. તે ઈમેલ સરનામું અને નવો પાસવર્ડ પૂછશે.",
+      "copyCommand": "કમાન્ડ કૉપી કરો",
+      "copied": "કમાન્ડ કૉપી થયો"
+    },
+    "expired": {
+      "title": "તમારું સત્ર સમાપ્ત થયું છે",
+      "body": "ચાલુ રાખવા માટે ફરી સાઇન ઇન કરો. તમે સીધા આ પૃષ્ઠ પર પાછા આવશો.",
+      "signedInAs": "{email} તરીકે સાઇન ઇન",
+      "continue": "ચાલુ રાખો",
+      "checking": "તપાસી રહ્યું છે…",
+      "signOut": "સાઇન આઉટ કરો",
+      "wrongPassword": "પાસવર્ડ ખોટો છે."
+    },
+    "signOut": "સાઇન આઉટ કરો"
+  },
+  "account": {
+    "title": "ખાતું",
+    "subtitle": "તમારી વિગતો અને એપ તમારા માટે કેવી રીતે વર્તે છે",
+    "sections": {
+      "profile": "પ્રોફાઇલ",
+      "preferences": "પસંદગીઓ",
+      "security": "સુરક્ષા"
+    },
+    "nameLabel": "નામ",
+    "emailLabel": "ઈમેલ",
+    "emailHelper": "ઈમેલ બદલવા માટે તમારો પાસવર્ડ જરૂરી છે",
+    "roleLabel": "ભૂમિકા",
+    "lastSignInLabel": "છેલ્લું સાઇન ઇન",
+    "languageLabel": "ભાષા",
+    "themeLabel": "થીમ",
+    "passwordLabel": "પાસવર્ડ",
+    "passwordLastChanged": "છેલ્લે બદલ્યો {date}",
+    "passwordNeverChanged": "ક્યારેય બદલ્યો નથી",
+    "changePassword": "પાસવર્ડ બદલો",
+    "updated": "ખાતું અપડેટ થયું",
+    "languageChanged": "ભાષા બદલીને {language} કરી",
+    "theme": {
+      "light": "લાઇટ",
+      "dark": "ડાર્ક",
+      "system": "સિસ્ટમ"
+    },
+    "changePasswordModal": {
+      "title": "પાસવર્ડ બદલો",
+      "currentLabel": "હાલનો પાસવર્ડ",
+      "newLabel": "નવો પાસવર્ડ",
+      "confirmLabel": "નવા પાસવર્ડની પુષ્ટિ કરો",
+      "helper": "ઓછામાં ઓછા 8 અક્ષરો",
+      "strengthWeak": "નબળો",
+      "strengthFair": "ઠીક",
+      "strengthStrong": "મજબૂત",
+      "notice": "તમે અહીં સાઇન ઇન રહેશો. અન્ય કોઈપણ ઉપકરણો સાઇન આઉટ થઈ જશે.",
+      "submit": "પાસવર્ડ અપડેટ કરો",
+      "submitting": "અપડેટ થઈ રહ્યું છે…",
+      "success": "પાસવર્ડ અપડેટ થયો",
+      "errors": {
+        "currentWrong": "આ તમારો હાલનો પાસવર્ડ નથી.",
+        "tooShort": "ઓછામાં ઓછા 8 અક્ષરો વાપરો",
+        "mismatch": "પાસવર્ડ મેળ ખાતા નથી",
+        "sameAsCurrent": "એવો પાસવર્ડ પસંદ કરો જે તમે અહીં પહેલાં વાપર્યો ન હોય"
+      }
+    },
+    "errors": {
+      "emailTaken": "તે ઈમેલ સરનામું પહેલેથી વપરાયેલું છે."
+    }
+  },
+  "nav": {
+    "dashboard": "ડેશબોર્ડ",
+    "groups": {
+      "operations": "કામગીરી",
+      "masters": "માસ્ટર",
+      "money": "નાણાં",
+      "insights": "અહેવાલ"
+    },
+    "deliveryOrders": "ડિલિવરી ઓર્ડર",
+    "coinIssues": "સિક્કા ઇશ્યૂ",
+    "partyOrders": "પાર્ટી ઓર્ડર",
+    "directSales": "સીધું વેચાણ",
+    "staff": "સ્ટાફ",
+    "products": "પ્રોડક્ટ",
+    "coinTypes": "સિક્કાના પ્રકાર",
+    "expenseCategories": "ખર્ચ શ્રેણીઓ",
+    "expenses": "ખર્ચ",
+    "payments": "ચુકવણીઓ",
+    "reports": "અહેવાલો",
+    "coinLedger": "સિક્કા ખાતાવહી",
+    "accountSettings": "ખાતા સેટિંગ્સ",
+    "toggleSidebar": "સાઇડબાર બદલો",
+    "toggleTheme": "થીમ બદલો",
+    "language": "ભાષા"
+  },
+  "dashboard": {
+    "title": "ડેશબોર્ડ",
+    "subtitle": "તમારો આખો વ્યવસાય, અત્યારે",
+    "comingSoon": "ડેશબોર્ડ તબક્કા 8 માં આવશે. તેને ડેટા આપતા મોડ્યુલ પહેલાં બનાવવામાં આવે છે."
+  }
+}

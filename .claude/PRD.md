@@ -169,6 +169,7 @@ There are no paired English/Gujarati columns in the schema. Full detail in [I18N
 
 | # | Module | One-line purpose | Spec |
 |---|---|---|---|
+| 0 | Auth & Account | Sign in, and the handful of account controls one admin needs | [00-auth.md](MODULES/00-auth.md) |
 | 1 | Staff | Who your delivery people are, and what each currently owes | [01-staff.md](MODULES/01-staff.md) |
 | 2 | Products | What you sell and what it normally costs | [02-products.md](MODULES/02-products.md) |
 | 3 | Delivery Orders | Jar issue, returns, and cash/coin collection | [03-delivery-orders.md](MODULES/03-delivery-orders.md) |

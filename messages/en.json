@@ -1,0 +1,153 @@
+{
+  "brand": {
+    "name": "Maruti Jal",
+    "tagline": "Water Supply"
+  },
+  "common": {
+    "save": "Save",
+    "saveChanges": "Save changes",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "close": "Close",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "search": "Search",
+    "filters": "Filters",
+    "clearFilters": "Clear filters",
+    "tryAgain": "Try again",
+    "gotIt": "Got it",
+    "loading": "Loading…",
+    "unsavedChanges": "Unsaved changes",
+    "somethingWentWrong": "Something went wrong. Please try again.",
+    "notSignedIn": "You are not signed in.",
+    "noAccess": "You do not have access to this action.",
+    "fixHighlighted": "Please fix the highlighted fields",
+    "copied": "Copied",
+    "never": "Never",
+    "notFound": "That record could not be found.",
+    "insufficientStock": "There isn't enough stock for that."
+  },
+  "auth": {
+    "signIn": {
+      "title": "Sign in",
+      "subtitle": "Enter your details to continue",
+      "emailLabel": "Email",
+      "emailPlaceholder": "owner@marutijal.com",
+      "passwordLabel": "Password",
+      "keepSignedIn": "Keep me signed in",
+      "submit": "Sign in",
+      "submitting": "Signing in…",
+      "forgotPassword": "Forgot password?",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
+      "redirectedNotice": "Sign in to continue to that page."
+    },
+    "errors": {
+      "invalidCredentials": "Email or password is incorrect.",
+      "emailRequired": "Enter your email address",
+      "emailInvalid": "Enter a valid email address, like owner@marutijal.com",
+      "passwordRequired": "Enter your password",
+      "rateLimited": "Too many failed attempts. Try again in {minutes} minutes.",
+      "accountInactive": "This account has been deactivated. Contact the account owner.",
+      "network": "Can't reach the server. Check your connection and try again."
+    },
+    "forgot": {
+      "title": "Resetting your password",
+      "body": "This app doesn't send password reset emails yet. Because there's a single owner account, a reset is done from the server.",
+      "afterCommand": "Run that on the server and follow the prompts. It asks for the email address and a new password.",
+      "copyCommand": "Copy command",
+      "copied": "Command copied"
+    },
+    "expired": {
+      "title": "Your session has expired",
+      "body": "Sign in again to continue. You'll come right back to this page.",
+      "signedInAs": "Signed in as {email}",
+      "continue": "Continue",
+      "checking": "Checking…",
+      "signOut": "Sign out",
+      "wrongPassword": "Password is incorrect."
+    },
+    "signOut": "Sign out"
+  },
+  "account": {
+    "title": "Account",
+    "subtitle": "Your details and how the app behaves for you",
+    "sections": {
+      "profile": "Profile",
+      "preferences": "Preferences",
+      "security": "Security"
+    },
+    "nameLabel": "Name",
+    "emailLabel": "Email",
+    "emailHelper": "Changing your email requires your password",
+    "roleLabel": "Role",
+    "lastSignInLabel": "Last sign-in",
+    "languageLabel": "Language",
+    "themeLabel": "Theme",
+    "passwordLabel": "Password",
+    "passwordLastChanged": "Last changed {date}",
+    "passwordNeverChanged": "Never changed",
+    "changePassword": "Change password",
+    "updated": "Account updated",
+    "languageChanged": "Language changed to {language}",
+    "theme": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    },
+    "changePasswordModal": {
+      "title": "Change password",
+      "currentLabel": "Current password",
+      "newLabel": "New password",
+      "confirmLabel": "Confirm new password",
+      "helper": "At least 8 characters",
+      "strengthWeak": "Weak",
+      "strengthFair": "Fair",
+      "strengthStrong": "Strong",
+      "notice": "You'll stay signed in here. Any other devices will be signed out.",
+      "submit": "Update password",
+      "submitting": "Updating…",
+      "success": "Password updated",
+      "errors": {
+        "currentWrong": "That's not your current password.",
+        "tooShort": "Use at least 8 characters",
+        "mismatch": "Passwords don't match",
+        "sameAsCurrent": "Choose a password you haven't used here before"
+      }
+    },
+    "errors": {
+      "emailTaken": "That email address is already in use."
+    }
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "groups": {
+      "operations": "Operations",
+      "masters": "Masters",
+      "money": "Money",
+      "insights": "Insights"
+    },
+    "deliveryOrders": "Delivery Orders",
+    "coinIssues": "Coin Issues",
+    "partyOrders": "Party Orders",
+    "directSales": "Direct Sales",
+    "staff": "Staff",
+    "products": "Products",
+    "coinTypes": "Coin Types",
+    "expenseCategories": "Expense Categories",
+    "expenses": "Expenses",
+    "payments": "Payments",
+    "reports": "Reports",
+    "coinLedger": "Coin Ledger",
+    "accountSettings": "Account settings",
+    "toggleSidebar": "Toggle sidebar",
+    "toggleTheme": "Toggle theme",
+    "language": "Language"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Your whole business, right now",
+    "comingSoon": "Dashboard arrives in Phase 8. The modules that feed it are built first."
+  }
+}

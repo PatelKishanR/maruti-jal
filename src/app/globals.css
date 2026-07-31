@@ -1,0 +1,271 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+/* ═══════════════════════════════════════════════════════════════════════
+   NovaSpark design tokens, applied to a dense business application.
+   Source: .claude/design/novaspark-design-system.md
+   Rules:  .claude/design/DESIGN-STANDARDS.md
+
+   The semantic token names below are the ones shadcn/ui components read.
+   Painting THOSE with NovaSpark values (rather than inventing a parallel
+   set) is what makes every component on-brand with zero overrides.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --radius: 0.5rem; /* radius-md 8px */
+
+  /* ── Brand scale (raw — for charts, badges, brand marks) ── */
+  --nova-blue: #2563eb;
+  --nova-dark: #0f172a;
+  --nova-light: #f8fafc;
+  --spark-orange: #f97316;
+  --spark-green: #22c55e;
+  --spark-red: #ef4444;
+
+  /* ── Semantic tokens ── */
+  --background: #f8fafc; /* page sits on Nova Light, cards are white */
+  --foreground: #111827; /* Gray 900 */
+  --card: #ffffff;
+  --card-foreground: #111827;
+  --popover: #ffffff;
+  --popover-foreground: #111827;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --secondary: #f3f4f6; /* Gray 100 */
+  --secondary-foreground: #111827;
+  --muted: #f3f4f6;
+  --muted-foreground: #4b5563; /* Gray 600 */
+  --accent: #f3f4f6;
+  --accent-foreground: #111827;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #e5e7eb;
+  --input: #d1d5db; /* design doc: inputs are 1px #D1D5DB */
+  --ring: #2563eb;
+
+  /* Status — not in stock shadcn, but this app needs them */
+  --success: #22c55e;
+  --success-foreground: #ffffff;
+  --warning: #f97316;
+  --warning-foreground: #ffffff;
+
+  /* Badge pairs (DESIGN-STANDARDS §7.1) */
+  --badge-default-bg: #e5e7eb;
+  --badge-default-fg: #374151;
+  --badge-primary-bg: #dbeafe;
+  --badge-primary-fg: #1d4ed8;
+  --badge-success-bg: #dcfce7;
+  --badge-success-fg: #15803d;
+  --badge-warning-bg: #fef3c7;
+  --badge-warning-fg: #b45309;
+  --badge-danger-bg: #fee2e2;
+  --badge-danger-fg: #b91c1c;
+
+  /* Sidebar — 240px / 64px per the design doc */
+  --sidebar: #f8fafc;
+  --sidebar-foreground: #111827;
+  --sidebar-primary: #2563eb;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #dbeafe; /* active item background */
+  --sidebar-accent-foreground: #1d4ed8;
+  --sidebar-border: #e5e7eb;
+  --sidebar-ring: #2563eb;
+  --sidebar-width: 15rem; /* 240px */
+  --sidebar-width-icon: 4rem; /* 64px */
+  --topbar-height: 4rem; /* 64px */
+
+  /* Charts — validated for colour vision deficiency, DESIGN-STANDARDS §12.1.
+     Order matters: purple is LAST because against Nova Blue it separates by
+     only ΔE 2.3 under protanopia. */
+  --chart-1: #2563eb;
+  --chart-2: #f97316;
+  --chart-3: #14b8a6;
+  --chart-4: #22c55e;
+  --chart-5: #8b5cf6;
+}
+
+.dark {
+  --background: #0f172a;
+  --foreground: #f1f5f9;
+  --card: #1e293b;
+  --card-foreground: #f1f5f9;
+  --popover: #1e293b;
+  --popover-foreground: #f1f5f9;
+  /* Nova Blue lifts one step to hold 4.5:1 on #0F172A */
+  --primary: #3b82f6;
+  --primary-foreground: #0f172a;
+  --secondary: #1e293b;
+  --secondary-foreground: #f1f5f9;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --accent: #1e293b;
+  --accent-foreground: #f1f5f9;
+  --destructive: #f87171;
+  --destructive-foreground: #0f172a;
+  --border: #334155;
+  --input: #334155;
+  --ring: #3b82f6;
+
+  --success: #4ade80;
+  --success-foreground: #0f172a;
+  --warning: #fb923c;
+  --warning-foreground: #0f172a;
+
+  --badge-default-bg: #334155;
+  --badge-default-fg: #e2e8f0;
+  --badge-primary-bg: #1e3a8a;
+  --badge-primary-fg: #bfdbfe;
+  --badge-success-bg: #14532d;
+  --badge-success-fg: #bbf7d0;
+  --badge-warning-bg: #7c2d12;
+  --badge-warning-fg: #fed7aa;
+  --badge-danger-bg: #7f1d1d;
+  --badge-danger-fg: #fecaca;
+
+  --sidebar: #0f172a;
+  --sidebar-foreground: #f1f5f9;
+  --sidebar-primary: #3b82f6;
+  --sidebar-primary-foreground: #0f172a;
+  --sidebar-accent: #1e3a8a;
+  --sidebar-accent-foreground: #bfdbfe;
+  --sidebar-border: #334155;
+  --sidebar-ring: #3b82f6;
+
+  /* Selected dark palette, not a lightened copy. Green is emerald #34D399
+     rather than #4ADE80: against orange the naive lift separates by only
+     ΔE 7.1 under deuteranopia; emerald clears at 10.5. */
+  --chart-1: #3b82f6;
+  --chart-2: #fb923c;
+  --chart-3: #2dd4bf;
+  --chart-4: #34d399;
+  --chart-5: #a78bfa;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Fonts. Noto Sans Gujarati sits AFTER Inter: browsers fall back per
+     character, so a line mixing "Ramesh" and "રમેશ" renders correctly in one
+     pass. Without it Gujarati is tofu boxes. See .claude/I18N.md §5.3 */
+  --font-sans: var(--font-inter), var(--font-noto-gujarati), ui-sans-serif,
+    system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), var(--font-noto-gujarati),
+    ui-monospace, monospace;
+
+  /* Radius scale 4 / 8 / 12 / 16 */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 4px);
+  --radius-xl: calc(var(--radius) + 8px);
+
+  /* Shadows, verbatim from the design doc */
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px rgb(0 0 0 / 0.07);
+  --shadow-lg: 0 10px 15px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px rgb(0 0 0 / 0.15);
+
+  /* Type scale → text-h2, text-body-sm, text-caption … */
+  --text-display: 3rem;
+  --text-display--line-height: 1.1;
+  --text-h1: 2.25rem;
+  --text-h1--line-height: 1.2;
+  --text-h2: 1.75rem;
+  --text-h2--line-height: 1.3;
+  --text-h3: 1.375rem;
+  --text-h3--line-height: 1.4;
+  --text-h4: 1.125rem;
+  --text-h4--line-height: 1.4;
+  --text-body-lg: 1.125rem;
+  --text-body-lg--line-height: 1.6;
+  --text-body: 1rem;
+  --text-body--line-height: 1.6;
+  --text-body-sm: 0.875rem;
+  --text-body-sm--line-height: 1.5;
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1.4;
+
+  /* Motion */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    /* Gujarati matras sit above and below the baseline; a tight line box
+       clips them. 1.6 minimum. See .claude/I18N.md §7 */
+    line-height: 1.6;
+  }
+
+  /* Design doc: every interactive element has a visible focus ring.
+     Never remove this without an equivalent replacement. */
+  :focus-visible {
+    @apply outline-ring outline-2 outline-offset-2;
+  }
+
+  /* All figures align vertically down a column. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+    @apply font-mono;
+  }
+}
+
+@layer utilities {
+  /* Money and quantity cells: mono, tabular, right-aligned. */
+  .figure {
+    font-variant-numeric: tabular-nums;
+    @apply font-mono text-right;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

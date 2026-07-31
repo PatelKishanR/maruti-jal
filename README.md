@@ -52,6 +52,7 @@ Everything lives under [`.claude/`](.claude/).
 
 | # | Module | Purpose | Spec | Design |
 |---|---|---|---|---|
+| 0 | Auth & Account | Sign in, password, language and theme preferences | [spec](.claude/MODULES/00-auth.md) | [design](.claude/design/MODULES/00-auth.md) |
 | 1 | Staff | Delivery people, and what each one owes | [spec](.claude/MODULES/01-staff.md) | [design](.claude/design/MODULES/01-staff.md) |
 | 2 | Products | What you sell and what it costs | [spec](.claude/MODULES/02-products.md) | [design](.claude/design/MODULES/02-products.md) |
 | 3 | Delivery Orders | Jar issue, returns, cash/coin collection | [spec](.claude/MODULES/03-delivery-orders.md) | [design](.claude/design/MODULES/03-delivery-orders.md) |
@@ -70,9 +71,9 @@ Everything lives under [`.claude/`](.claude/).
 
 The short version: **do not paste the standards or NovaSpark files into Stitch.** They're too long and get diluted. Instead, run the component-sheet prompt from [COMPONENT-INVENTORY.md](.claude/design/COMPONENT-INVENTORY.md) §15 first, screenshot the result, then attach that screenshot to every subsequent prompt. Each screen section in the module files ends with a self-contained **Stitch prompt** block written for exactly this.
 
-**Module order** — Staff first, because it establishes the list / detail / form pattern that seven other modules reuse:
+**Module order** — Auth as a quick warm-up, then Staff, because Staff establishes the list / detail / form pattern that seven other modules reuse:
 
-`01 Staff → 02 Products → 03 Delivery Orders → 04 Coins → 05 Party Orders → 06 Direct Sales → 07 Expenses → 08 Dashboards → 09 Reports`
+`00 Auth → 01 Staff → 02 Products → 06 Direct Sales → 07 Expenses → 03 Delivery Orders → 04 Coins → 05 Party Orders → 08 Dashboards → 09 Reports`
 
 If a module design ever contradicts [DESIGN-STANDARDS.md](.claude/design/DESIGN-STANDARDS.md), the standards win. New patterns go into the standards first, so the other eight modules can use them.
 

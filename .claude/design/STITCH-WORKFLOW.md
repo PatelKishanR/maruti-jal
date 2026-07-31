@@ -26,6 +26,7 @@ That is exactly why the module files have 63 short prompts instead of one long d
 | Stage | What you paste | Where it comes from |
 |---|---|---|
 | 1 | Component sheet prompt | [COMPONENT-INVENTORY.md](COMPONENT-INVENTORY.md) §15 |
+| 1.5 | Login screen prompt | [MODULES/00-auth.md](MODULES/00-auth.md) §3.9 |
 | 2 | Staff list prompt | [MODULES/01-staff.md](MODULES/01-staff.md) §3.9 |
 | 3 | Staff detail prompt | [MODULES/01-staff.md](MODULES/01-staff.md) §4.9 |
 | 4 | Staff form prompt | [MODULES/01-staff.md](MODULES/01-staff.md) §5.9 |
@@ -67,6 +68,18 @@ Every prompt block is fenced as ```text so you can copy it cleanly.
 6. **Screenshot the approved sheet and save it.** This image is your style reference for every remaining phase.
 
 > Do not move on until this looks right. Every screen inherits from it, so a wrong button here becomes a wrong button 40 times.
+
+---
+
+## Phase 1.5 — Login (warm-up)
+
+**Goal:** one easy screen to confirm your component sheet actually transfers, before you spend the expensive mode on the archetypes.
+
+Login is the ideal second generation: a single card, five elements, no table, no data. If it comes out on-brand, your reference image is working. If it doesn't, fix that now rather than discovering it three screens deeper.
+
+1. New chat, `Maruti Jal — Auth`. **Standard mode** is fine.
+2. Attach the component sheet screenshot, paste [00-auth.md](MODULES/00-auth.md) §3.9.
+3. While you're in that chat, also generate the change-password modal (§7.9) — it establishes the modal look that Delivery Orders and Coins lean on heavily later.
 
 ---
 
