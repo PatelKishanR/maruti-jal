@@ -4,6 +4,7 @@ import { getDataSource, withTx } from '@/lib/db/data-source';
 import { User } from '@/lib/db/entities';
 import { AppError, ConflictError, NotFoundError } from '@/lib/errors';
 import { logger } from '@/lib/logger';
+import { toUserDto, type UserDto } from '@/lib/dto/user.dto';
 
 /**
  * A bcrypt hash of a value nobody knows.
@@ -74,11 +75,39 @@ export async function verifyCredentials(
   };
 }
 
-export async function getUserById(id: string) {
+/** Returns a DTO, never the entity — see lib/dto/user.dto.ts for why. */
+export async function getUserById(id: string): Promise<UserDto> {
   const ds = await getDataSource();
   const user = await ds.getRepository(User).findOne({ where: { id } });
   if (!user) throw new NotFoundError('Account');
-  return user;
+  return toUserDto(user);
+}
+
+/**
+ * Is this token still valid for this account?
+ *
+ * The JWT carries the sessionVersion it was minted with. Changing a password
+ * bumps the stored value, so every other device's token stops matching. Called
+ * from the authenticated layout, which runs on Node — Edge middleware cannot
+ * reach the database.
+ */
+export async function isSessionValid(
+  userId: string,
+  tokenSessionVersion: number | undefined,
+): Promise<boolean> {
+  const ds = await getDataSource();
+  const row = await ds.getRepository(User).findOne({
+    where: { id: userId },
+    select: { id: true, sessionVersion: true, isActive: true },
+  });
+
+  return !!row && row.isActive && row.sessionVersion === tokenSessionVersion;
+}
+
+/** Phase 0 smoke check — proves the full app → TypeORM → Neon path works. */
+export async function countAccounts(): Promise<number> {
+  const ds = await getDataSource();
+  return ds.getRepository(User).count();
 }
 
 /**

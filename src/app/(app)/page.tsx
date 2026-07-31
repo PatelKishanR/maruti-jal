@@ -2,8 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { LayoutDashboard } from "lucide-react";
 import { PageHeader } from "@/components/common/page-header";
 import { Card } from "@/components/ui/card";
-import { getDataSource } from "@/lib/db/data-source";
-import { User } from "@/lib/db/entities";
+import { countAccounts } from "@/lib/services/auth.service";
 
 export const runtime = "nodejs";
 
@@ -17,8 +16,7 @@ export const runtime = "nodejs";
 export default async function DashboardPage() {
   const t = await getTranslations();
 
-  const ds = await getDataSource();
-  const accountCount = await ds.getRepository(User).count();
+  const accountCount = await countAccounts();
 
   return (
     <>

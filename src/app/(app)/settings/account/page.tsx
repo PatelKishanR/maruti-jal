@@ -36,7 +36,7 @@ export default async function AccountPage() {
             label={t("lastSignInLabel")}
             value={
               user.lastLoginAt
-                ? format.dateTime(user.lastLoginAt, {
+                ? format.dateTime(new Date(user.lastLoginAt), {
                     dateStyle: "medium",
                     timeStyle: "short",
                   })
@@ -64,7 +64,7 @@ export default async function AccountPage() {
             <p className="mt-0.5 text-xs text-muted-foreground">
               {user.passwordChangedAt
                 ? t("passwordLastChanged", {
-                    date: format.dateTime(user.passwordChangedAt, {
+                    date: format.dateTime(new Date(user.passwordChangedAt), {
                       dateStyle: "medium",
                     }),
                   })

@@ -2,8 +2,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { Topbar } from "@/components/layout/topbar";
-import { getDataSource } from "@/lib/db/data-source";
-import { User } from "@/lib/db/entities";
+import { isSessionValid } from "@/lib/services/auth.service";
 
 /**
  * Authenticated shell.
@@ -38,15 +37,11 @@ export default async function AppLayout({
    * Costs one indexed lookup per page load. Acceptable for a single-user tool;
    * revisit if the app ever serves many concurrent users.
    */
-  const ds = await getDataSource();
-  const current = await ds.getRepository(User).findOne({
-    where: { id: session.user.id },
-    select: { id: true, sessionVersion: true, isActive: true },
-  });
-
-  if (!current || !current.isActive || current.sessionVersion !== session.user.sessionVersion) {
-    redirect("/login");
-  }
+  const valid = await isSessionValid(
+    session.user.id,
+    session.user.sessionVersion,
+  );
+  if (!valid) redirect("/login");
 
   return (
     <div className="flex min-h-dvh">
