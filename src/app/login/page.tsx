@@ -64,7 +64,11 @@ export default async function LoginPage({
             {t("auth.signIn.subtitle")}
           </p>
 
-          <LoginForm redirectTo={redirectTo} wasRedirected={!!params.next} />
+          <LoginForm
+            redirectTo={redirectTo}
+            wasRedirected={!!params.next}
+            sessionExpired={params.expired === "1"}
+          />
 
           <div className="mt-5">
             <ForgotPasswordDialog />

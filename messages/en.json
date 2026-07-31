@@ -42,7 +42,8 @@
       "forgotPassword": "Forgot password?",
       "showPassword": "Show password",
       "hidePassword": "Hide password",
-      "redirectedNotice": "Sign in to continue to that page."
+      "redirectedNotice": "Sign in to continue to that page.",
+      "expiredNotice": "Your session ended. Sign in again to continue."
     },
     "errors": {
       "invalidCredentials": "Email or password is incorrect.",

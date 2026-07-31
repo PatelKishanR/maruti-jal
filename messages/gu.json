@@ -42,7 +42,8 @@
       "forgotPassword": "પાસવર્ડ ભૂલી ગયા?",
       "showPassword": "પાસવર્ડ બતાવો",
       "hidePassword": "પાસવર્ડ છુપાવો",
-      "redirectedNotice": "તે પૃષ્ઠ પર જવા માટે સાઇન ઇન કરો."
+      "redirectedNotice": "તે પૃષ્ઠ પર જવા માટે સાઇન ઇન કરો.",
+      "expiredNotice": "તમારું સત્ર સમાપ્ત થયું. ચાલુ રાખવા માટે ફરી સાઇન ઇન કરો."
     },
     "errors": {
       "invalidCredentials": "ઈમેલ અથવા પાસવર્ડ ખોટો છે.",

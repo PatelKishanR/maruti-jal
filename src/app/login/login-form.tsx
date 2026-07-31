@@ -29,9 +29,12 @@ import { FieldError } from "@/components/ui/field-error";
 export function LoginForm({
   redirectTo,
   wasRedirected,
+  sessionExpired = false,
 }: {
   redirectTo: string;
   wasRedirected: boolean;
+  /** Arrived here from force-signout after a stale session was cleared. */
+  sessionExpired?: boolean;
 }) {
   const t = useTranslations();
   const router = useRouter();
@@ -91,7 +94,13 @@ export function LoginForm({
 
   return (
     <form onSubmit={submit} noValidate>
-      {wasRedirected && !bannerKey && (
+      {sessionExpired && !bannerKey && (
+        <Alert variant="info" icon={<Info aria-hidden />} className="mb-6">
+          {t("auth.signIn.expiredNotice")}
+        </Alert>
+      )}
+
+      {wasRedirected && !sessionExpired && !bannerKey && (
         <Alert variant="info" icon={<Info aria-hidden />} className="mb-6">
           {t("auth.signIn.redirectedNotice")}
         </Alert>

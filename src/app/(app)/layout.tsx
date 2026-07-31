@@ -42,7 +42,15 @@ export default async function AppLayout({
     .get<SessionStateDto>("/api/auth/session-state")
     .catch(() => ({ valid: false }));
 
-  if (!valid) redirect("/login");
+  /**
+   * Redirect to force-signout, NOT to /login.
+   *
+   * A stale token is still cryptographically valid, so middleware would treat
+   * the user as signed in and bounce them straight back here — an infinite
+   * loop. force-signout clears the cookie first, which is what makes
+   * middleware and this layout agree again. See that route for the full note.
+   */
+  if (!valid) redirect("/api/auth/force-signout");
 
   return (
     <div className="flex min-h-dvh">
