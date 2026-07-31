@@ -10,7 +10,8 @@ import type {
   ProductDetailDto,
   ProductLookupsDto,
 } from "@/lib/dto/product.dto";
-import { ProductForm, toFormInitial } from "../../product-form";
+import { ProductForm } from "../../product-form";
+import { toFormInitial } from "../../product-form-model";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

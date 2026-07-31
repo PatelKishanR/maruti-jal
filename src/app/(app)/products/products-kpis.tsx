@@ -37,7 +37,7 @@ export function ProductKpis({ kpis }: { kpis: ProductCatalogueKpisDto }) {
   return (
     <KpiRow className="mb-6">
       <KpiCard
-        icon={Package}
+        icon="product"
         label={t("totalProducts")}
         value={kpis.totalProducts}
         format="count"
@@ -51,7 +51,7 @@ export function ProductKpis({ kpis }: { kpis: ProductCatalogueKpisDto }) {
       />
 
       <KpiCard
-        icon={CheckCircle2}
+        icon="active"
         label={t("active")}
         value={kpis.activeProducts}
         format="count"

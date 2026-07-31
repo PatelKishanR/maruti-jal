@@ -6,7 +6,8 @@ import type {
   ProductDetailDto,
   ProductLookupsDto,
 } from "@/lib/dto/product.dto";
-import { ProductForm, blankProduct } from "../product-form";
+import { ProductForm } from "../product-form";
+import { blankProduct } from "../product-form-model";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

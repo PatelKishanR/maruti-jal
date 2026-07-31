@@ -52,7 +52,7 @@ export default async function StaffListPage({
       <KpiRow className="mb-6">
         <KpiCard
           label={t("kpi.total")}
-          icon={Users}
+          icon="staff"
           value={stats.totalStaff}
           format="count"
           href={staffPaths.all}
@@ -66,7 +66,7 @@ export default async function StaffListPage({
 
         <KpiCard
           label={t("kpi.active")}
-          icon={UserCheck}
+          icon="staffActive"
           value={stats.activeStaff}
           format="count"
           href={staffPaths.active}
@@ -84,7 +84,7 @@ export default async function StaffListPage({
 
         <KpiCard
           label={t("kpi.cash")}
-          icon={Wallet}
+          icon="cash"
           value={stats.cashOutstanding}
           format="money"
           href={staffPaths.withBalance}
@@ -101,7 +101,7 @@ export default async function StaffListPage({
 
         <KpiCard
           label={t("kpi.jars")}
-          icon={PackageX}
+          icon="jarsOut"
           value={stats.jarsOut}
           format="count"
           href={staffPaths.withJars}

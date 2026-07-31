@@ -1,5 +1,7 @@
 "use client";
 
+import type { ProductFormInitial } from "./product-form-model";
+
 import { useMemo, useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -61,17 +63,6 @@ import type {
  * loud, so the owner raises a price without fear.
  */
 
-export interface ProductFormInitial {
-  title: string;
-  litres: number | null;
-  basePrice: number | null;
-  tagCode: string;
-  filterTypeCode: string;
-  description: string;
-  isReturnable: boolean;
-  sortOrder: number | null;
-  isActive: boolean;
-}
 
 interface FormValues {
   title: string;
@@ -787,52 +778,7 @@ function LookupField({
   );
 }
 
-/**
- * A fresh form: returnable ON, sort order 100, everything else blank.
- * `duplicate` pre-fills from an existing product with ` (copy)` appended.
- */
-export function blankProduct(
-  duplicateOf?: ProductDto,
-  copySuffix = " (copy)",
-): ProductFormInitial {
-  if (duplicateOf) {
-    return {
-      title: `${duplicateOf.title}${copySuffix}`,
-      litres: duplicateOf.litres,
-      basePrice: duplicateOf.basePrice,
-      tagCode: duplicateOf.tagCode,
-      filterTypeCode: duplicateOf.filterTypeCode,
-      description: duplicateOf.description ?? "",
-      isReturnable: duplicateOf.isReturnable,
-      sortOrder: duplicateOf.sortOrder,
-      isActive: true,
-    };
-  }
-
-  return {
-    title: "",
-    litres: null,
-    basePrice: null,
-    tagCode: "",
-    filterTypeCode: "",
-    description: "",
-    isReturnable: true,
-    sortOrder: 100,
-    isActive: true,
-  };
-}
-
-/** An existing record, ready for the edit form. */
-export function toFormInitial(product: ProductDto): ProductFormInitial {
-  return {
-    title: product.title,
-    litres: product.litres,
-    basePrice: product.basePrice,
-    tagCode: product.tagCode,
-    filterTypeCode: product.filterTypeCode,
-    description: product.description ?? "",
-    isReturnable: product.isReturnable,
-    sortOrder: product.sortOrder,
-    isActive: product.isActive,
-  };
-}
+// Type only. The BUILDERS are deliberately NOT re-exported here: a server
+// component calling an export of a "use client" module is exactly the error
+// this split fixes. Import them from ./product-form-model instead.
+export type { ProductFormInitial } from "./product-form-model";

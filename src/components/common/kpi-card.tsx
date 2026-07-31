@@ -3,7 +3,8 @@
 import * as React from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { TrendingDown, TrendingUp, type LucideIcon } from "lucide-react";
+import { TrendingDown, TrendingUp } from "lucide-react";
+import { KPI_ICONS, type KpiIconName } from "./kpi-icons";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { formatINR, formatINRCompact, formatQuantity } from "@/lib/money";
@@ -42,7 +43,12 @@ export interface KpiTrend {
 export interface KpiCardProps {
   /** Already translated. Rendered 12px/600 uppercase. */
   label: string;
-  icon?: LucideIcon;
+  /**
+   * Icon NAME, not a component reference. A LucideIcon is a function and
+   * cannot cross the server->client boundary, so `icon={Coins}` from a server
+   * component throws. See ./kpi-icons.ts
+   */
+  icon?: KpiIconName;
   value?: number | string | null;
   /** `money` abbreviates per §13 (`₹1.85L`); `count` groups without decimals. */
   format?: "money" | "count";
@@ -74,7 +80,7 @@ export interface KpiCardProps {
 
 export function KpiCard({
   label,
-  icon: Icon,
+  icon: iconName,
   value,
   format = "money",
   valueLabel,
@@ -107,7 +113,10 @@ export function KpiCard({
   const body = (
     <>
       <p className="flex items-center gap-1 text-caption font-semibold uppercase tracking-[0.04em] text-muted-foreground">
-        {Icon ? <Icon className="size-4 shrink-0" aria-hidden /> : null}
+        {iconName ? (() => {
+          const Icon = KPI_ICONS[iconName];
+          return <Icon className="size-4 shrink-0" aria-hidden />;
+        })() : null}
         {label}
       </p>
 

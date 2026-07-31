@@ -76,7 +76,7 @@ export default async function CoinTypesPage({
       <KpiRow className="mb-8">
         <KpiCard
           label={t("kpi.count")}
-          icon={Coins}
+          icon="coin"
           value={summary.total}
           format="count"
           href="/coins/types"
@@ -88,7 +88,7 @@ export default async function CoinTypesPage({
         />
         <KpiCard
           label={t("kpi.coinsInStock")}
-          icon={Coins}
+          icon="coin"
           value={summary.coinsInStock}
           format="count"
           href="/coins/types?sort=balanceCoins&dir=desc"
@@ -106,7 +106,7 @@ export default async function CoinTypesPage({
         />
         <KpiCard
           label={t("kpi.valueInStock")}
-          icon={IndianRupee}
+          icon="rupee"
           value={summary.valueInStock}
           format="money"
           href="/coins/types?sort=balanceCoins&dir=desc"
@@ -119,7 +119,7 @@ export default async function CoinTypesPage({
             then the card states zero honestly rather than linking nowhere. */}
         <KpiCard
           label={t("kpi.outWithStaff")}
-          icon={Users}
+          icon="staff"
           value={summary.coinsOutWithStaff}
           format="count"
           breakdown={t("kpi.outWithStaffBreakdown", {
