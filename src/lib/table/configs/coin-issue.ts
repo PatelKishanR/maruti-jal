@@ -1,11 +1,13 @@
+import { z } from "zod";
 import type { TableConfig } from "@/lib/table/types";
 
 /**
  * The coin-issue register table contract. Spec: .claude/ARCHITECTURE.md §6.1 ·
- * design/MODULES/04-coins.md
+ * design/MODULES/04-coins.md §6
  *
- * Written ahead of the module (wave 3) so the allowlist exists in ONE place
- * from the first line of UI code. `CoinIssueRepository` already imports it.
+ * The single source of truth for the sort allowlist AND the filter vocabulary:
+ * `CoinIssueRepository` imports the sort map, the client table imports the
+ * filter keys, and `coinIssueListQuerySchema` derives its enums from here.
  *
  * Client-safe by construction — zod and types only, no `server-only`, no
  * entity or repository imports. See .claude/MODULE-RECIPE.md §1
@@ -34,6 +36,42 @@ export const COIN_ISSUE_SORT_COLUMNS = {
 
 export type CoinIssueSortKey = keyof typeof COIN_ISSUE_SORT_COLUMNS;
 
+/** True when the parsed key is one the repository can actually order by. */
+export function isCoinIssueSortKey(key: string): key is CoinIssueSortKey {
+  return Object.hasOwn(COIN_ISSUE_SORT_COLUMNS, key);
+}
+
+/**
+ * The register's status vocabulary.
+ *
+ * Deliberately NOT the raw `payment_status` enum. The owner reads this column
+ * as "what do I do about this row?", and the answer comes from ONE signed
+ * number — `outstanding_amount` — which is positive when he is owed, negative
+ * when he owes, and zero when the relationship is closed. Design §6.4
+ */
+export const COIN_ISSUE_STATUS_FILTERS = [
+  "pending",
+  "partial",
+  "settled",
+  "refund_due",
+  "cancelled",
+] as const;
+
+export type CoinIssueStatusFilter = (typeof COIN_ISSUE_STATUS_FILTERS)[number];
+
+/** Filter param names, so the chips, the URL and the schema cannot drift. */
+export const COIN_ISSUE_FILTERS = {
+  status: "status",
+  staffId: "staffId",
+  coinTypeId: "coinTypeId",
+  from: "from",
+  to: "to",
+} as const;
+
+/** `'YYYY-MM-DD'`, matching the string-only business date rule of §9.2. */
+const businessDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
+const uuid = z.string().uuid();
+
 export const coinIssueTableConfig = {
   sortable: COIN_ISSUE_SORT_COLUMNS,
   /** The register is read newest first — today's issues at the top. */
@@ -44,12 +82,13 @@ export const coinIssueTableConfig = {
    * and that name and phone live on `staff`. See .claude/DATA-MODEL.md §5.2
    */
   searchable: ["ci.code", "s.name", "s.phone"],
-  /**
-   * TODO(wave-3): staff, status, coin type, the date range and the
-   * "outstanding only" chip get their Zod schemas here when the list page
-   * ships. The repository already filters on all five.
-   */
-  filters: {},
+  filters: {
+    [COIN_ISSUE_FILTERS.status]: z.enum(COIN_ISSUE_STATUS_FILTERS),
+    [COIN_ISSUE_FILTERS.staffId]: uuid,
+    [COIN_ISSUE_FILTERS.coinTypeId]: uuid,
+    [COIN_ISSUE_FILTERS.from]: businessDate,
+    [COIN_ISSUE_FILTERS.to]: businessDate,
+  },
   defaultPageSize: 25,
   maxPageSize: 100,
 } satisfies TableConfig;

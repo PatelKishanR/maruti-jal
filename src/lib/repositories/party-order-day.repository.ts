@@ -13,6 +13,26 @@ import { PartyOrderDay } from "@/lib/db/entities";
  * schedule triggers and the payment triggers.
  * See .claude/DATA-MODEL.md §7 · .claude/ARCHITECTURE.md §4.3
  */
+/** One booking's schedule position, aggregated in SQL. */
+export interface PartyOrderDayProgressRow {
+  partyOrderId: string;
+  totalDays: number;
+  deliveredDays: number;
+  skippedDays: number;
+  cancelledDays: number;
+  scheduledDays: number;
+  /** Earliest day still SCHEDULED — `next 20 Aug`. */
+  nextServiceDate: string | null;
+}
+
+/** The calendar footer band and the `PARTY REVENUE THIS MONTH` KPI. */
+export interface PartyOrderDayTotals {
+  /** Σ of `day_total`. From SQL, because it is money. */
+  amount: number;
+  days: number;
+  bookings: number;
+}
+
 class PartyOrderDayRepository extends BaseRepository<PartyOrderDay> {
   protected readonly target: EntityTarget<PartyOrderDay> = PartyOrderDay;
   protected readonly alias = "d";

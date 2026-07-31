@@ -40,6 +40,15 @@ export interface PartyOrderSearchResult {
   total: number;
 }
 
+/** The `PARTY OUTSTANDING` KPI, in one indexed pass. */
+export interface PartyOutstandingTotals {
+  /** Σ of `outstanding_amount` over bookings that still owe. */
+  amount: number;
+  parties: number;
+  /** First service date of the oldest such booking, for `Oldest 12 days`. */
+  oldestServiceDate: string | null;
+}
+
 /**
  * Every query that touches the `party_orders` table lives here.
  *
@@ -172,6 +181,68 @@ class PartyOrderRepository extends BaseRepository<PartyOrder> {
       .orderBy("po.partyName", "ASC")
       .addOrderBy("i.lineNo", "ASC")
       .getMany();
+  }
+
+  /**
+   * The calendar: every party delivery in a date WINDOW, with its lines.
+   *
+   * The same shape as `findWithDeliveriesOn`, widened to a range, because a
+   * month grid asking that method once per cell is 31 round trips for one
+   * screen. Both bounds are inclusive and both are `'YYYY-MM-DD'` strings, so
+   * there is no timezone to get wrong.
+   *
+   * Cancelled BOOKINGS drop out; cancelled DAYS stay, because the calendar
+   * renders them at 60% rather than hiding what was called off.
+   * See design/MODULES/05-party-orders.md §10.3
+   */
+  async findWithDeliveriesBetween(
+    from: string,
+    to: string,
+    em?: EntityManager,
+  ): Promise<PartyOrder[]> {
+    const qb = await this.qb(em);
+    return qb
+      .innerJoinAndSelect(
+        "po.days",
+        "d",
+        "d.serviceDate BETWEEN :from AND :to",
+        { from, to },
+      )
+      .leftJoinAndSelect("d.items", "i")
+      .where("po.deletedAt IS NULL")
+      .andWhere("po.status <> :cancelledOrder", { cancelledOrder: "CANCELLED" })
+      .orderBy("d.serviceDate", "ASC")
+      .addOrderBy("po.partyName", "ASC")
+      .addOrderBy("i.lineNo", "ASC")
+      .getMany();
+  }
+
+  /**
+   * How much money is sitting out there, across how many parties.
+   *
+   * A SQL aggregate rather than a `reduce` over a page of rows: the KPI covers
+   * every booking, not the twenty-five on screen, and adding rupee values in
+   * TypeScript is a code-review failure. `SUM` over a numeric returns a
+   * numeric, which the driver keeps as a string — hence the explicit
+   * conversion, at the boundary, once.
+   * See .claude/ARCHITECTURE.md §9.1
+   */
+  async sumOutstanding(em?: EntityManager): Promise<PartyOutstandingTotals> {
+    const qb = await this.qb(em);
+    const row = await qb
+      .select("coalesce(sum(po.outstandingAmount), 0)", "amount")
+      .addSelect("count(*)", "parties")
+      .addSelect("min(po.firstServiceDate)", "oldest")
+      .where("po.deletedAt IS NULL")
+      .andWhere("po.status <> :cancelled", { cancelled: "CANCELLED" })
+      .andWhere("po.outstandingAmount > 0")
+      .getRawOne<{ amount: string; parties: string; oldest: string | null }>();
+
+    return {
+      amount: Number(row?.amount ?? 0),
+      parties: Number(row?.parties ?? 0),
+      oldestServiceDate: row?.oldest ?? null,
+    };
   }
 }
 

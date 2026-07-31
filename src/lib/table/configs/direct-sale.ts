@@ -1,3 +1,4 @@
+import { z } from "zod";
 import type { TableConfig } from "@/lib/table/types";
 
 /**
@@ -31,6 +32,55 @@ export const DIRECT_SALE_SORT_COLUMNS = {
 
 export type DirectSaleSortKey = keyof typeof DIRECT_SALE_SORT_COLUMNS;
 
+/**
+ * The sorts that keep the day-group bands.
+ *
+ * A per-day cash tally is meaningless once rows are reordered ACROSS days, so
+ * sorting by amount or customer drops the bands and swaps the `TIME` column
+ * for `DATE`. See design/MODULES/06-direct-sales.md §3.6
+ */
+export const DIRECT_SALE_GROUPED_SORTS: readonly DirectSaleSortKey[] = [
+  "saleDate",
+  "soldAt",
+  "code",
+];
+
+/** URL parameter names for this module's filters, in one place. */
+export const DIRECT_SALE_FILTERS = {
+  range: "range",
+  from: "from",
+  to: "to",
+  minAmount: "minAmount",
+  maxAmount: "maxAmount",
+  /** `1` shows voided rows. Off by default — §3.3 filter popover. */
+  voided: "voided",
+  productId: "productId",
+} as const;
+
+/**
+ * The quick chips, which are the primary navigation of this screen: the owner
+ * lives on `Today`. Resolved to concrete `from`/`to` bounds in the service, so
+ * no date arithmetic reaches SQL.
+ */
+export const DIRECT_SALE_RANGES = [
+  "today",
+  "yesterday",
+  "week",
+  "month",
+  "all",
+] as const;
+
+export type DirectSaleRange = (typeof DIRECT_SALE_RANGES)[number];
+
+/** Today's counter first: this list is read as "what have we sold today?". */
+export const DEFAULT_DIRECT_SALE_RANGE: DirectSaleRange = "today";
+
+/** `'YYYY-MM-DD'` and nothing else — business dates are strings end to end. */
+const businessDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
+
+/** Up to 2 decimals, no sign — an amount filter is never negative. */
+const rupees = z.string().regex(/^\d{1,10}(\.\d{1,2})?$/);
+
 export const directSaleTableConfig = {
   sortable: DIRECT_SALE_SORT_COLUMNS,
   /** Today's counter first: this list is read as "what have we sold today?". */
@@ -43,11 +93,19 @@ export const directSaleTableConfig = {
    */
   searchable: ["ds.searchBlob", "ds.code"],
   /**
-   * TODO(wave-4): the product filter, the date range and the "include voided"
-   * toggle get their Zod schemas here when the list page ships. The repository
-   * already filters on all three.
+   * Unknown filter keys are dropped; declared ones are schema-validated, and a
+   * malformed value is ignored rather than 500-ing a bookmarked URL. The
+   * repository already filters on every key below.
    */
-  filters: {},
+  filters: {
+    [DIRECT_SALE_FILTERS.range]: z.enum(DIRECT_SALE_RANGES),
+    [DIRECT_SALE_FILTERS.from]: businessDate,
+    [DIRECT_SALE_FILTERS.to]: businessDate,
+    [DIRECT_SALE_FILTERS.minAmount]: rupees,
+    [DIRECT_SALE_FILTERS.maxAmount]: rupees,
+    [DIRECT_SALE_FILTERS.voided]: z.literal("1"),
+    [DIRECT_SALE_FILTERS.productId]: z.string().uuid(),
+  },
   defaultPageSize: 25,
   maxPageSize: 100,
 } satisfies TableConfig;
