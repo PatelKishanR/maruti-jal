@@ -26,7 +26,8 @@
     "copied": "Copied",
     "never": "Never",
     "notFound": "That record could not be found.",
-    "insufficientStock": "There isn't enough stock for that."
+    "insufficientStock": "There isn't enough stock for that.",
+    "invalidRequest": "That request wasn't valid."
   },
   "auth": {
     "signIn": {
@@ -117,7 +118,9 @@
       }
     },
     "errors": {
-      "emailTaken": "That email address is already in use."
+      "emailTaken": "That email address is already in use.",
+      "nameRequired": "Enter a name",
+      "nameTooLong": "Use 120 characters or fewer"
     }
   },
   "nav": {

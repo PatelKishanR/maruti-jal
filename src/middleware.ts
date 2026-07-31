@@ -14,7 +14,17 @@ export default NextAuth(authConfig).auth;
 
 export const config = {
   matcher: [
-    // Everything except Next internals, the auth API, and static assets.
-    '/((?!api/auth|_next/static|_next/image|favicon.ico|.*\\.(?:png|jpg|jpeg|gif|svg|ico|webp|woff2?)$).*)',
+    /**
+     * Page routes only.
+     *
+     * `/api/**` is deliberately EXCLUDED. Middleware protects pages by
+     * redirecting to /login — correct for a browser, useless for an API
+     * client, which would receive a 302 and an HTML login page instead of a
+     * JSON 401 it can act on.
+     *
+     * API routes authenticate themselves inside `createApiHandler`, which
+     * returns a proper `401 { ok: false, code: "UNAUTHENTICATED" }`.
+     */
+    '/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:png|jpg|jpeg|gif|svg|ico|webp|woff2?)$).*)',
   ],
 };

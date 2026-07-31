@@ -1,11 +1,14 @@
 "use client";
 
 import { useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { locales, localeNames, type Locale } from "@/i18n/config";
-import { updatePreferencesAction } from "./actions";
+import { api } from "@/lib/api/client";
+import { apiRoutes } from "@/lib/api/routes";
+import type { UserDto } from "@/lib/dto/user.dto";
 
 type Theme = "light" | "dark" | "system";
 const THEMES: Theme[] = ["light", "dark", "system"];
@@ -21,13 +24,20 @@ export function PreferencesForm() {
   const t = useTranslations("account");
   const currentLocale = useLocale() as Locale;
   const { theme, setTheme } = useTheme();
+  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const currentTheme = (theme ?? "system") as Theme;
 
   function persist(nextLocale: Locale, nextTheme: Theme) {
     startTransition(async () => {
-      await updatePreferencesAction({ locale: nextLocale, theme: nextTheme });
+      await api.patch<UserDto>(apiRoutes.account.preferences, {
+        locale: nextLocale,
+        theme: nextTheme,
+      });
+      // The locale cookie is set by the API; refresh so the server re-renders
+      // in the new language without a full reload.
+      router.refresh();
     });
   }
 

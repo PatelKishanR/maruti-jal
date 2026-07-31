@@ -69,7 +69,11 @@ export const updateProfileSchema = z.object({
    * A `[A-Za-z]` pattern here would silently block "રમેશ પટેલ" and present as
    * "the app won't let me save". See .claude/I18N.md §3.1
    */
-  name: z.string().trim().min(1).max(120),
+  name: z
+    .string()
+    .trim()
+    .min(1, { message: "account.errors.nameRequired" })
+    .max(120, { message: "account.errors.nameTooLong" }),
   email: emailSchema,
 });
 

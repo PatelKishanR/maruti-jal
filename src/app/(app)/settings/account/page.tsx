@@ -1,7 +1,7 @@
-import { redirect } from "next/navigation";
 import { getTranslations, getFormatter } from "next-intl/server";
-import { auth } from "@/auth";
-import { getUserById } from "@/lib/services/auth.service";
+import { api } from "@/lib/api/client";
+import { apiRoutes } from "@/lib/api/routes";
+import type { UserDto } from "@/lib/dto/user.dto";
 import { PageHeader } from "@/components/common/page-header";
 import { Card } from "@/components/ui/card";
 import { ProfileForm } from "./profile-form";
@@ -12,10 +12,9 @@ export const runtime = "nodejs";
 
 /** Spec: .claude/design/MODULES/00-auth.md §6 */
 export default async function AccountPage() {
-  const session = await auth();
-  if (!session?.user?.id) redirect("/login");
-
-  const user = await getUserById(session.user.id);
+  // The layout already gated auth; this fetches through the API like every
+  // other screen, forwarding the request cookies.
+  const user = await api.get<UserDto>(apiRoutes.account.me);
   const t = await getTranslations("account");
   const format = await getFormatter();
 

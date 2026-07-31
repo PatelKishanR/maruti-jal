@@ -232,26 +232,103 @@ Run migrations as a separate pipeline step *before* promoting the new build, usi
 
 ---
 
-## 4. Layering
+## 4. Layering — the core rule of this codebase
 
 ```
-Server Action / Route Handler   ← auth, validation, error → result mapping
-        ↓ DTO in
-Service                          ← business rules. OWNS THE TRANSACTION. Returns DTOs
-        ↓ EntityManager passed down
-Repository                       ← query building. NEVER opens a transaction
-        ↓
-Database
+┌─────────────────────────────────────────────────────────────────┐
+│  FRONTEND        src/app/**  ·  src/components/**               │
+│                  Pages, layouts, client components.             │
+│                  Reaches data ONLY via lib/api/client.          │
+└────────────────────────────┬────────────────────────────────────┘
+                             │  HTTP (fetch)
+┌────────────────────────────▼────────────────────────────────────┐
+│  API             src/app/api/**/route.ts                        │
+│                  Authenticate → authorise → VALIDATE body,      │
+│                  query and params → call a service → map errors │
+│                  to HTTP. No business logic. No SQL.            │
+└────────────────────────────┬────────────────────────────────────┘
+                             │
+┌────────────────────────────▼────────────────────────────────────┐
+│  SERVICE         src/lib/services/**                            │
+│                  Business rules. OWNS THE TRANSACTION.          │
+│                  Returns DTOs. Talks to the DB only through     │
+│                  repositories.                                  │
+└────────────────────────────┬────────────────────────────────────┘
+                             │  EntityManager passed down
+┌────────────────────────────▼────────────────────────────────────┐
+│  REPOSITORY      src/lib/repositories/**                        │
+│                  THE ONLY LAYER THAT TOUCHES THE DATABASE.      │
+│                  One repository per entity. Never opens a       │
+│                  transaction. Returns entities.                 │
+└────────────────────────────┬────────────────────────────────────┘
+                             │
+                        PostgreSQL
 ```
+
+**Each layer talks only to the one directly below it. No shortcuts.**
 
 ### 4.1 Hard rules
 
-1. **Transactions begin and end in the service layer.** Never in a repository — you can't compose them. Never in a route handler — business rules leak upward
-2. **Every repository function takes an optional transaction manager.** Absent → use the default. Present → join the caller's transaction. This is what makes services composable
-3. **Services return DTOs, never entities.** TypeORM entities are class instances, and React's server-component serialiser rejects any object whose prototype isn't plain — you get *"Only plain objects can be passed to Client Components"*. Mapping once at the service boundary fixes it in one place instead of forty, and stops a password hash ever leaving the server
-4. **Route handlers and actions contain no business logic.** Parse, authorise, call the service, map the error
+| # | Rule | Why |
+|---|---|---|
+| 1 | **The frontend never imports a service, a repository or the DataSource.** All data is read and written through `lib/api/client`. Type-only imports of DTOs are fine — they are erased at compile time | The API becomes a real contract: testable on its own, versionable, and consumable later by something that isn't this app |
+| 2 | **API routes call services, never repositories.** A route that reaches a repository has skipped every business rule the service enforces | Rules live in exactly one place |
+| 3 | **Services never write SQL and never call `getRepository`.** Every read and write goes through a repository | One place to change when a query is wrong |
+| 4 | **One repository per entity.** A repository queries its own table only. If a service needs two entities, it calls two repositories | Prevents the "god repository" that eventually owns half the schema |
+| 5 | **Repositories never call services, and never call each other.** Dependencies point one way | A cycle here becomes untestable within a month |
+| 6 | **Transactions begin and end in the service layer.** Never in a repository (uncomposable), never in a route (rules leak upward) | Several repository calls commit or roll back as one unit |
+| 7 | **Every repository method takes an optional `EntityManager`.** Absent → default connection. Present → join the caller's transaction | This is what makes repositories composable inside a service transaction |
+| 8 | **Services return DTOs, never entities.** TypeORM entities are class instances; React's serialiser rejects them outright, and a `passwordHash` on an entity is one careless spread from the browser | Mapping once at the service boundary fixes it in one place instead of forty |
+| 9 | **Every API route validates body, query and params with Zod.** No exceptions, including internal-looking routes | An unvalidated route is where the first production bug comes from |
+| 10 | **Every API route declares its permitted roles.** `roles` is a required parameter of `createApiHandler` | It is impossible to write a route without deciding who may reach it |
 
-### 4.2 Operations that must be transactional
+**This is enforced automatically.** `npm run check:layering` walks `src/` and fails the build on any violation. It is part of `npm run verify`, which is what CI runs. The rule is not a convention anyone has to remember.
+
+### 4.2 BaseRepository
+
+Every repository extends `BaseRepository<T>`, which supplies `findById` · `findOneBy` · `findManyBy` · `exists` · `count` · `create` · `save` · `updateById` · `softDeleteById` · `restoreById` · `findByIdForUpdate` — each accepting an optional `EntityManager`.
+
+Entity-specific queries are added as methods on the subclass:
+
+```ts
+class UserRepository extends BaseRepository<User> {
+  protected readonly target = User;
+  protected readonly alias = "u";
+
+  async findByEmailWithPassword(email: string, em?: EntityManager) {
+    const qb = await this.qb(em);
+    return qb.addSelect("u.passwordHash")
+             .where("u.email = :email", { email: email.toLowerCase() })
+             .getOne();
+  }
+}
+
+export const userRepository = new UserRepository();
+```
+
+Exported as a singleton instance, not a class — callers never construct one.
+
+### 4.3 Transactions
+
+A service opens a transaction with `withTx` and passes the `EntityManager` to every repository call inside it. **If a request writes to more than one table, it must be transactional.**
+
+```ts
+export async function changePassword(userId: string, current: string, next: string) {
+  return withTx(async (em) => {
+    // Row-locked: the read and the write must be atomic, or two concurrent
+    // changes lose one another.
+    const user = await userRepository.findByIdWithPasswordForUpdate(userId, em);
+    if (!user) throw new NotFoundError("Account");
+    // …validate, mutate…
+    await userRepository.save(user, em);           // ← same transaction
+    return { sessionVersion: user.sessionVersion };
+  });
+}
+```
+
+**Locking discipline:** acquire locks in a consistent order everywhere — child → parent → grandparent, and ascending id within a set. Violating this produces intermittent deadlocks that are miserable to reproduce.
+
+### 4.4 Operations that must be transactional
 
 | Operation | Why | Locking |
 |---|---|---|
@@ -267,28 +344,66 @@ Reads for list tables and dashboards are non-transactional.
 
 ---
 
-## 5. Mutations and reads
+## 5. The API layer
 
-| Concern | Choice |
+**Every read and every write crosses an HTTP API route.** Server Actions are not used for data access.
+
+| Concern | Mechanism |
 |---|---|
-| **Mutations** | Server Actions, wrapped in a typed helper |
-| **List and detail reads** | Server Components calling services directly — no HTTP hop at all |
-| **Route Handlers** | CSV/PDF export, auth, health check, async combobox search |
-| **tRPC** | **No** |
+| Reads (server components and client) | `GET /api/…` via `lib/api/client` |
+| Writes | `POST` / `PATCH` / `PUT` / `DELETE` via `lib/api/client` |
+| Sign-in | `signIn()` from `next-auth/react`, which posts to `/api/auth/callback/credentials` |
+| Exports | `GET /api/reports/…` returning a stream |
 
-### 5.1 Why not tRPC
+### 5.1 `createApiHandler`
 
-Its value is type-safe remote procedure calls across a network boundary between separately-typed codebases. Here there is one app and one TypeScript project, and server components already `await` services with full type inference and zero serialisation.
+One wrapper behind every route. It runs, in order:
 
-Adding it would reintroduce an HTTP hop that isn't needed, a client-side cache competing with the framework's own router cache, and turn every list into a client-side fetch with a loading spinner instead of a server-rendered table. Real complexity for type safety already in hand.
+1. **Authenticate** — session, or `401`
+2. **Authorise** — `roles`, or `403`
+3. **Validate** — `body`, `query` and `params` Zod schemas, or `422` with field errors
+4. **Call the service** — the route itself contains no logic
+5. **Map errors** — `AppError` carries its own HTTP status; anything else is logged in full and returned as a generic `500`, so stack traces never reach the browser
 
-### 5.2 The action wrapper
+```ts
+export const PATCH = createApiHandler({
+  name: "PATCH /api/account/profile",
+  roles: ["OWNER", "ADMIN"],          // required — no route without a decision
+  body: updateProfileSchema,          // validated before the handler runs
+  handler: ({ body, ctx }) => updateProfile(ctx.userId, body),
+});
+```
 
-Server Actions are **public POST endpoints**. Authorisation must be re-checked inside every one — middleware alone is never the boundary.
+`roles` and the validation schemas are constructor parameters rather than something you remember to call, so an unguarded or unvalidated route cannot be written by accident.
 
-A shared `createAction` helper takes a validation schema, a role list and a handler. It checks the session, checks the role, validates the input, calls the handler, and maps known errors to a typed result with field-level errors. Because roles are a required parameter, **it is impossible to write an action without declaring who may call it.** That is the point of the wrapper.
+### 5.2 Response envelope
 
-Unknown errors are logged with full context and returned as a generic message; stack traces never reach the browser.
+Uniform, so the client has one shape to handle:
+
+```jsonc
+{ "ok": true,  "data": { … } }
+{ "ok": false, "code": "VALIDATION", "messageKey": "common.fixHighlighted",
+  "fieldErrors": { "email": ["auth.errors.emailInvalid"] } }
+```
+
+`messageKey` is a **message-catalogue key, never a sentence** — otherwise a Gujarati UI receives English server errors. Every response carries an `x-request-id` that also appears in the logs.
+
+### 5.3 The API client
+
+`lib/api/client` is the only thing the frontend imports for data. It handles the two things that are easy to get wrong when a **server component** calls the app's own API:
+
+- **Absolute origin.** `fetch` on the server has no notion of "this site"
+- **Cookie forwarding.** Without it the route sees an anonymous request and returns 401 — the single most common mistake in this pattern
+
+Failures throw `ApiError` carrying status, code, `messageKey` and `fieldErrors`, so a form can route server-side field errors into the same `FieldError` component as client-side ones. One error-display path, not two.
+
+### 5.4 The cost, stated plainly
+
+A server component fetching its own API pays an extra HTTP hop compared with calling a service in-process — roughly a millisecond on localhost, more under load.
+
+That is a deliberate trade. What it buys: the API is a real, testable contract; the data path is identical whether the caller is a page, a client component, or a future mobile app; and no rendering code can drift into holding business logic. For an internal tool at this scale the latency is irrelevant and the discipline is worth more.
+
+If a specific page ever becomes measurably slow because of it, the fix is to cache that route's response — not to bypass the layer.
 
 ### 5.3 Revalidation
 
@@ -449,7 +564,9 @@ src/
       page.tsx               executive dashboard
       staff/  products/  orders/  coins/  party-orders/
       direct-sales/  expenses/  reports/
-    login/  api/
+    login/
+    api/                     THE ONLY server-side entry point for data
+      account/  auth/  dashboard/  …
 
   components/
     ui/                      component library primitives
@@ -457,11 +574,15 @@ src/
     form/  layout/  common/
 
   lib/
+    api/                     client.ts (FE→API), handler.ts (route wrapper), routes.ts
     db/                      data-source, transactions, entities
-    repositories/            query building
+    repositories/            base.repository.ts + one per entity — ONLY layer touching the DB
     services/                business rules, transactions, DTO mapping
-    dto/  validation/  actions/  table/
+    dto/  validation/  table/
     money.ts  dates.ts  errors.ts  logger.ts
+
+scripts/
+  check-layering.mjs         fails the build on any layering violation
 
 messages/
   en.json  gu.json

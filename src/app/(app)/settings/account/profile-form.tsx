@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { AlertCircle } from "lucide-react";
 import { Alert } from "@/components/ui/alert";
@@ -8,8 +9,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FieldError, FieldHint } from "@/components/ui/field-error";
-import { updateProfileAction } from "./actions";
+import { api, ApiError } from "@/lib/api/client";
+import { apiRoutes } from "@/lib/api/routes";
+import type { UserDto } from "@/lib/dto/user.dto";
 
+/**
+ * Talks to the API only — no service, no repository, no database import.
+ * See .claude/ARCHITECTURE.md §4
+ */
 export function ProfileForm({
   initialName,
   initialEmail,
@@ -19,18 +26,24 @@ export function ProfileForm({
 }) {
   const t = useTranslations("account");
   const tCommon = useTranslations("common");
+  const router = useRouter();
 
-  const [values, setValues] = useState({
-    name: initialName,
-    email: initialEmail,
-  });
+  const [values, setValues] = useState({ name: initialName, email: initialEmail });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [banner, setBanner] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const [isPending, startTransition] = useTransition();
 
-  const dirty =
-    values.name !== initialName || values.email !== initialEmail;
+  const dirty = values.name !== initialName || values.email !== initialEmail;
+
+  /**
+   * Server field errors are catalogue KEYS, resolved here in the active
+   * language — so they render through the same FieldError as client-side
+   * ones. One error-display path, not two.
+   */
+  function resolveKey(key: string): string {
+    return tCommon.has(key) ? tCommon(key) : key;
+  }
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -39,25 +52,27 @@ export function ProfileForm({
     setSaved(false);
 
     startTransition(async () => {
-      const result = await updateProfileAction(values);
-
-      if (result.ok) {
+      try {
+        await api.patch<UserDto>(apiRoutes.account.profile, values);
         setSaved(true);
-        return;
-      }
-
-      if (result.fieldErrors) {
-        const mapped: Record<string, string> = {};
-        for (const [field, keys] of Object.entries(result.fieldErrors)) {
-          // Server errors are catalogue KEYS, resolved in the active language —
-          // so they render through the same FieldError as client-side ones.
-          if (keys?.[0]) mapped[field] = tCommon.has(keys[0]) ? tCommon(keys[0]) : keys[0];
+        router.refresh();
+      } catch (err) {
+        if (err instanceof ApiError) {
+          if (err.fieldErrors) {
+            const mapped: Record<string, string> = {};
+            for (const [field, keys] of Object.entries(err.fieldErrors)) {
+              if (keys?.[0]) mapped[field] = resolveKey(keys[0]);
+            }
+            setErrors(mapped);
+            return;
+          }
+          if (err.messageKey.endsWith("emailTaken")) {
+            setErrors({ email: t("errors.emailTaken") });
+            return;
+          }
         }
-        setErrors(mapped);
-        return;
+        setBanner(tCommon("somethingWentWrong"));
       }
-
-      setBanner(tCommon("somethingWentWrong"));
     });
   }
 

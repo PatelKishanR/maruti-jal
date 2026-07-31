@@ -1,6 +1,8 @@
 "use client";
 
-import { useActionState, useEffect, useRef, useState } from "react";
+import { useRef, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 import { useTranslations } from "next-intl";
 import { AlertCircle, Eye, EyeOff, Info, WifiOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,17 +11,20 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Alert } from "@/components/ui/alert";
 import { FieldError } from "@/components/ui/field-error";
-import { signInAction, type SignInState } from "./actions";
 
 /**
  * Login form. Spec: .claude/design/MODULES/00-auth.md §3
+ *
+ * Posts to the Auth.js API route (`/api/auth/callback/credentials`) via
+ * `signIn` — an API call, consistent with the rest of the app. No Server
+ * Action, no direct service access.
  *
  * Behaviours that matter and are easy to lose:
  *  - validation never runs while typing, only on blur and submit
  *  - after a failure the EMAIL is kept and focus moves to password; retyping
  *    an email you already got right is pure friction
- *  - the submit button holds its spinner through the redirect rather than
- *    flashing back to idle
+ *  - the button holds its spinner through the redirect rather than flashing
+ *    back to idle
  */
 export function LoginForm({
   redirectTo,
@@ -29,56 +34,63 @@ export function LoginForm({
   wasRedirected: boolean;
 }) {
   const t = useTranslations();
-  const [state, formAction, isPending] = useActionState<SignInState, FormData>(
-    signInAction,
-    { status: "idle" },
-  );
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
 
   const [showPassword, setShowPassword] = useState(false);
-  const [touched, setTouched] = useState<{ email: boolean; password: boolean }>(
-    {
-      email: false,
-      password: false,
-    },
-  );
+  const [touched, setTouched] = useState({ email: false, password: false });
   const [values, setValues] = useState({ email: "", password: "" });
+  const [bannerKey, setBannerKey] = useState<string | null>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
-
-  // On a rejected attempt, clear the password and put the cursor in it.
-  useEffect(() => {
-    if (state.status === "error") {
-      setValues((v) => ({ ...v, password: "" }));
-      passwordRef.current?.focus();
-    }
-  }, [state]);
-
-  const serverFieldErrors =
-    state.status === "fieldError" ? state.fieldErrors : undefined;
 
   // Client-side checks run only once a field has been blurred.
   const emailError =
-    serverFieldErrors?.email?.[0] ??
-    (touched.email && !values.email.trim()
+    touched.email && !values.email.trim()
       ? "auth.errors.emailRequired"
       : touched.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(values.email.trim())
         ? "auth.errors.emailInvalid"
-        : undefined);
+        : undefined;
 
   const passwordError =
-    serverFieldErrors?.password?.[0] ??
-    (touched.password && !values.password
-      ? "auth.errors.passwordRequired"
-      : undefined);
+    touched.password && !values.password ? "auth.errors.passwordRequired" : undefined;
 
-  const bannerKey = state.status === "error" ? state.messageKey : undefined;
-  const bannerParams = state.status === "error" ? state.params : undefined;
   const isNetworkError = bannerKey === "auth.errors.network";
-  const isRateLimited = bannerKey === "auth.errors.rateLimited";
+
+  function submit(e: React.FormEvent) {
+    e.preventDefault();
+    setTouched({ email: true, password: true });
+    setBannerKey(null);
+
+    if (!values.email.trim() || !values.password) return;
+
+    startTransition(async () => {
+      try {
+        const result = await signIn("credentials", {
+          email: values.email.trim().toLowerCase(),
+          password: values.password,
+          redirect: false,
+        });
+
+        if (result?.error) {
+          // Identical message for a wrong password and an unknown email —
+          // distinguishing them enumerates accounts. See MODULES/00-auth.md §5.1
+          setBannerKey("auth.errors.invalidCredentials");
+          setValues((v) => ({ ...v, password: "" }));
+          passwordRef.current?.focus();
+          return;
+        }
+
+        // Keep the spinner through navigation — never flash back to idle.
+        router.replace(redirectTo);
+        router.refresh();
+      } catch {
+        setBannerKey("auth.errors.network");
+      }
+    });
+  }
 
   return (
-    <form action={formAction} className="space-y-0" noValidate>
-      <input type="hidden" name="redirectTo" value={redirectTo} />
-
+    <form onSubmit={submit} noValidate>
       {wasRedirected && !bannerKey && (
         <Alert variant="info" icon={<Info aria-hidden />} className="mb-6">
           {t("auth.signIn.redirectedNotice")}
@@ -88,16 +100,10 @@ export function LoginForm({
       {bannerKey && (
         <Alert
           variant="danger"
-          icon={
-            isNetworkError ? (
-              <WifiOff aria-hidden />
-            ) : (
-              <AlertCircle aria-hidden />
-            )
-          }
+          icon={isNetworkError ? <WifiOff aria-hidden /> : <AlertCircle aria-hidden />}
           className="mb-6"
         >
-          {t(bannerKey, bannerParams as never)}
+          {t(bannerKey)}
         </Alert>
       )}
 
@@ -119,10 +125,7 @@ export function LoginForm({
           onBlur={() => setTouched((s) => ({ ...s, email: true }))}
           disabled={isPending}
         />
-        <FieldError
-          id="email-error"
-          message={emailError ? t(emailError) : null}
-        />
+        <FieldError id="email-error" message={emailError ? t(emailError) : null} />
       </div>
 
       <div className="mb-5">
@@ -137,9 +140,7 @@ export function LoginForm({
           value={values.password}
           invalid={!!passwordError || !!bannerKey}
           aria-describedby={passwordError ? "password-error" : undefined}
-          onChange={(e) =>
-            setValues((v) => ({ ...v, password: e.target.value }))
-          }
+          onChange={(e) => setValues((v) => ({ ...v, password: e.target.value }))}
           onBlur={() => setTouched((s) => ({ ...s, password: true }))}
           disabled={isPending}
           suffix={
@@ -149,11 +150,8 @@ export function LoginForm({
               // Reveal is a deliberate click, never a hover.
               className="flex size-11 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
               aria-label={t(
-                showPassword
-                  ? "auth.signIn.hidePassword"
-                  : "auth.signIn.showPassword",
+                showPassword ? "auth.signIn.hidePassword" : "auth.signIn.showPassword",
               )}
-              tabIndex={0}
             >
               {showPassword ? (
                 <EyeOff className="size-[18px]" aria-hidden />
@@ -163,10 +161,7 @@ export function LoginForm({
             </button>
           }
         />
-        <FieldError
-          id="password-error"
-          message={passwordError ? t(passwordError) : null}
-        />
+        <FieldError id="password-error" message={passwordError ? t(passwordError) : null} />
       </div>
 
       <div className="mb-6 flex items-center gap-2">
@@ -185,7 +180,6 @@ export function LoginForm({
         className="w-full"
         loading={isPending}
         loadingText={t("auth.signIn.submitting")}
-        disabled={isRateLimited}
       >
         {t("auth.signIn.submit")}
       </Button>

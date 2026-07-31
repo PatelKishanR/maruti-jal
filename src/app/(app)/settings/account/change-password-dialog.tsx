@@ -19,7 +19,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { FieldError, FieldHint } from "@/components/ui/field-error";
 import { cn } from "@/lib/utils";
-import { changePasswordAction } from "./actions";
+import { api, ApiError } from "@/lib/api/client";
+import { apiRoutes } from "@/lib/api/routes";
 
 type Strength = "weak" | "fair" | "strong";
 
@@ -72,30 +73,43 @@ export function ChangePasswordDialog() {
     }
 
     startTransition(async () => {
-      const result = await changePasswordAction({
-        currentPassword: values.current,
-        newPassword: values.next,
-        confirmPassword: values.confirm,
-      });
+      try {
+        const { sessionVersion } = await api.put<{ sessionVersion: number }>(
+          apiRoutes.account.password,
+          {
+            currentPassword: values.current,
+            newPassword: values.next,
+            confirmPassword: values.confirm,
+          },
+        );
 
-      if (result.ok) {
-        // Refresh this device's token so it survives the sessionVersion bump.
-        await update({ sessionVersion: result.data.sessionVersion });
+        // Refresh THIS device's token so it survives the sessionVersion bump
+        // while every other device is signed out.
+        await update({ sessionVersion });
         setOpen(false);
         reset();
-        return;
+      } catch (err) {
+        if (err instanceof ApiError) {
+          if (err.messageKey.endsWith("currentWrong")) {
+            setBanner(t("errors.currentWrong"));
+            setValues((v) => ({ ...v, current: "" }));
+            return;
+          }
+          if (err.messageKey.endsWith("sameAsCurrent")) {
+            setErrors({ next: t("errors.sameAsCurrent") });
+            return;
+          }
+          if (err.fieldErrors?.newPassword?.[0]) {
+            setErrors({ next: t("errors.tooShort") });
+            return;
+          }
+          if (err.fieldErrors?.confirmPassword?.[0]) {
+            setErrors({ confirm: t("errors.mismatch") });
+            return;
+          }
+        }
+        setBanner(tCommon("somethingWentWrong"));
       }
-
-      if (result.messageKey.endsWith("currentWrong")) {
-        setBanner(t("errors.currentWrong"));
-        setValues((v) => ({ ...v, current: "" }));
-        return;
-      }
-      if (result.messageKey.endsWith("sameAsCurrent")) {
-        setErrors({ next: t("errors.sameAsCurrent") });
-        return;
-      }
-      setBanner(tCommon("somethingWentWrong"));
     });
   }
 

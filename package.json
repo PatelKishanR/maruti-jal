@@ -18,7 +18,9 @@
     "db:revert": "npm run typeorm -- migration:revert -d db/typeorm.config.ts",
     "db:show": "npm run typeorm -- migration:show -d db/typeorm.config.ts",
     "db:seed": "tsx db/seed.ts",
-    "auth:reset-password": "tsx db/reset-password.ts"
+    "auth:reset-password": "tsx db/reset-password.ts",
+    "check:layering": "node scripts/check-layering.mjs",
+    "verify": "npm run typecheck && npm run check:layering && npm run build"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

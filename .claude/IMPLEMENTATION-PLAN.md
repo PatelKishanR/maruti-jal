@@ -119,12 +119,16 @@ These apply to every phase and are not negotiable per-module.
 |---|---|
 | **Explicit types in every TypeORM decorator** — never bare `@Column()` | esbuild never emits decorator metadata. Bare decorators work in the app and fail in the migration CLI |
 | **`synchronize: false` everywhere**, migrations only | It issues `DROP COLUMN` with no prompt and races across cold starts |
+| **Frontend never imports a service, repository or the DataSource** | All data flows FE → API → Service → Repository → DB. Enforced by `npm run check:layering` |
+| **Every API route validates body, query and params** | An unvalidated route is where the first production bug comes from |
+| **Every API route declares its permitted roles** | `roles` is a required parameter, so an unguarded route can't be written |
+| **Only repositories touch the database** | One per entity. Services never call `getRepository` or write SQL |
 | **Services return DTOs, never entities** | React's server-component serialiser rejects class instances outright |
-| **Transactions live in the service layer** | Not repositories (uncomposable), not route handlers (rules leak upward) |
+| **Transactions live in the service layer** | Not repositories (uncomposable), not route handlers (rules leak upward). Any request writing to 2+ tables must be transactional |
 | **Money maths happens in SQL** | A `reduce((a,b) => a+b)` over amounts is a code-review failure |
 | **Business dates are `'YYYY-MM-DD'` strings** | Never a `Date`. Prevents the silent off-by-one-day |
 | **Sort keys are allowlisted** | User input is a lookup key, never a string reaching SQL |
-| **Every Server Action re-checks the session and role** | They are public POST endpoints; middleware is not the boundary |
+| **Every API route re-checks the session and role** | They are public endpoints; middleware is not the boundary |
 | **No hardcoded user-facing strings** | Every one goes through the message catalogues |
 | **No `[A-Za-z]` regex on any name, address or note field** | Silently blocks Gujarati input |
 
@@ -195,5 +199,7 @@ Template in [`.env.example`](../.env.example).
 | `npm run db:revert` | Roll back the last one |
 | `npm run db:seed` | Seed reference data and the owner account |
 | `npm run typecheck` | Types only, no build |
+| `npm run check:layering` | Fails on any layering violation |
+| `npm run verify` | typecheck + layering + build — **run before every phase sign-off** |
 
 **Always read generated migration SQL before committing it** — the down-migration in particular is often generated wrong.

@@ -2,7 +2,8 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { Topbar } from "@/components/layout/topbar";
-import { isSessionValid } from "@/lib/services/auth.service";
+import { api } from "@/lib/api/client";
+import type { SessionStateDto } from "@/lib/dto/dashboard.dto";
 
 /**
  * Authenticated shell.
@@ -37,10 +38,10 @@ export default async function AppLayout({
    * Costs one indexed lookup per page load. Acceptable for a single-user tool;
    * revisit if the app ever serves many concurrent users.
    */
-  const valid = await isSessionValid(
-    session.user.id,
-    session.user.sessionVersion,
-  );
+  const { valid } = await api
+    .get<SessionStateDto>("/api/auth/session-state")
+    .catch(() => ({ valid: false }));
+
   if (!valid) redirect("/login");
 
   return (

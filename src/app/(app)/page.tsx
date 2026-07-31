@@ -2,21 +2,24 @@ import { getTranslations } from "next-intl/server";
 import { LayoutDashboard } from "lucide-react";
 import { PageHeader } from "@/components/common/page-header";
 import { Card } from "@/components/ui/card";
-import { countAccounts } from "@/lib/services/auth.service";
+import { api } from "@/lib/api/client";
+import { apiRoutes } from "@/lib/api/routes";
+import type { DashboardSummaryDto } from "@/lib/dto/dashboard.dto";
 
 export const runtime = "nodejs";
 
 /**
  * Dashboard placeholder.
  *
- * It reads from the database on purpose: Phase 0's exit criteria require a
- * page that proves the full TypeORM path works in dev AND in a production
- * build. Replaced by the real dashboard in Phase 8.
+ * Fetches through the API like every other screen — no service import, no
+ * repository, no DataSource. Replaced by the real dashboard in Phase 8.
  */
 export default async function DashboardPage() {
   const t = await getTranslations();
 
-  const accountCount = await countAccounts();
+  const summary = await api.get<DashboardSummaryDto>(
+    apiRoutes.dashboard.summary("today"),
+  );
 
   return (
     <>
@@ -38,11 +41,12 @@ export default async function DashboardPage() {
           {t("dashboard.comingSoon")}
         </p>
 
-        {/* Phase 0 proof: this number came out of Postgres via TypeORM. */}
+        {/* Proof the full path works: page → API → service → repository → Neon. */}
         <p className="mt-6 text-xs text-muted-foreground">
-          Database connected ·{" "}
-          <span className="figure">{accountCount}</span> account
-          {accountCount === 1 ? "" : "s"}
+          API connected · <span className="figure">{summary.accountCount}</span>{" "}
+          account{summary.accountCount === 1 ? "" : "s"} ·{" "}
+          <span className="figure">{summary.pendingModules.length}</span> modules
+          pending
         </p>
       </Card>
     </>

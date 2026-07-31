@@ -22,7 +22,7 @@ export function Topbar({
       </div>
 
       <div className="flex items-center gap-1.5">
-        <LanguageToggle />
+        <LanguageToggle authenticated />
         <ThemeToggle />
         <UserMenu name={name} email={email} />
       </div>
