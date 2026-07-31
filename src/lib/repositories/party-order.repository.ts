@@ -6,25 +6,18 @@ import type {
   PartyOrderStatus,
   PaymentStatus,
 } from "@/lib/db/entities/enums";
+import {
+  PARTY_ORDER_SORT_COLUMNS,
+  type PartyOrderSortKey,
+} from "@/lib/table/configs/party-order";
 
 /**
- * Public sort key → hard-coded SQL column.
- *
- * THE INJECTION DEFENCE IS STRUCTURAL. User input is only ever a lookup key
- * into this map, never a value that reaches SQL. `?sort=id;DROP TABLE staff`
- * simply misses the map and falls back to the default. There is no escaping to
- * get wrong, because nothing user-supplied is interpolated.
- * See .claude/ARCHITECTURE.md §6.2
+ * The sort allowlist is imported, never re-declared — one map, shared by the
+ * table config and this ORDER BY. The config is client-safe (zod and types
+ * only), so this import couples nothing.
+ * See .claude/MODULE-RECIPE.md §1 and .claude/ARCHITECTURE.md §6.2
  */
-const SORT_COLUMNS = {
-  startDate: "po.firstServiceDate",
-  partyName: "po.partyName",
-  totalAmount: "po.totalAmount",
-  outstandingAmount: "po.outstandingAmount",
-  code: "po.partyNo",
-} as const satisfies Record<string, string>;
-
-export type PartyOrderSortKey = keyof typeof SORT_COLUMNS;
+export type { PartyOrderSortKey };
 
 export interface PartyOrderSearchParams {
   /** Matches code, party name, phone or address. */
@@ -113,7 +106,7 @@ class PartyOrderRepository extends BaseRepository<PartyOrder> {
       qb.andWhere("po.outstandingAmount > 0");
     }
 
-    const sortColumn = SORT_COLUMNS[params.sort ?? "startDate"];
+    const sortColumn = PARTY_ORDER_SORT_COLUMNS[params.sort ?? "startDate"];
     const direction = params.direction === "ASC" ? "ASC" : "DESC";
 
     qb.orderBy(sortColumn, direction)

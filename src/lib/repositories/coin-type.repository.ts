@@ -2,25 +2,20 @@ import "server-only";
 import type { EntityManager, EntityTarget } from "typeorm";
 import { BaseRepository } from "./base.repository";
 import { CoinType } from "@/lib/db/entities";
+import {
+  COIN_TYPE_SORT_COLUMNS,
+  type CoinTypeSortKey,
+} from "@/lib/table/configs/coin-type";
 
 /**
- * Public sort key → hard-coded SQL column.
+ * The sort allowlist is imported, never re-declared.
  *
- * User input is only ever a LOOKUP KEY into this map, never a value that
- * reaches SQL. `?sort=id;DROP TABLE coin_types` simply misses the map and falls
- * back to the default. There is no escaping to get wrong because nothing
- * user-supplied is interpolated. See .claude/ARCHITECTURE.md §6.2
+ * `coinTypeTableConfig.sortable` is the one map, and it is what actually
+ * reaches ORDER BY here. The config is client-safe (zod and types only), so
+ * this import couples nothing.
+ * See .claude/MODULE-RECIPE.md §1 and .claude/ARCHITECTURE.md §6.2
  */
-const SORTABLE = {
-  name: "ct.name",
-  coinsPerPacket: "ct.coinsPerPacket",
-  packetAmount: "ct.packetAmount",
-  perCoinPrice: "ct.perCoinPrice",
-  balanceCoins: "ct.balanceCoins",
-  createdAt: "ct.createdAt",
-} as const;
-
-export type CoinTypeSortKey = keyof typeof SORTABLE;
+export type { CoinTypeSortKey };
 
 export interface CoinTypeSearchParams {
   /** Free text over the name. */
@@ -99,6 +94,66 @@ class CoinTypeRepository extends BaseRepository<CoinType> {
     return qb.getExists();
   }
 
+  /**
+   * The stock KPI strip — counts and totals across every non-deleted type.
+   *
+   * Summed in SQL, deliberately. A `reduce((a, b) => a + b)` over the current
+   * page would be both wrong (it only sees 25 rows) and a code-review failure
+   * (money never adds up in TypeScript). `SUM` over a numeric returns a
+   * numeric, which the driver hands back as a string, so every figure is
+   * converted exactly once, here.
+   * See .claude/ARCHITECTURE.md §9.1 and MODULES/04-coins.md §4.2
+   */
+  async summary(em?: EntityManager): Promise<{
+    total: number;
+    active: number;
+    coinsInStock: number;
+    valueInStock: number;
+    packetsInStock: number;
+    looseCoinsInStock: number;
+  }> {
+    const qb = await this.qb(em);
+    const raw = await qb
+      .select("COUNT(*)", "total")
+      .addSelect("COUNT(*) FILTER (WHERE ct.is_active)", "active")
+      .addSelect("COALESCE(SUM(ct.balance_coins), 0)", "coins")
+      // Both columns are integers, so `/` is integer division and `%` is the
+      // remainder — the owner's "47 packets + 40 coins", computed per type and
+      // then summed, because packet sizes differ between types.
+      .addSelect(
+        "COALESCE(SUM(ct.balance_coins / ct.coins_per_packet), 0)",
+        "packets",
+      )
+      .addSelect(
+        "COALESCE(SUM(ct.balance_coins % ct.coins_per_packet), 0)",
+        "loose",
+      )
+      // Rounded per row before summing, matching the two-decimal rule every
+      // row-level amount in this module obeys. MODULES/04-coins.md §8.2
+      .addSelect(
+        "COALESCE(SUM(round(ct.balance_coins * ct.per_coin_price, 2)), 0)",
+        "value",
+      )
+      .where("ct.deletedAt IS NULL")
+      .getRawOne<{
+        total: string | number;
+        active: string | number;
+        coins: string | number;
+        value: string | number;
+        packets: string | number;
+        loose: string | number;
+      }>();
+
+    return {
+      total: Number(raw?.total ?? 0),
+      active: Number(raw?.active ?? 0),
+      coinsInStock: Number(raw?.coins ?? 0),
+      valueInStock: Number(raw?.value ?? 0),
+      packetsInStock: Number(raw?.packets ?? 0),
+      looseCoinsInStock: Number(raw?.loose ?? 0),
+    };
+  }
+
   async searchPaginated(
     params: CoinTypeSearchParams = {},
     em?: EntityManager,
@@ -123,7 +178,10 @@ class CoinTypeRepository extends BaseRepository<CoinType> {
     }
 
     const [rows, total] = await qb
-      .orderBy(SORTABLE[sortBy] ?? SORTABLE.name, sortDir)
+      .orderBy(
+        COIN_TYPE_SORT_COLUMNS[sortBy] ?? COIN_TYPE_SORT_COLUMNS.name,
+        sortDir,
+      )
       // Without a stable tiebreaker, equal-valued rows shuffle between pages —
       // users see one record twice and miss another entirely.
       .addOrderBy("ct.id", "ASC")

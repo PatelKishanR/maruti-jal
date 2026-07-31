@@ -143,15 +143,72 @@ export async function repo<T extends object>(entity: new () => T) {
 }
 
 /**
+ * Who is making the change, for the audit trigger.
+ *
+ * A bare string is the user id and is all a service normally has — services
+ * already take `userId` as their first argument. The object form exists for
+ * the request-scoped extras (`request_id`, `ip`) that an API handler can
+ * supply and a background job cannot.
+ */
+export type TxActor =
+  | string
+  | {
+      id?: string | null;
+      name?: string | null;
+      role?: string | null;
+      requestId?: string | null;
+      ip?: string | null;
+    };
+
+/** GUC name → value. Keys mirror the audit_logs columns they end up in. */
+function actorSettings(actor: TxActor): Array<[string, string]> {
+  const a = typeof actor === 'string' ? { id: actor } : actor;
+  const pairs: Array<[string, string | null | undefined]> = [
+    ['app.actor_id', a.id],
+    ['app.actor_name', a.name],
+    ['app.actor_role', a.role],
+    ['app.request_id', a.requestId],
+    ['app.ip', a.ip],
+  ];
+  return pairs.filter((p): p is [string, string] => Boolean(p[1]));
+}
+
+/**
  * Run work inside a transaction.
  *
  * Transactions belong HERE and in the service layer — never in a repository
  * (uncomposable) and never in a route handler (business rules leak upward).
  * See .claude/ARCHITECTURE.md §4
+ *
+ * Pass `actor` — normally just the `userId` the service was called with — and
+ * `fn_audit_row()` will stamp every row this transaction touches with who did
+ * it. Omitting it is legal and produces audit rows with a NULL actor, which
+ * is the correct record for a seed script or a migration.
+ *
+ * `set_config(..., true)` is TRANSACTION-scoped. That matters more than it
+ * looks: against Neon's transaction-mode pooler a session-scoped setting
+ * would outlive the commit and be inherited by whichever request picks up
+ * that backend next, attributing one user's edits to another.
  */
 export async function withTx<T>(
   fn: (em: EntityManager) => Promise<T>,
+  actor?: TxActor,
 ): Promise<T> {
   const ds = await getDataSource();
-  return ds.transaction('READ COMMITTED', fn);
+  return ds.transaction('READ COMMITTED', async (em) => {
+    if (actor) {
+      const settings = actorSettings(actor);
+      if (settings.length > 0) {
+        // One round trip, not one per setting. Values are bound parameters:
+        // set_config() takes text arguments, so nothing is interpolated.
+        const params: string[] = [];
+        const calls = settings.map(([name, value]) => {
+          params.push(name, value);
+          return `set_config($${params.length - 1}, $${params.length}, true)`;
+        });
+        await em.query(`SELECT ${calls.join(', ')}`, params);
+      }
+    }
+    return fn(em);
+  });
 }

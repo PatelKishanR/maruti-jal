@@ -7,25 +7,18 @@ import type {
   PaymentStatus,
   ReturnStatus,
 } from "@/lib/db/entities/enums";
+import {
+  DELIVERY_ORDER_SORT_COLUMNS,
+  type DeliveryOrderSortKey,
+} from "@/lib/table/configs/delivery-order";
 
 /**
- * Public sort key → hard-coded property path.
- *
- * User input is only ever a LOOKUP KEY into this map, never a value that
- * reaches SQL. `?sort=id;DROP TABLE staff` simply misses the map and falls back
- * to the default. There is no escaping to get wrong because nothing
- * user-supplied is interpolated. See .claude/ARCHITECTURE.md §6.2
+ * The sort allowlist is imported, never re-declared — one map, shared by the
+ * table config and this ORDER BY. The config is client-safe (zod and types
+ * only), so this import couples nothing.
+ * See .claude/MODULE-RECIPE.md §1 and .claude/ARCHITECTURE.md §6.2
  */
-const ORDER_SORT_COLUMNS = {
-  date: "o.orderDate",
-  code: "o.orderNo",
-  total: "o.totalAmount",
-  balance: "o.outstandingAmount",
-  jarsPending: "o.qtyPending",
-  staff: "s.name",
-} as const;
-
-export type DeliveryOrderSortKey = keyof typeof ORDER_SORT_COLUMNS;
+export type { DeliveryOrderSortKey };
 
 /** Countable status dimensions, again as an allowlist rather than free text. */
 const STATUS_COUNT_COLUMNS = {
@@ -103,7 +96,7 @@ class DeliveryOrderRepository extends BaseRepository<DeliveryOrder> {
     qb.leftJoinAndSelect("o.staff", "s");
     this.applyFilters(qb, params);
 
-    const sortColumn = ORDER_SORT_COLUMNS[params.sort ?? "date"];
+    const sortColumn = DELIVERY_ORDER_SORT_COLUMNS[params.sort ?? "date"];
     const direction = params.direction === "ASC" ? "ASC" : "DESC";
 
     /**

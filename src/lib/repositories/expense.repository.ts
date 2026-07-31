@@ -3,21 +3,18 @@ import type { EntityManager, EntityTarget } from "typeorm";
 import { BaseRepository } from "./base.repository";
 import { Expense } from "@/lib/db/entities";
 import type { ExpensePaymentMode } from "@/lib/db/entities";
+import {
+  EXPENSE_SORT_COLUMNS,
+  type ExpenseSortKey,
+} from "@/lib/table/configs/expense";
 
 /**
- * Public sort key → hard-coded SQL. User input is only a lookup key into this
- * map. See .claude/ARCHITECTURE.md §6.2
+ * The sort allowlist is imported, never re-declared — one map, shared by the
+ * table config and this ORDER BY. The config is client-safe (zod and types
+ * only), so this import couples nothing.
+ * See .claude/MODULE-RECIPE.md §1 and .claude/ARCHITECTURE.md §6.2
  */
-const SORT_COLUMNS = {
-  expenseDate: "e.expenseDate",
-  /** The identity number, not the text code — 'EXP-9' must precede 'EXP-10'. */
-  code: "e.expenseNo",
-  amount: "e.amount",
-  paidTo: "e.paidTo",
-  createdAt: "e.createdAt",
-} as const;
-
-export type ExpenseSortKey = keyof typeof SORT_COLUMNS;
+export type { ExpenseSortKey };
 
 export interface ExpenseSearchQuery {
   search?: string;
@@ -86,7 +83,8 @@ class ExpenseRepository extends BaseRepository<Expense> {
     }
 
     const column =
-      SORT_COLUMNS[query.sort as ExpenseSortKey] ?? SORT_COLUMNS.expenseDate;
+      EXPENSE_SORT_COLUMNS[query.sort as ExpenseSortKey] ??
+      EXPENSE_SORT_COLUMNS.expenseDate;
     qb.orderBy(column, query.dir === "ASC" ? "ASC" : "DESC");
     // Stable tiebreaker: many expenses share a date, and without this they
     // shuffle between pages.

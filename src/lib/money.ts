@@ -277,3 +277,21 @@ export function formatLitres(value: number): string {
 
   return `${trimmed}L`;
 }
+
+/**
+ * Per-coin value, held at 6 decimal places.
+ *
+ * `coin_types.per_coin_price` is `numeric(14,6)` because a packet rarely
+ * divides evenly — ₹1,000 over 90 coins is ₹11.111111. Rounding that to 2dp
+ * before it is multiplied back out loses roughly a rupee per packet, which
+ * compounds across a season into a real discrepancy the owner would have to
+ * chase.
+ *
+ * Trailing zeros are trimmed, so a clean ₹10.00 rate still reads "₹10".
+ */
+export function formatPerCoinValue(value: number, locale: string = "en"): string {
+  const fixed = value.toFixed(6).replace(/\.?0+$/, "");
+  const [whole, fraction] = fixed.split(".");
+  const grouped = formatRupeesPlain(Number(whole), locale).split(".")[0];
+  return fraction ? `₹${grouped}.${fraction}` : `₹${grouped}`;
+}

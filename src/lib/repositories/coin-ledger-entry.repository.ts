@@ -148,6 +148,66 @@ class CoinLedgerEntryRepository extends BaseRepository<CoinLedgerEntry> {
     return { coins: Number(raw?.coins ?? 0), value: Number(raw?.value ?? 0) };
   }
 
+  /**
+   * The four figures the reconciliation band is built from:
+   *
+   *   Opening 3,000 + In 640 − Out 1,200 = Balance 2,440 coins
+   *
+   * `OPENING` is excluded from `in` because the band states it separately —
+   * counting it twice is exactly the arithmetic the band exists to disprove.
+   * `net` is the independent re-sum that `coin_types.balance_coins` is checked
+   * against; a disagreement is what the §13 drift banner surfaces.
+   *
+   * One query, every figure aggregated in SQL. Coins are integers, but the
+   * counts still come back from the driver as strings, so they are converted
+   * once, here. See MODULES/04-coins.md §7.1 and .claude/DATA-MODEL.md §8.3
+   */
+  async sumMovements(
+    coinTypeId: string,
+    em?: EntityManager,
+  ): Promise<{
+    openingCoins: number;
+    inCoins: number;
+    outCoins: number;
+    netCoins: number;
+    entryCount: number;
+  }> {
+    const qb = await this.qb(em);
+    const raw = await qb
+      .select(
+        "COALESCE(SUM(cle.coins_delta) FILTER (WHERE cle.movement_type = 'OPENING'), 0)",
+        "opening",
+      )
+      .addSelect(
+        "COALESCE(SUM(cle.coins_delta) FILTER (WHERE cle.coins_delta > 0 AND cle.movement_type <> 'OPENING'), 0)",
+        "coins_in",
+      )
+      // Negated inside the SUM so the column reads as a positive magnitude —
+      // the direction is carried by which column it lands in, never by a sign.
+      .addSelect(
+        "COALESCE(SUM(-cle.coins_delta) FILTER (WHERE cle.coins_delta < 0), 0)",
+        "coins_out",
+      )
+      .addSelect("COALESCE(SUM(cle.coins_delta), 0)", "net")
+      .addSelect("COUNT(*)", "entries")
+      .where("cle.coinTypeId = :coinTypeId", { coinTypeId })
+      .getRawOne<{
+        opening: string | number;
+        coins_in: string | number;
+        coins_out: string | number;
+        net: string | number;
+        entries: string | number;
+      }>();
+
+    return {
+      openingCoins: Number(raw?.opening ?? 0),
+      inCoins: Number(raw?.coins_in ?? 0),
+      outCoins: Number(raw?.coins_out ?? 0),
+      netCoins: Number(raw?.net ?? 0),
+      entryCount: Number(raw?.entries ?? 0),
+    };
+  }
+
   /* ── Append-only guards ───────────────────────────────────────────────────
    *
    * Declared with NO parameters on purpose: a caller attempting an update or a

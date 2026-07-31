@@ -43,13 +43,60 @@
       "noDataBody": "તમે ઉમેરેલા રેકોર્ડ અહીં દેખાશે.",
       "noResultsTitle": "કોઈ મેળ નથી",
       "noResultsBody": "તમારા ફિલ્ટર સાથે કોઈ રેકોર્ડ મેળ ખાતો નથી. ફિલ્ટર પહોળા કરો.",
-      "activeFilters": "સક્રિય ફિલ્ટર: {filters}"
+      "activeFilters": "સક્રિય ફિલ્ટર"
     },
     "errorState": {
       "title": "આ લોડ કરી શકાયું નહીં"
     },
     "kpi": {
-      "nothingYet": "હજી કંઈ નોંધાયું નથી"
+      "nothingYet": "હજી કંઈ નોંધાયું નથી",
+      "increased": "વધ્યું",
+      "decreased": "ઘટ્યું",
+      "unchanged": "યથાવત"
+    },
+    "status": {
+      "unpaid": "ચૂકવ્યું નથી",
+      "partiallyPaid": "આંશિક ચૂકવ્યું",
+      "paid": "ચૂકવાયું",
+      "overpaid": "વધુ ચૂકવાયું",
+      "overpaidBy": "{amount} વધુ ચૂકવાયું",
+      "amountDue": "{amount} બાકી",
+      "refundDue": "રિફંડ બાકી",
+      "refundAmount": "રિફંડ {amount}",
+      "notReturned": "પરત નથી આવ્યું",
+      "partiallyReturned": "આંશિક પરત",
+      "jarsOut": "{count} જાર બહાર",
+      "coinsOut": "{count} સિક્કા બહાર",
+      "itemsOut": "{count} વસ્તુ બહાર",
+      "settled": "પતાવટ થઈ",
+      "notApplicable": "લાગુ નથી",
+      "active": "સક્રિય",
+      "inactive": "નિષ્ક્રિય",
+      "draft": "ડ્રાફ્ટ",
+      "cancelled": "રદ કરેલ",
+      "scheduled": "નિર્ધારિત",
+      "delivered": "પહોંચાડ્યું",
+      "skipped": "છોડી દીધું"
+    },
+    "timeline": {
+      "empty": "હજી કોઈ પ્રવૃત્તિ નથી"
+    },
+    "lookupManager": {
+      "add": "ઉમેરો",
+      "adding": "ઉમેરાઈ રહ્યું છે…",
+      "inactive": "નિષ્ક્રિય",
+      "loading": "યાદી લોડ થઈ રહી છે…",
+      "nameRequired": "નામ દાખલ કરો",
+      "nameTooLong": "આ નામ {max} અક્ષરોથી લાંબું છે",
+      "rename": "નામ બદલો",
+      "reorderFailed": "નવો ક્રમ સાચવી શકાયો નહીં. યાદી પાછી મૂકી છે.",
+      "reorderHandle": "{name} નો ક્રમ બદલો — ખેંચો, અથવા ઉપર-નીચે તીર વાપરો",
+      "retry": "ફરી પ્રયાસ કરો",
+      "rowActions": "{name} માટે વધુ ક્રિયાઓ",
+      "saveFailed": "તે સાચવી શકાયું નહીં. કંઈ બદલાયું નથી.",
+      "switchOff": "બંધ કરો",
+      "switchOn": "ચાલુ કરો",
+      "toggleActive": "{name} ચાલુ કે બંધ કરો"
     }
   },
   "auth": {
@@ -183,5 +230,692 @@
     "pagination": "પેજિનેશન",
     "previous": "પાછલું પૃષ્ઠ",
     "next": "આગલું પૃષ્ઠ"
+  },
+  "staff": {
+    "title": "સ્ટાફ",
+    "subtitle": "તમારા માટે કોણ ડિલિવરી કરે છે અને દરેક પાસે અત્યારે શું બાકી છે",
+    "actions": {
+      "add": "સ્ટાફ ઉમેરો",
+      "view": "જુઓ",
+      "edit": "ફેરફાર કરો",
+      "deactivate": "નિષ્ક્રિય કરો",
+      "reactivate": "ફરી સક્રિય કરો",
+      "close": "બંધ કરો",
+      "undo": "પાછું લો",
+      "menuLabel": "{name} માટે વધુ ક્રિયાઓ"
+    },
+    "kpi": {
+      "total": "કુલ સ્ટાફ",
+      "totalBreakdown": "{count} નિષ્ક્રિય",
+      "totalZero": "હજી કોઈ સ્ટાફ નથી",
+      "active": "સક્રિય સ્ટાફ",
+      "activeBreakdown": "ટીમના {percent}%",
+      "activeZero": "હજી કોઈ સક્રિય નથી",
+      "cash": "બાકી રોકડ",
+      "cashBreakdown": "{count} લોકો પાસે",
+      "cashZero": "કંઈ બાકી નથી",
+      "jars": "બહાર ગયેલા જાર",
+      "jarsBreakdown": "{count} લોકો પાસે",
+      "jarsZero": "બધા જાર પાછા આવી ગયા"
+    },
+    "columns": {
+      "code": "કોડ",
+      "name": "નામ",
+      "phone": "ફોન",
+      "address": "સરનામું",
+      "cash": "રોકડ",
+      "jars": "જાર",
+      "coins": "સિક્કા",
+      "status": "સ્થિતિ",
+      "actions": "ક્રિયાઓ"
+    },
+    "chips": {
+      "all": "બધા",
+      "active": "સક્રિય",
+      "moneyPending": "પૈસા બાકી",
+      "jarsOut": "જાર બહાર",
+      "inactive": "નિષ્ક્રિય"
+    },
+    "filters": {
+      "statusLabel": "સ્થિતિ",
+      "statusValue": "સ્થિતિ: {value}",
+      "status": {
+        "active": "સક્રિય",
+        "inactive": "નિષ્ક્રિય",
+        "all": "બધા"
+      },
+      "hasBalance": "બાકી રકમ છે",
+      "hasJars": "જાર બહાર છે"
+    },
+    "list": {
+      "searchPlaceholder": "નામ, ફોન કે સરનામું શોધો…",
+      "empty": {
+        "title": "હજી કોઈ સ્ટાફ નથી",
+        "body": "તમારા ડિલિવરી કરનારાઓને અહીં ઉમેરો. એક વાર ઉમેરાયા પછી તમે તેમને ઓર્ડર સોંપી શકશો, સિક્કા આપી શકશો અને દરેક પાસે શું બાકી છે તે બરાબર જોઈ શકશો.",
+        "cta": "પહેલો સ્ટાફ ઉમેરો"
+      },
+      "noResults": {
+        "title": "તમારા ફિલ્ટર સાથે કોઈ સ્ટાફ મળ્યો નહીં",
+        "bodyQueryAndFilters": "“{query}” અને {filters} સાથે કંઈ મળતું નથી.",
+        "bodyQuery": "“{query}” સાથે કંઈ મળતું નથી.",
+        "bodyFilters": "{filters} સાથે કંઈ મળતું નથી.",
+        "bodyGeneric": "તમે લગાવેલા ફિલ્ટર સાથે કોઈ સ્ટાફ મળતો નથી."
+      },
+      "error": {
+        "title": "સ્ટાફ લોડ થઈ શક્યો નહીં",
+        "body": "સર્વરે જવાબ આપ્યો નહીં. તમારું કનેક્શન તપાસો અને ફરી પ્રયાસ કરો.",
+        "cta": "ફરી પ્રયાસ કરો"
+      }
+    },
+    "badges": {
+      "moneyTooltip": "રોકડ {cash} · સિક્કા {coins}"
+    },
+    "summary": {
+      "cash": "બાકી રોકડ",
+      "cashContext": "{count} ઓર્ડરમાં",
+      "jars": "બહાર ગયેલા જાર",
+      "jarsContext": "કુલ {total} આપેલા માંથી",
+      "coins": "સિક્કાની બાકી રકમ",
+      "coinsContext": "{count} ખુલ્લા ઇશ્યૂ",
+      "revenue": "કુલ આવક",
+      "revenueContext": "{date} થી"
+    },
+    "tabs": {
+      "overview": "ઝલક",
+      "orders": "ડિલિવરી ઓર્ડર",
+      "coins": "સિક્કા ઇશ્યૂ",
+      "payments": "ચુકવણીઓ",
+      "activity": "પ્રવૃત્તિ"
+    },
+    "detail": {
+      "joined": "{date} થી જોડાયા",
+      "status": "સ્થિતિ",
+      "contact": "સંપર્ક",
+      "note": "નોંધ",
+      "noteEmpty": "આ સ્ટાફ પર કોઈ નોંધ નથી.",
+      "record": "રેકોર્ડ",
+      "createdAt": "બનાવ્યું {date} · {actor}",
+      "updatedAt": "અપડેટ કર્યું {date} · {actor}",
+      "unknownActor": "અજાણ્યું",
+      "call": "{phone} પર કૉલ કરો",
+      "inactiveBanner": "આ સ્ટાફ નિષ્ક્રિય છે. તે નવા ઓર્ડર કે સિક્કા ઇશ્યૂ ફોર્મમાં દેખાશે નહીં.",
+      "notFound": {
+        "title": "એવો કોઈ સ્ટાફ નથી",
+        "body": "આ રેકોર્ડ કદાચ કાઢી નાખવામાં આવ્યો હશે. તમે જેને શોધો છો તે સ્ટાફ યાદીમાં જોઈ લો.",
+        "cta": "સ્ટાફ યાદી પર પાછા"
+      },
+      "orders": {
+        "emptyTitle": "હજી કોઈ ડિલિવરી ઓર્ડર નથી",
+        "emptyBody": "{name} ને સોંપાયેલા ઓર્ડર અહીં દેખાશે."
+      },
+      "coins": {
+        "emptyTitle": "હજી કોઈ સિક્કા ઇશ્યૂ નથી",
+        "emptyBody": "{name} ને આપેલા સિક્કાના પેકેટ અહીં દેખાશે."
+      },
+      "payments": {
+        "emptyTitle": "કોઈ ચુકવણી નોંધાઈ નથી",
+        "emptyBody": "ઓર્ડર અને સિક્કા ઇશ્યૂ સામે {name} પાસેથી મળેલી ચુકવણીઓ અહીં દેખાશે."
+      },
+      "activity": {
+        "empty": "આ રેકોર્ડ બન્યા પછી કંઈ બદલાયું નથી.",
+        "created": "રેકોર્ડ બનાવ્યો",
+        "updated": "રેકોર્ડ અપડેટ કર્યો",
+        "changed": "{fields} બદલ્યું",
+        "meta": "{date} · {actor}",
+        "fields": {
+          "name": "નામ",
+          "phone": "ફોન",
+          "altPhone": "વૈકલ્પિક ફોન",
+          "address": "સરનામું",
+          "note": "નોંધ",
+          "joinedOn": "જોડાયા તારીખ",
+          "isActive": "સ્થિતિ"
+        }
+      }
+    },
+    "new": {
+      "title": "સ્ટાફ ઉમેરો",
+      "subtitle": "ઓર્ડર સોંપવા અને સિક્કા આપવા માટે ડિલિવરી કરનારને નોંધો"
+    },
+    "edit": {
+      "title": "સ્ટાફમાં ફેરફાર",
+      "created": "{date} ના રોજ બનાવ્યું"
+    },
+    "form": {
+      "name": {
+        "label": "પૂરું નામ",
+        "placeholder": "દા.ત. રમેશ પટેલ",
+        "hint": "ગુજરાતી કે English — તમે જેમ બોલો છો તેમ લખો"
+      },
+      "phone": {
+        "label": "ફોન નંબર",
+        "placeholder": "દા.ત. 9876543210",
+        "hint": "10 અંક, +91 વગર"
+      },
+      "altPhone": {
+        "label": "વૈકલ્પિક ફોન",
+        "placeholder": "દા.ત. 9909112233"
+      },
+      "address": {
+        "label": "સરનામું",
+        "placeholder": "દા.ત. 12 કૃષ્ણ નગર, વટવા રોડ, અમદાવાદ 382445"
+      },
+      "joinedOn": {
+        "label": "જોડાયા તારીખ",
+        "hint": "આજથી શરૂ કરે તો આજની તારીખ રહેવા દો"
+      },
+      "note": {
+        "label": "નોંધ",
+        "placeholder": "દા.ત. ફક્ત સવારનો રૂટ",
+        "hint": "આ ફક્ત તમે જ જુઓ છો"
+      },
+      "create": "સ્ટાફ સાચવો",
+      "save": "ફેરફારો સાચવો",
+      "saving": "સાચવી રહ્યું છે…",
+      "statusHeading": "સ્થિતિ",
+      "activeLabel": "સક્રિય",
+      "activeHint": "નિષ્ક્રિય સ્ટાફ નવા ઓર્ડર કે સિક્કા ઇશ્યૂ ફોર્મમાં દેખાતો નથી",
+      "statusBlocked": "{name} ને હજી નિષ્ક્રિય કરી શકાય નહીં. પહેલાં બાકી રોકડ, જાર અને સિક્કા પતાવો.",
+      "viewHolder": "{code} જુઓ",
+      "discard": {
+        "createTitle": "આ સ્ટાફ છોડી દેવો છે?",
+        "createBody": "{name} સચવાયા નથી. તમે લખેલું બધું જતું રહેશે.",
+        "editTitle": "તમારા ફેરફારો છોડી દેવા છે?",
+        "editBody": "{name} માં કરેલા તમારા ફેરફારો સચવાયા નથી.",
+        "confirm": "છોડી દો",
+        "thisRecord": "આ રેકોર્ડ"
+      },
+      "errors": {
+        "saveTitle": "આ સ્ટાફ સાચવી શકાયો નહીં",
+        "offlineTitle": "તમે ઓફલાઇન છો",
+        "offlineBody": "કંઈ સચવાયું નથી. ફરી કનેક્ટ થઈને સાચવો દબાવો — તમે લખેલું બધું અહીં જ છે."
+      }
+    },
+    "errors": {
+      "nameRequired": "સ્ટાફનું નામ દાખલ કરો",
+      "nameTooLong": "નામ વધુમાં વધુ 120 અક્ષરનું હોઈ શકે",
+      "phoneRequired": "ફોન નંબર દાખલ કરો",
+      "phoneLength": "10 અંકનો મોબાઇલ નંબર દાખલ કરો",
+      "phoneStart": "ભારતીય મોબાઇલ નંબર 6, 7, 8 કે 9 થી શરૂ થાય છે",
+      "altPhoneSame": "વૈકલ્પિક ફોન મુખ્ય ફોનથી અલગ હોવો જોઈએ",
+      "addressTooLong": "સરનામું વધુમાં વધુ 500 અક્ષરનું હોઈ શકે",
+      "noteTooLong": "નોંધ વધુમાં વધુ 2000 અક્ષરની હોઈ શકે",
+      "joinedOnInvalid": "14 Aug 2026 જેવી તારીખ દાખલ કરો",
+      "joinedOnFuture": "જોડાયા તારીખ ભવિષ્યની ન હોઈ શકે",
+      "phoneTaken": "આ ફોન નંબર બીજા સ્ટાફનો છે.",
+      "phoneTakenDetail": "{phone} પહેલેથી {name} ({code}) નો છે",
+      "phoneTakenInactive": "{phone} છેલ્લે {name} વાપરતા હતા, જે નિષ્ક્રિય છે. સાચવવાથી આ નંબર નવા રેકોર્ડને મળી જશે.",
+      "deactivateBlocked": "આ સ્ટાફ પાસે હજી પૈસા કે જાર છે, એટલે નિષ્ક્રિય કરી શકાય નહીં."
+    },
+    "deactivate": {
+      "title": "{name} ને નિષ્ક્રિય કરવા છે?",
+      "body": "તે નવા ઓર્ડર અને સિક્કા ઇશ્યૂ ફોર્મમાં દેખાવાનું બંધ થશે. તેમના જૂના ઓર્ડર જેમ છે તેમ જ રહેશે, અને તમે ગમે ત્યારે ફરી સક્રિય કરી શકો છો.",
+      "submitting": "નિષ્ક્રિય કરી રહ્યું છે…",
+      "blocked": {
+        "title": "{name} ને હજી નિષ્ક્રિય કરી શકાય નહીં",
+        "body": "{count, plural, =1 {એક બાબત હજી ખુલ્લી છે. તે પતાવીને પછી નિષ્ક્રિય કરો.} =2 {બે બાબતો હજી ખુલ્લી છે. તે પતાવીને પછી નિષ્ક્રિય કરો.} =3 {ત્રણ બાબતો હજી ખુલ્લી છે. તે પતાવીને પછી નિષ્ક્રિય કરો.} other {# બાબતો હજી ખુલ્લી છે. તે પતાવીને પછી નિષ્ક્રિય કરો.}}",
+        "reason": {
+          "cash": "રોકડ બાકી",
+          "jars": "જાર પાછા આવ્યા નથી",
+          "coins": "ના સિક્કા બાકી"
+        },
+        "orderCount": "{count} ઓર્ડર",
+        "issueCount": "{count} ઇશ્યૂ",
+        "openRecord": "રેકોર્ડ ખોલો"
+      }
+    },
+    "reactivate": {
+      "title": "{name} ને ફરી સક્રિય કરવા છે?",
+      "body": "તે ફરીથી નવા ઓર્ડર અને સિક્કા ઇશ્યૂ ફોર્મમાં દેખાશે.",
+      "submitting": "સક્રિય કરી રહ્યું છે…"
+    },
+    "toasts": {
+      "created": "{name} ઉમેરાયા",
+      "updated": "{name} અપડેટ થયા",
+      "deactivated": "{name} નિષ્ક્રિય થયા",
+      "reactivated": "{name} ફરી સક્રિય થયા",
+      "deactivateFailed": "{name} ને નિષ્ક્રિય કરી શકાયા નહીં. કંઈ બદલાયું નથી.",
+      "reactivateFailed": "{name} ને ફરી સક્રિય કરી શકાયા નહીં. કંઈ બદલાયું નથી."
+    }
+  },
+  "products": {
+    "title": "પ્રોડક્ટ્સ",
+    "subtitle": "તમે શું વેચો છો અને તેની સામાન્ય કિંમત શું છે",
+    "backToList": "પ્રોડક્ટ્સ",
+    "searchPlaceholder": "પ્રોડક્ટનું નામ કે વર્ણન શોધો…",
+    "free": "મફત",
+    "returnableYes": "હા",
+    "returnableNo": "ના",
+    "actions": {
+      "add": "પ્રોડક્ટ ઉમેરો"
+    },
+    "columns": {
+      "code": "કોડ",
+      "title": "નામ",
+      "litres": "લિટર",
+      "tag": "ટૅગ",
+      "filterType": "ફિલ્ટર પ્રકાર",
+      "basePrice": "કિંમત",
+      "returnable": "પરત",
+      "status": "સ્થિતિ",
+      "actions": "ક્રિયાઓ"
+    },
+    "chips": {
+      "all": "બધા",
+      "active": "સક્રિય",
+      "cold": "ઠંડું",
+      "returnable": "પરત થાય",
+      "nonReturnable": "પરત ન થાય",
+      "inactive": "નિષ્ક્રિય"
+    },
+    "filters": {
+      "tag": "ટૅગ",
+      "anyTag": "કોઈપણ ટૅગ",
+      "filterType": "ફિલ્ટર પ્રકાર",
+      "anyFilterType": "કોઈપણ ફિલ્ટર પ્રકાર",
+      "status": "સ્થિતિ",
+      "statusActive": "સક્રિય",
+      "statusInactive": "નિષ્ક્રિય",
+      "statusAll": "બધા",
+      "returnable": "પરત થાય તેવું",
+      "returnableAny": "કોઈપણ",
+      "returnableYes": "પરત થાય",
+      "returnableNo": "પરત ન થાય"
+    },
+    "kpi": {
+      "totalProducts": "કુલ પ્રોડક્ટ્સ",
+      "deactivatedCount": "{count} નિષ્ક્રિય",
+      "noProductsYet": "હજી કોઈ પ્રોડક્ટ નથી",
+      "active": "સક્રિય",
+      "percentOfCatalogue": "યાદીના {percent}%",
+      "noneActive": "હજી કોઈ સક્રિય નથી",
+      "topByVolume": "સૌથી વધુ જથ્થો",
+      "topByRevenue": "સૌથી વધુ આવક",
+      "unitsInMonth": "આ મહિને {units} નંગ",
+      "thisMonth": "આ મહિને",
+      "movementPending": "ઓર્ડર નોંધાયા પછી જથ્થો અને આવક દેખાશે"
+    },
+    "empty": {
+      "noData": {
+        "title": "હજી કોઈ પ્રોડક્ટ નથી",
+        "body": "તમે જે વેચો છો તે ઉમેરો — 20 લિટરનો જાર, 1 લિટરની બોટલ — પછી તેની સામે ઓર્ડર બનાવી શકાશે. કિંમત પછીથી બદલો તો પણ જૂના ઓર્ડરને કંઈ થતું નથી.",
+        "action": "પહેલી પ્રોડક્ટ ઉમેરો"
+      },
+      "noResults": {
+        "title": "તમારા ફિલ્ટર સાથે કોઈ પ્રોડક્ટ મળી નહીં",
+        "body": "તમે લગાવેલા ફિલ્ટર સાથે કંઈ મળતું નથી. ફિલ્ટર થોડા પહોળા કરો.",
+        "bodyWithQuery": "તમે લગાવેલા ફિલ્ટર સાથે “{query}” મળતું નથી."
+      }
+    },
+    "error": {
+      "listTitle": "પ્રોડક્ટ્સ લોડ થઈ શકી નહીં",
+      "listBody": "સર્વરે જવાબ આપ્યો નહીં. તમારું કનેક્શન તપાસો અને ફરી પ્રયાસ કરો."
+    },
+    "rowActions": {
+      "view": "જુઓ",
+      "edit": "ફેરફાર કરો",
+      "duplicate": "નકલ કરો",
+      "deactivate": "નિષ્ક્રિય કરો",
+      "reactivate": "ફરી સક્રિય કરો",
+      "menu": "{title} માટે વધુ ક્રિયાઓ",
+      "more": "વધુ ક્રિયાઓ"
+    },
+    "toast": {
+      "created": "{title} ઉમેરાયું",
+      "updated": "{title} અપડેટ થયું",
+      "updatedWithPrice": "{title} અપડેટ થયું — હવે મૂળ કિંમત {price}",
+      "deactivated": "{title} નિષ્ક્રિય થયું",
+      "reactivated": "{title} ફરી સક્રિય થયું",
+      "undo": "પાછું લો",
+      "actionFailed": "તે સાચવી શકાયું નહીં. કંઈ બદલાયું નથી."
+    },
+    "deactivate": {
+      "title": "{title} ને નિષ્ક્રિય કરવું છે?",
+      "body": "તે નવા ઓર્ડર ફોર્મમાં દેખાવાનું બંધ થશે. તેની જૂની ઓર્ડર લાઇનો જેમ છે તેમ જ રહેશે, અને તમે ગમે ત્યારે ફરી સક્રિય કરી શકો છો.",
+      "confirm": "નિષ્ક્રિય કરો"
+    },
+    "discard": {
+      "createTitle": "આ પ્રોડક્ટ છોડી દેવી છે?",
+      "createBody": "“{title}” સચવાયું નથી. તમે લખેલું બધું જતું રહેશે.",
+      "editTitle": "તમારા ફેરફારો છોડી દેવા છે?",
+      "editBody": "{title} માં કરેલા તમારા ફેરફારો સચવાયા નથી.",
+      "confirm": "છોડી દો"
+    },
+    "create": {
+      "title": "પ્રોડક્ટ ઉમેરો",
+      "subtitle": "તમે શું વેચો છો અને ઓર્ડરમાં કઈ કિંમતથી શરૂઆત થાય તે નક્કી કરો"
+    },
+    "edit": {
+      "title": "પ્રોડક્ટમાં ફેરફાર",
+      "usedOnLines": "{count} ઓર્ડર લાઇનમાં વપરાયું"
+    },
+    "form": {
+      "snapshotBanner": "આ પ્રોડક્ટ બદલવાથી જૂના ઓર્ડર ક્યારેય બદલાતા નથી. દરેક ઓર્ડર લાઇન પોતાની સાથે નામ, લિટર, ટૅગ, ફિલ્ટર પ્રકાર, કિંમત અને પરત થાય કે નહીં તેની નકલ રાખે છે — ઓર્ડર બન્યો ત્યારે જે હતું તે જ.",
+      "couldNotSave": "આ પ્રોડક્ટ સાચવી શકાઈ નહીં",
+      "titleLabel": "નામ",
+      "titlePlaceholder": "દા.ત. 20L જાર",
+      "titleHint": "ગુજરાતી કે English — ઓર્ડર ફોર્મમાં સ્ટાફને આ જ દેખાય છે",
+      "duplicateTitle": "“{title}” નામની પ્રોડક્ટ પહેલેથી છે ({code})",
+      "duplicateView": "જુઓ",
+      "litresLabel": "લિટર",
+      "litresHint": "વધુમાં વધુ 3 દશાંશ — પાઉચ માટે 0.500, જાર માટે 20.000",
+      "basePriceLabel": "મૂળ કિંમત",
+      "basePriceHint": "ઓર્ડરમાં સ્ટાફ આનાથી ઓછી કિંમતે ભાવતાલ કરી શકે છે",
+      "tagLabel": "ટૅગ",
+      "tagPlaceholder": "ટૅગ પસંદ કરો",
+      "tagHint": "યાદીમાં નથી? ઉમેરી દો — ડેવલપરની જરૂર નથી",
+      "noTagsYet": "હજી કોઈ ટૅગ નથી — પહેલો ઉમેરો",
+      "filterTypeLabel": "ફિલ્ટર પ્રકાર",
+      "filterTypePlaceholder": "ફિલ્ટર પ્રકાર પસંદ કરો",
+      "noFilterTypesYet": "હજી કોઈ ફિલ્ટર પ્રકાર નથી — પહેલો ઉમેરો",
+      "descriptionLabel": "વર્ણન",
+      "descriptionPlaceholder": "દા.ત. સામાન્ય વાદળી જાર, ડબલ ફિલ્ટર્ડ",
+      "handlingHeading": "હેન્ડલિંગ",
+      "returnableLabel": "પરત થાય તેવું",
+      "returnableHint": "કન્ટેનર પાછું આવવું જોઈએ — આ પ્રોડક્ટ જાર-પરતની ગણતરીમાં આવે છે. સીલબંધ બોટલ જે એકવાર વેચાઈ જાય તેના માટે આ બંધ કરો.",
+      "returnableOffHint": "સીલબંધ બોટલ એકવાર વેચાય છે અને બહાર ગયેલા જારના આંકડામાં ક્યારેય આવતી નથી.",
+      "sortOrderLabel": "ક્રમ",
+      "sortOrderHint": "નાનો આંક ઓર્ડર ફોર્મમાં પહેલાં દેખાય છે",
+      "statusHeading": "સ્થિતિ",
+      "activeLabel": "સક્રિય",
+      "activeHint": "નિષ્ક્રિય પ્રોડક્ટ નવા ઓર્ડર ફોર્મમાંથી નીકળી જાય છે. જૂના ઓર્ડરમાં તે જેમ વેચાઈ હતી તેમ જ દેખાતી રહે છે.",
+      "submitCreate": "પ્રોડક્ટ સાચવો",
+      "submitEdit": "ફેરફારો સાચવો",
+      "copySuffix": " (નકલ)",
+      "priceRise": "પહેલાં {was} — {percent}% વધારો",
+      "priceCut": "પહેલાં {was} — {percent}% ઘટાડો",
+      "priceToZero": "પહેલાં {was} — હવે આ પ્રોડક્ટ મફત થશે",
+      "priceFromFree": "પહેલાં મફત — હવે {now}"
+    },
+    "detail": {
+      "backToProducts": "પ્રોડક્ટ યાદી પર પાછા",
+      "addedOn": "{date} ના રોજ ઉમેરાયું",
+      "returnable": "પરત થાય",
+      "nonReturnable": "પરત ન થાય",
+      "returnableYesLong": "હા — કન્ટેનર પાછું આવવું જોઈએ",
+      "returnableNoLong": "ના — એકવાર વેચાય, પરતની ગણતરી નહીં",
+      "inactiveBanner": "આ પ્રોડક્ટ નિષ્ક્રિય છે. તે નવા ઓર્ડર ફોર્મમાં દેખાશે નહીં. તેને વાપરેલો દરેક જૂનો ઓર્ડર જેમ વેચાયો હતો તેમ જ દેખાય છે.",
+      "notFoundTitle": "એવી કોઈ પ્રોડક્ટ નથી",
+      "notFoundBody": "તે કદાચ કાઢી નાખવામાં આવી હશે. તમે જે શોધો છો તે યાદીમાં જોઈ લો.",
+      "errorTitle": "આ પ્રોડક્ટ લોડ થઈ શકી નહીં",
+      "errorBody": "સર્વરે જવાબ આપ્યો નહીં. તમારું કનેક્શન તપાસો અને ફરી પ્રયાસ કરો.",
+      "specification": "વિગત",
+      "filterLabel": "ફિલ્ટર",
+      "priceHistory": "કિંમતનો ઇતિહાસ",
+      "priceUnchanged": "આ પ્રોડક્ટ ઉમેરાયા પછી કિંમત બદલાઈ નથી — શરૂઆતથી {price} જ રહી છે.",
+      "priceSetAt": "{price} પર નક્કી કરી",
+      "movementHeading": "ચેનલ પ્રમાણે હિલચાલ · {month}",
+      "movementEmptyTitle": "હજી કંઈ વેચાયું નથી",
+      "movementEmptyBody": "આ પ્રોડક્ટ કોઈ ઓર્ડરમાં આવશે કે તરત તેનો જથ્થો અને આવક અહીં દેખાશે.",
+      "movement": {
+        "channel": "ચેનલ",
+        "units": "નંગ",
+        "revenue": "આવક",
+        "avg": "સરેરાશ ₹",
+        "total": "કુલ"
+      },
+      "channels": {
+        "delivery": "ડિલિવરી",
+        "party": "પાર્ટી",
+        "walkIn": "સીધું વેચાણ"
+      },
+      "summary": {
+        "basePrice": "મૂળ કિંમત",
+        "priceSetOn": "{date} ના રોજ નક્કી",
+        "avgRealised": "સરેરાશ મળેલી કિંમત",
+        "noSalesYet": "હજી કોઈ વેચાણ નથી",
+        "unitsThisMonth": "આ મહિનાના નંગ",
+        "unitsLifetime": "કુલ નંગ",
+        "sinceAdded": "{date} થી"
+      }
+    },
+    "errors": {
+      "titleRequired": "પ્રોડક્ટનું નામ દાખલ કરો",
+      "titleTooLong": "નામ વધુમાં વધુ 120 અક્ષરનું હોઈ શકે",
+      "descriptionTooLong": "વર્ણન વધુમાં વધુ 500 અક્ષરનું હોઈ શકે",
+      "litresRequired": "આમાં કેટલા લિટર આવે તે દાખલ કરો",
+      "litresPositive": "લિટર 0 થી વધારે હોવા જોઈએ",
+      "litresTooLarge": "લિટર વધુમાં વધુ 9,999.999 હોઈ શકે",
+      "litresDecimals": "લિટરમાં વધુમાં વધુ 3 દશાંશ સ્થાન હોઈ શકે",
+      "basePriceRequired": "મૂળ કિંમત દાખલ કરો",
+      "basePriceInvalid": "35 કે 35.50 જેવી રકમ દાખલ કરો",
+      "basePriceNegative": "મૂળ કિંમત ઋણ ન હોઈ શકે. પ્રોડક્ટ મફત હોય તો 0 લખો.",
+      "basePriceTooLarge": "આ મૂળ કિંમત ઘણી મોટી છે. આંકડો તપાસો.",
+      "basePriceDecimals": "મૂળ કિંમતમાં વધુમાં વધુ 2 દશાંશ સ્થાન હોઈ શકે",
+      "tagRequired": "ટૅગ પસંદ કરો",
+      "filterTypeRequired": "ફિલ્ટર પ્રકાર પસંદ કરો",
+      "sortOrderInteger": "ક્રમ પૂર્ણ આંક હોવો જોઈએ",
+      "sortOrderRange": "ક્રમ 0 થી 32767 ની વચ્ચે હોવો જોઈએ",
+      "nothingToUpdate": "કંઈ બદલાયું નથી, એટલે સાચવવા જેવું કંઈ નથી.",
+      "tagMissing": "તે ટૅગ હવે અસ્તિત્વમાં નથી. બીજો પસંદ કરીને ફરી પ્રયાસ કરો.",
+      "tagRetired": "તમે લખતા હતા તે દરમિયાન તે ટૅગ બંધ કરાયો. બીજો પસંદ કરીને ફરી પ્રયાસ કરો.",
+      "filterTypeMissing": "તે ફિલ્ટર પ્રકાર હવે અસ્તિત્વમાં નથી. બીજો પસંદ કરીને ફરી પ્રયાસ કરો.",
+      "filterTypeRetired": "તમે લખતા હતા તે દરમિયાન તે ફિલ્ટર પ્રકાર બંધ કરાયો. બીજો પસંદ કરીને ફરી પ્રયાસ કરો.",
+      "couldNotSave": "આ પ્રોડક્ટ સાચવી શકાઈ નહીં"
+    }
+  },
+  "coins": {
+    "types": {
+      "title": "સિક્કાના પ્રકાર",
+      "subtitle": "તમારા આગોતરા ટોકન, તેમની કિંમત અને સ્ટોકમાં શું બચ્યું છે",
+      "new": "નવો સિક્કા પ્રકાર",
+      "searchPlaceholder": "સિક્કા પ્રકારનું નામ શોધો…",
+      "mobileMeta": "એક પેકેટમાં {coinsPerPacket}",
+      "columns": {
+        "name": "નામ",
+        "coinsPerPacket": "સિક્કા/પેકેટ",
+        "packetAmount": "પેકેટની રકમ",
+        "perCoinPrice": "એક સિક્કાની કિંમત",
+        "stockCoins": "સ્ટોક (સિક્કા)",
+        "stockPackets": "સ્ટોક (પેકેટ)",
+        "stockValue": "સ્ટોકની કિંમત",
+        "status": "સ્થિતિ",
+        "actions": "ક્રિયાઓ"
+      },
+      "chips": {
+        "active": "સક્રિય",
+        "inactive": "નિષ્ક્રિય"
+      },
+      "stock": {
+        "low": "ઓછો",
+        "packets": "<fig>{packets}</fig> પેકેટ",
+        "packetsPlusCoins": "<fig>{packets}</fig> પેકેટ + <fig>{coins}</fig> સિક્કા",
+        "packetsPlain": "{packets} પેકેટ",
+        "packetsPlusCoinsPlain": "{packets} પેકેટ + {coins} સિક્કા"
+      },
+      "kpi": {
+        "count": "સિક્કાના પ્રકાર",
+        "countBreakdown": "{active} સક્રિય · {inactive} નિષ્ક્રિય",
+        "noneYet": "હજી કોઈ પ્રકાર નથી",
+        "coinsInStock": "સ્ટોકમાં સિક્કા",
+        "noStockYet": "સ્ટોકમાં કંઈ નથી",
+        "valueInStock": "સ્ટોકની કુલ કિંમત",
+        "valueBreakdown": "{count} પ્રકારમાં",
+        "outWithStaff": "સ્ટાફ પાસેના સિક્કા",
+        "outWithStaffBreakdown": "સ્ટાફ પાસે {amount} બાકી",
+        "nothingOut": "સ્ટાફ પાસે કંઈ નથી"
+      },
+      "empty": {
+        "title": "હજી કોઈ સિક્કા પ્રકાર નથી",
+        "body": "સિક્કા પ્રકાર એટલે એક જાતનું ટોકન — તેનું નામ, એક પેકેટમાં કેટલા સિક્કા આવે અને એક પેકેટની કિંમત કેટલી. સિક્કા આપવાનું શરૂ કરવા પહેલો પ્રકાર ઉમેરો."
+      },
+      "noResults": {
+        "title": "તમારા ફિલ્ટર સાથે કોઈ સિક્કા પ્રકાર મળ્યો નહીં"
+      },
+      "error": {
+        "title": "સિક્કાના પ્રકાર લોડ થઈ શક્યા નહીં",
+        "body": "સર્વરે જવાબ આપ્યો નહીં. તમારો ડેટા સુરક્ષિત છે."
+      },
+      "actions": {
+        "viewLedger": "ખાતાવહી જુઓ",
+        "edit": "ફેરફાર કરો",
+        "deactivate": "નિષ્ક્રિય કરો",
+        "reactivate": "ફરી સક્રિય કરો",
+        "rowMenu": "{name} માટે વધુ ક્રિયાઓ"
+      },
+      "deactivate": {
+        "title": "{name} ને નિષ્ક્રિય કરવું છે?",
+        "body": "તે બધા જૂના ઇશ્યૂ અને ખાતાવહીની એન્ટ્રીમાં રહેશે, પણ તમે તેને આપી શકશો નહીં કે તેમાં સ્ટોક ઉમેરી શકશો નહીં. પછીથી ફરી ચાલુ કરી શકાય છે.",
+        "confirm": "પ્રકાર નિષ્ક્રિય કરો",
+        "success": "{name} નિષ્ક્રિય થયું",
+        "blockedBalance": "{coins} સિક્કા હજી સ્ટોકમાં છે",
+        "blockedOutWithStaff": "{coins} સિક્કા હજી સ્ટાફ પાસે છે"
+      },
+      "reactivate": {
+        "success": "{name} ફરી સક્રિય થયું"
+      },
+      "detail": {
+        "back": "સિક્કાના પ્રકાર",
+        "editAction": "ફેરફાર કરો",
+        "meta": "{coinsPerPacket} સિક્કા/પેકેટ · {packetAmount}/પેકેટ · એક સિક્કાના {perCoin} · {created} ના રોજ બનાવ્યું",
+        "summary": {
+          "stockCoins": "સ્ટોક (સિક્કા)",
+          "stockPackets": "સ્ટોક (પેકેટ)",
+          "stockValue": "સ્ટોકની કિંમત",
+          "outWithStaff": "સ્ટાફ પાસે"
+        },
+        "tabs": {
+          "ledger": "ખાતાવહી",
+          "issues": "ઇશ્યૂ",
+          "adjustments": "સુધારા",
+          "circulation": "ચલણમાં",
+          "soon": "સિક્કા ઇશ્યૂ સાથે આવશે"
+        }
+      },
+      "form": {
+        "back": "સિક્કાના પ્રકાર",
+        "newTitle": "નવો સિક્કા પ્રકાર",
+        "newSubtitle": "ટોકન નક્કી કરો: એક પેકેટમાં કેટલા સિક્કા અને એક પેકેટની કિંમત કેટલી",
+        "editTitle": "{name} માં ફેરફાર",
+        "editSubtitle": "પેકેટની રકમ બદલવાની અસર ફક્ત આવનારા ઇશ્યૂ પર થાય છે. જૂના ઇશ્યૂ જે કિંમતે અપાયા હતા તે જ રહે છે.",
+        "nameLabel": "નામ",
+        "namePlaceholder": "દા.ત. બ્લુ ટોકન",
+        "nameHint": "કોઈપણ લિપિ ચાલશે. નામ અલગ હોવું જોઈએ.",
+        "coinsPerPacketLabel": "પેકેટ દીઠ સિક્કા",
+        "coinsPerPacketHint": "એક સીલબંધ પેકેટમાં કેટલા સિક્કા આવે છે",
+        "packetAmountLabel": "પેકેટની રકમ",
+        "packetAmountHint": "એક આખા પેકેટની કિંમત કેટલી છે",
+        "derivedLabel": "એક સિક્કાની કિંમત",
+        "derivedBadge": "ગણેલી",
+        "derivedEmpty": "એક સિક્કાની કિંમત જોવા પેકેટના સિક્કા અને રકમ દાખલ કરો",
+        "derivedFormula": "{amount} ÷ {coins} સિક્કા. 6 દશાંશ સુધી રખાય છે, પંક્તિઓમાં 2 સુધી ગોળ થાય છે.",
+        "derivedFormulaUneven": "{amount} ÷ {coins} સિક્કા. 6 દશાંશ સુધી રખાય છે, પંક્તિઓમાં 2 સુધી ગોળ થાય છે — એક એક કરીને પાછા આપો તો {credited} જમા થાય, {shortfall} ઓછા.",
+        "openingStockLabel": "શરૂઆતનો સ્ટોક (સિક્કા)",
+        "openingStockHint": "આ ખાતાવહીની પહેલી એન્ટ્રી લખે છે. પછીથી બદલી શકાતું નથી — તેના બદલે સ્ટોક સુધારો નોંધો.",
+        "openingStockLocked": "ખાતાવહીમાં એન્ટ્રી થયા પછી શરૂઆતનો સ્ટોક બંધ થઈ જાય છે. તેના બદલે સ્ટોક સુધારો નોંધો.",
+        "colourLabel": "બૅજનો રંગ",
+        "colourOption": "રંગ {index}",
+        "activeLabel": "સક્રિય",
+        "ledgerWarning": "{name} માં {count} ખાતાવહી એન્ટ્રી છે. પેકેટની રકમ બદલવાથી ફક્ત આવનારા ઇશ્યૂની કિંમત બદલાય છે — જૂના ઇશ્યૂ {rate} પર જ રહે છે.",
+        "formError": "આ સિક્કા પ્રકાર સાચવી શકાયો નહીં",
+        "submit": "પ્રકાર સાચવો",
+        "submitEdit": "ફેરફારો સાચવો",
+        "submitting": "સાચવી રહ્યું છે…",
+        "createdToast": "{name} બન્યું, સ્ટોકમાં {coins} સિક્કા",
+        "createdToastNoStock": "{name} બન્યું",
+        "updatedToast": "{name} અપડેટ થયું",
+        "discardTitle": "આ સિક્કા પ્રકાર છોડી દેવો છે?",
+        "discardBody": "તમે લખેલું કંઈ સચવાશે નહીં.",
+        "discardConfirm": "છોડી દો"
+      },
+      "errors": {
+        "nameRequired": "નામ દાખલ કરો",
+        "nameTooLong": "નામ વધુમાં વધુ 120 અક્ષરનું હોઈ શકે",
+        "nameTaken": "આ નામનો સિક્કા પ્રકાર પહેલેથી છે",
+        "coinsPerPacketRequired": "એક પેકેટમાં કેટલા સિક્કા છે તે દાખલ કરો",
+        "coinsPerPacketPositive": "પેકેટ દીઠ સિક્કા 0 થી વધારે હોવા જોઈએ",
+        "coinsPerPacketTooLarge": "પેકેટ દીઠ સિક્કા વધુમાં વધુ 10,00,000 હોઈ શકે",
+        "wholeCoinsOnly": "આખા સિક્કા જ ચાલે — અડધો સિક્કો ન હોય",
+        "packetAmountRequired": "એક આખા પેકેટની કિંમત દાખલ કરો",
+        "packetAmountNegative": "પેકેટની રકમ ઋણ ન હોઈ શકે",
+        "packetAmountTooLarge": "આ પેકેટની રકમ ઘણી મોટી છે. આંકડો તપાસો.",
+        "packetAmountPaise": "પેકેટની રકમમાં વધુમાં વધુ 2 દશાંશ સ્થાન હોઈ શકે",
+        "openingStockRequired": "શરૂઆતનો સ્ટોક દાખલ કરો, અથવા 0 રહેવા દો",
+        "openingStockNegative": "શરૂઆતનો સ્ટોક ઋણ ન હોઈ શકે",
+        "openingStockTooLarge": "આ શરૂઆતનો સ્ટોક ઘણો મોટો છે. આંકડો તપાસો.",
+        "colourInvalid": "બૅજના રંગોમાંથી એક પસંદ કરો",
+        "cannotDeactivate": "આ સિક્કા પ્રકાર હજી નિષ્ક્રિય કરી શકાય નહીં"
+      }
+    },
+    "ledger": {
+      "caption": "{name} ની સિક્કા ખાતાવહી",
+      "columns": {
+        "seq": "#",
+        "date": "તારીખ",
+        "movement": "હિલચાલ",
+        "reference": "સંદર્ભ",
+        "note": "નોંધ",
+        "in": "આવક",
+        "out": "જાવક",
+        "balance": "સિલક"
+      },
+      "balanceNotSortable": "ચાલુ સિલક હંમેશાં એન્ટ્રીના ક્રમે જ ચાલે છે",
+      "chips": {
+        "all": "બધું",
+        "issuedOut": "આપેલા",
+        "returnedIn": "પાછા આવેલા",
+        "orderReceipts": "ઓર્ડરમાં મળેલા",
+        "adjustments": "સુધારા"
+      },
+      "movements": {
+        "OPENING": "શરૂઆત",
+        "ISSUE": "ઇશ્યૂ",
+        "ISSUE_RETURN": "ઇશ્યૂ પરત",
+        "ORDER_RECEIPT": "ઓર્ડરમાં મળ્યા",
+        "ADJUSTMENT_IN": "સુધારો આવક",
+        "ADJUSTMENT_OUT": "સુધારો જાવક",
+        "ISSUE_CANCELLED": "ઇશ્યૂ રદ"
+      },
+      "reconciled": "શરૂઆત {opening} + આવક {coinsIn} − જાવક {coinsOut} = સિલક {balance} સિક્કા",
+      "reconciledMeta": "હમણાં જ મેળવ્યું · {count} એન્ટ્રી",
+      "filteredCaveat": "{total} માંથી {shown} એન્ટ્રી બતાવી રહ્યા છીએ — ઉપરની સિલક આખી ખાતાવહીની છે, ફિલ્ટર કરેલી નહીં.",
+      "openingRow": "શરૂઆતની સિલક · {date}",
+      "carriedForward": "આગળ લઈ ગયા",
+      "closingBalance": "આખરી સિલક",
+      "empty": {
+        "title": "આ ખાતાવહી ખાલી છે",
+        "body": "હજી કંઈ હલ્યું નથી. સ્ટાફને સિક્કા આપો, અથવા સ્ટોક સુધારો નોંધો — દરેક હિલચાલ ચાલુ સિલક સાથે અહીં દેખાશે."
+      },
+      "noResults": {
+        "title": "તમારા ફિલ્ટર સાથે કોઈ હિલચાલ મળી નહીં"
+      }
+    },
+    "drift": {
+      "title": "સિક્કાની સિલક મેળ ખાતી નથી — {name}",
+      "body": "સંગ્રહેલી સિલક {stored} સિક્કા કહે છે પણ ખાતાવહીનો સરવાળો {ledger} થાય છે. {difference} સિક્કાનો ફરક છે.",
+      "reassurance": "કંઈ બદલાયું નથી. વધુ સિક્કા આપતાં પહેલાં ખાતાવહી ફરી તપાસો."
+    }
+  },
+  "expenseCategories": {
+    "title": "ખર્ચ શ્રેણીઓ",
+    "subtitle": "તમારી પોતાની યાદી — નામ બદલો, ઉમેરો કે બંધ કરો. શરૂઆતમાં દસ.",
+    "addLabel": "શ્રેણી ઉમેરો",
+    "addPlaceholder": "દા.ત. બોરવેલ સમારકામ",
+    "summary": "{total} શ્રેણીઓ · {active} સક્રિય",
+    "footnote": "શ્રેણી ફક્ત બંધ થાય છે, ક્યારેય કાઢી શકાતી નથી — દરેક જૂનો ખર્ચ જે નામ હેઠળ નોંધાયો હતો તે જ રહે છે.",
+    "empty": {
+      "title": "હજી કોઈ શ્રેણી નથી",
+      "description": "પછીથી તમે તમારો ખર્ચ આ શ્રેણીઓથી જ વાંચશો — ઈંધણ, સ્ટાફ પગાર, વીજળી. તમે ધંધાને જે રીતે જુઓ છો તે પ્રમાણેની શ્રેણીઓ ઉમેરો."
+    },
+    "error": {
+      "title": "શ્રેણીઓ લોડ થઈ શકી નહીં",
+      "description": "સર્વરે જવાબ આપ્યો નહીં. તમારું કનેક્શન તપાસો અને ફરી પ્રયાસ કરો."
+    },
+    "deactivate": {
+      "title": "“{name}” બંધ કરવી છે?",
+      "description": "તે દરેક જૂના ખર્ચ પર રહેશે, પણ નવો ખર્ચ ઉમેરતી વખતે દેખાશે નહીં. તમે ગમે ત્યારે ફરી ચાલુ કરી શકો છો.",
+      "confirm": "બંધ કરો"
+    },
+    "errors": {
+      "duplicate": "“{name}” નામની શ્રેણી પહેલેથી છે",
+      "nameRequired": "શ્રેણીનું નામ દાખલ કરો",
+      "nameTooLong": "શ્રેણીનું નામ {max} અક્ષરથી લાંબું ન હોઈ શકે"
+    },
+    "toasts": {
+      "added": "“{name}” ઉમેરાયું",
+      "renamed": "શ્રેણીનું નામ બદલીને “{name}” કર્યું",
+      "switchedOff": "“{name}” બંધ કર્યું",
+      "switchedOn": "“{name}” ચાલુ કર્યું"
+    }
   }
 }

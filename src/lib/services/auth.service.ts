@@ -144,7 +144,7 @@ export async function changePassword(
     logger.info({ userId }, "password changed");
 
     return { sessionVersion: user.sessionVersion };
-  });
+  }, userId);
 }
 
 /**
@@ -181,7 +181,7 @@ export async function updateProfile(
 
     const saved = await userRepository.save(user, em);
     return toUserDto(saved);
-  });
+  }, userId);
 }
 
 export async function updatePreferences(

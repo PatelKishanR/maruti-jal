@@ -6,19 +6,18 @@ import type {
   AdjustmentReason,
   PaymentDirection,
 } from "@/lib/db/entities/enums";
+import {
+  COIN_ADJUSTMENT_SORT_COLUMNS,
+  type CoinAdjustmentSortKey,
+} from "@/lib/table/configs/coin-adjustment";
 
 /**
- * Public sort key → hard-coded SQL column. User input is a lookup key only,
- * never interpolated. See .claude/ARCHITECTURE.md §6.2
+ * The sort allowlist is imported, never re-declared — one map, shared by the
+ * table config and this ORDER BY. The config is client-safe (zod and types
+ * only), so this import couples nothing.
+ * See .claude/MODULE-RECIPE.md §1 and .claude/ARCHITECTURE.md §6.2
  */
-const SORTABLE = {
-  adjustmentDate: "ca.adjustmentDate",
-  coins: "ca.coins",
-  reason: "ca.reason",
-  createdAt: "ca.createdAt",
-} as const;
-
-export type CoinAdjustmentSortKey = keyof typeof SORTABLE;
+export type { CoinAdjustmentSortKey };
 
 export interface CoinAdjustmentSearchParams {
   /** Free text over the mandatory note. */
@@ -92,7 +91,11 @@ class CoinAdjustmentRepository extends BaseRepository<CoinAdjustment> {
     if (dateTo) qb.andWhere("ca.adjustmentDate <= :dateTo", { dateTo });
 
     const [rows, total] = await qb
-      .orderBy(SORTABLE[sortBy] ?? SORTABLE.adjustmentDate, sortDir)
+      .orderBy(
+        COIN_ADJUSTMENT_SORT_COLUMNS[sortBy] ??
+          COIN_ADJUSTMENT_SORT_COLUMNS.adjustmentDate,
+        sortDir,
+      )
       // Stable tiebreaker — same-day adjustments must not shuffle between pages.
       .addOrderBy("ca.id", "ASC")
       .skip((page - 1) * pageSize)

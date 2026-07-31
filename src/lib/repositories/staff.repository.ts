@@ -2,23 +2,20 @@ import "server-only";
 import type { EntityManager, EntityTarget } from "typeorm";
 import { BaseRepository } from "./base.repository";
 import { Staff } from "@/lib/db/entities";
+import {
+  STAFF_SORT_COLUMNS,
+  type StaffSortKey,
+} from "@/lib/table/configs/staff";
 
 /**
- * Public sort key → hard-coded SQL. User input is only ever a LOOKUP KEY into
- * this map, never a value that reaches SQL, so `?sort=id;DROP TABLE staff`
- * simply misses the map and falls back to the default. There is no escaping to
- * get wrong. See .claude/ARCHITECTURE.md §6.2
+ * The sort allowlist is imported, never re-declared.
+ *
+ * `staffTableConfig.sortable` and this ORDER BY must be the same map or a
+ * column header the config advertises sorts by something else here. The config
+ * is client-safe (zod and types only), so importing it costs this layer
+ * nothing. See .claude/MODULE-RECIPE.md §1 and .claude/ARCHITECTURE.md §6.2
  */
-const SORT_COLUMNS = {
-  name: "s.name",
-  /** Sort by the identity number, not the text code — 'STF-9' before 'STF-10'. */
-  code: "s.staffNo",
-  phone: "s.phone",
-  joinedOn: "s.joinedOn",
-  createdAt: "s.createdAt",
-} as const;
-
-export type StaffSortKey = keyof typeof SORT_COLUMNS;
+export type { StaffSortKey };
 
 export interface StaffSearchQuery {
   search?: string;
@@ -77,7 +74,8 @@ class StaffRepository extends BaseRepository<Staff> {
       });
     }
 
-    const column = SORT_COLUMNS[query.sort as StaffSortKey] ?? SORT_COLUMNS.name;
+    const column =
+      STAFF_SORT_COLUMNS[query.sort as StaffSortKey] ?? STAFF_SORT_COLUMNS.name;
     qb.orderBy(column, query.dir === "DESC" ? "DESC" : "ASC");
     // Without a unique tiebreaker, rows with equal names shuffle between pages
     // and the user sees one record twice while missing another.

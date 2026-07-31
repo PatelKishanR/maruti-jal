@@ -43,13 +43,60 @@
       "noDataBody": "Records you add will appear here.",
       "noResultsTitle": "No matches",
       "noResultsBody": "No records match your filters. Try widening them.",
-      "activeFilters": "Active filters: {filters}"
+      "activeFilters": "Active filters"
     },
     "errorState": {
       "title": "Couldn't load this"
     },
     "kpi": {
-      "nothingYet": "Nothing recorded yet"
+      "nothingYet": "Nothing recorded yet",
+      "increased": "increased",
+      "decreased": "decreased",
+      "unchanged": "unchanged"
+    },
+    "status": {
+      "unpaid": "Unpaid",
+      "partiallyPaid": "Partially paid",
+      "paid": "Paid",
+      "overpaid": "Overpaid",
+      "overpaidBy": "Overpaid {amount}",
+      "amountDue": "{amount} due",
+      "refundDue": "Refund due",
+      "refundAmount": "Refund {amount}",
+      "notReturned": "Not returned",
+      "partiallyReturned": "Partially returned",
+      "jarsOut": "{count} jars out",
+      "coinsOut": "{count} coins out",
+      "itemsOut": "{count} items out",
+      "settled": "Settled",
+      "notApplicable": "Not applicable",
+      "active": "Active",
+      "inactive": "Inactive",
+      "draft": "Draft",
+      "cancelled": "Cancelled",
+      "scheduled": "Scheduled",
+      "delivered": "Delivered",
+      "skipped": "Skipped"
+    },
+    "timeline": {
+      "empty": "No activity yet"
+    },
+    "lookupManager": {
+      "add": "Add",
+      "adding": "Adding…",
+      "inactive": "Inactive",
+      "loading": "Loading list…",
+      "nameRequired": "Enter a name",
+      "nameTooLong": "That name is longer than {max} characters",
+      "rename": "Rename",
+      "reorderFailed": "Couldn't save the new order. The list has been put back.",
+      "reorderHandle": "Reorder {name} — drag, or use the up and down arrow keys",
+      "retry": "Retry",
+      "rowActions": "More actions for {name}",
+      "saveFailed": "Couldn't save that. Nothing has been changed.",
+      "switchOff": "Switch off",
+      "switchOn": "Switch on",
+      "toggleActive": "Switch {name} on or off"
     }
   },
   "auth": {
@@ -183,5 +230,692 @@
     "pagination": "Pagination",
     "previous": "Previous page",
     "next": "Next page"
+  },
+  "staff": {
+    "title": "Staff",
+    "subtitle": "Who delivers for you, and what each of them owes right now",
+    "actions": {
+      "add": "Add staff",
+      "view": "View",
+      "edit": "Edit",
+      "deactivate": "Deactivate",
+      "reactivate": "Reactivate",
+      "close": "Close",
+      "undo": "Undo",
+      "menuLabel": "More actions for {name}"
+    },
+    "kpi": {
+      "total": "Total staff",
+      "totalBreakdown": "{count} inactive",
+      "totalZero": "No staff yet",
+      "active": "Active staff",
+      "activeBreakdown": "{percent}% of the team",
+      "activeZero": "Nobody active yet",
+      "cash": "Cash outstanding",
+      "cashBreakdown": "across {count} people",
+      "cashZero": "Nothing outstanding",
+      "jars": "Jars out",
+      "jarsBreakdown": "with {count} people",
+      "jarsZero": "Every jar is back"
+    },
+    "columns": {
+      "code": "Code",
+      "name": "Name",
+      "phone": "Phone",
+      "address": "Address",
+      "cash": "Cash",
+      "jars": "Jars",
+      "coins": "Coins",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "chips": {
+      "all": "All",
+      "active": "Active",
+      "moneyPending": "Money pending",
+      "jarsOut": "Jars out",
+      "inactive": "Inactive"
+    },
+    "filters": {
+      "statusLabel": "Status",
+      "statusValue": "Status: {value}",
+      "status": {
+        "active": "Active",
+        "inactive": "Inactive",
+        "all": "All"
+      },
+      "hasBalance": "Has outstanding balance",
+      "hasJars": "Has jars out"
+    },
+    "list": {
+      "searchPlaceholder": "Search name, phone or address…",
+      "empty": {
+        "title": "No staff yet",
+        "body": "Add your delivery people here. Once they're in, you can assign orders, issue coins, and see exactly what each person owes you.",
+        "cta": "Add your first staff member"
+      },
+      "noResults": {
+        "title": "No staff match your filters",
+        "bodyQueryAndFilters": "Nothing matches “{query}” with {filters}.",
+        "bodyQuery": "Nothing matches “{query}”.",
+        "bodyFilters": "Nothing matches {filters}.",
+        "bodyGeneric": "No staff match the filters you have on."
+      },
+      "error": {
+        "title": "Couldn't load staff",
+        "body": "The server didn't respond. Check your connection and try again.",
+        "cta": "Try again"
+      }
+    },
+    "badges": {
+      "moneyTooltip": "Cash {cash} · Coins {coins}"
+    },
+    "summary": {
+      "cash": "Cash outstanding",
+      "cashContext": "across {count, plural, one {# order} other {# orders}}",
+      "jars": "Jars out",
+      "jarsContext": "of {total} handed out",
+      "coins": "Coin dues",
+      "coinsContext": "{count, plural, one {# open issue} other {# open issues}}",
+      "revenue": "Lifetime revenue",
+      "revenueContext": "since {date}"
+    },
+    "tabs": {
+      "overview": "Overview",
+      "orders": "Delivery orders",
+      "coins": "Coin issues",
+      "payments": "Payments",
+      "activity": "Activity"
+    },
+    "detail": {
+      "joined": "Joined {date}",
+      "status": "Status",
+      "contact": "Contact",
+      "note": "Note",
+      "noteEmpty": "No note on this staff member.",
+      "record": "Record",
+      "createdAt": "Created {date} · {actor}",
+      "updatedAt": "Updated {date} · {actor}",
+      "unknownActor": "Unknown",
+      "call": "Call {phone}",
+      "inactiveBanner": "This staff member is inactive. They won't appear in new order or coin issue forms.",
+      "notFound": {
+        "title": "That staff member doesn't exist",
+        "body": "The record may have been removed. Go back to the staff list to find who you're looking for.",
+        "cta": "Back to staff"
+      },
+      "orders": {
+        "emptyTitle": "No delivery orders yet",
+        "emptyBody": "Orders assigned to {name} will appear here."
+      },
+      "coins": {
+        "emptyTitle": "No coin issues yet",
+        "emptyBody": "Coin packets issued to {name} will appear here."
+      },
+      "payments": {
+        "emptyTitle": "No payments recorded",
+        "emptyBody": "Payments from {name} across orders and coin issues will appear here."
+      },
+      "activity": {
+        "empty": "Nothing has changed since this record was created.",
+        "created": "Record created",
+        "updated": "Record updated",
+        "changed": "Changed {fields}",
+        "meta": "{date} · {actor}",
+        "fields": {
+          "name": "name",
+          "phone": "phone",
+          "altPhone": "alternate phone",
+          "address": "address",
+          "note": "note",
+          "joinedOn": "joining date",
+          "isActive": "status"
+        }
+      }
+    },
+    "new": {
+      "title": "Add staff",
+      "subtitle": "Register a delivery person so you can assign orders and issue coins"
+    },
+    "edit": {
+      "title": "Edit staff",
+      "created": "Created {date}"
+    },
+    "form": {
+      "name": {
+        "label": "Full name",
+        "placeholder": "e.g. Ramesh Patel",
+        "hint": "English or ગુજરાતી — type it however you say it"
+      },
+      "phone": {
+        "label": "Phone",
+        "placeholder": "e.g. 9876543210",
+        "hint": "10 digits, no +91"
+      },
+      "altPhone": {
+        "label": "Alternate phone",
+        "placeholder": "e.g. 9909112233"
+      },
+      "address": {
+        "label": "Address",
+        "placeholder": "e.g. 12 Krishna Nagar, Vatva Road, Ahmedabad 382445"
+      },
+      "joinedOn": {
+        "label": "Joined on",
+        "hint": "Leave as today if they start now"
+      },
+      "note": {
+        "label": "Note",
+        "placeholder": "e.g. Morning route only",
+        "hint": "Only you see this"
+      },
+      "create": "Save staff",
+      "save": "Save changes",
+      "saving": "Saving…",
+      "statusHeading": "Status",
+      "activeLabel": "Active",
+      "activeHint": "Inactive staff don't appear in new order or coin issue forms",
+      "statusBlocked": "{name} can't be deactivated yet. Settle the outstanding cash, jars and coins first.",
+      "viewHolder": "View {code}",
+      "discard": {
+        "createTitle": "Discard this staff member?",
+        "createBody": "{name} hasn't been saved. Everything you typed will be lost.",
+        "editTitle": "Discard your changes?",
+        "editBody": "Your changes to {name} haven't been saved.",
+        "confirm": "Discard",
+        "thisRecord": "This record"
+      },
+      "errors": {
+        "saveTitle": "This staff member couldn't be saved",
+        "offlineTitle": "You're offline",
+        "offlineBody": "Nothing was saved. Reconnect and press Save again — your entries are still here."
+      }
+    },
+    "errors": {
+      "nameRequired": "Enter the staff member's name",
+      "nameTooLong": "Name can be at most 120 characters",
+      "phoneRequired": "Enter a phone number",
+      "phoneLength": "Enter a 10-digit mobile number",
+      "phoneStart": "Indian mobile numbers start with 6, 7, 8 or 9",
+      "altPhoneSame": "Alternate phone must be different from the main phone",
+      "addressTooLong": "Address can be at most 500 characters",
+      "noteTooLong": "Note can be at most 2000 characters",
+      "joinedOnInvalid": "Enter a date like 14 Aug 2026",
+      "joinedOnFuture": "Joining date can't be in the future",
+      "phoneTaken": "That phone number already belongs to another staff member.",
+      "phoneTakenDetail": "{phone} already belongs to {name} ({code})",
+      "phoneTakenInactive": "{phone} was last used by {name}, who is inactive. Saving will give this number to the new record.",
+      "deactivateBlocked": "This staff member still holds money or jars, so they can't be deactivated yet."
+    },
+    "deactivate": {
+      "title": "Deactivate {name}?",
+      "body": "They'll stop appearing in new order and coin issue forms. Their past orders stay exactly as they are, and you can reactivate them any time.",
+      "submitting": "Deactivating…",
+      "blocked": {
+        "title": "{name} can't be deactivated yet",
+        "body": "{count, plural, =1 {One thing is still open. Settle it, then deactivate.} =2 {Two things are still open. Settle them, then deactivate.} =3 {Three things are still open. Settle them, then deactivate.} other {# things are still open. Settle them, then deactivate.}}",
+        "reason": {
+          "cash": "cash outstanding",
+          "jars": "jars not returned",
+          "coins": "of coins pending"
+        },
+        "orderCount": "{count, plural, one {# order} other {# orders}}",
+        "issueCount": "{count, plural, one {# issue} other {# issues}}",
+        "openRecord": "Open record"
+      }
+    },
+    "reactivate": {
+      "title": "Reactivate {name}?",
+      "body": "They'll appear in new order and coin issue forms again.",
+      "submitting": "Reactivating…"
+    },
+    "toasts": {
+      "created": "{name} added",
+      "updated": "{name} updated",
+      "deactivated": "{name} deactivated",
+      "reactivated": "{name} reactivated",
+      "deactivateFailed": "Couldn't deactivate {name}. Nothing has been changed.",
+      "reactivateFailed": "Couldn't reactivate {name}. Nothing has been changed."
+    }
+  },
+  "products": {
+    "title": "Products",
+    "subtitle": "What you sell, and what it normally costs",
+    "backToList": "Products",
+    "searchPlaceholder": "Search product title or description…",
+    "free": "Free",
+    "returnableYes": "Yes",
+    "returnableNo": "No",
+    "actions": {
+      "add": "Add product"
+    },
+    "columns": {
+      "code": "Code",
+      "title": "Title",
+      "litres": "Litres",
+      "tag": "Tag",
+      "filterType": "Filter type",
+      "basePrice": "Base price",
+      "returnable": "Ret.",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "chips": {
+      "all": "All",
+      "active": "Active",
+      "cold": "Cold",
+      "returnable": "Returnable",
+      "nonReturnable": "Non-returnable",
+      "inactive": "Inactive"
+    },
+    "filters": {
+      "tag": "Tag",
+      "anyTag": "Any tag",
+      "filterType": "Filter type",
+      "anyFilterType": "Any filter type",
+      "status": "Status",
+      "statusActive": "Active",
+      "statusInactive": "Inactive",
+      "statusAll": "All",
+      "returnable": "Returnable",
+      "returnableAny": "Any",
+      "returnableYes": "Returnable",
+      "returnableNo": "Non-returnable"
+    },
+    "kpi": {
+      "totalProducts": "Total products",
+      "deactivatedCount": "{count} deactivated",
+      "noProductsYet": "No products yet",
+      "active": "Active",
+      "percentOfCatalogue": "{percent}% of catalogue",
+      "noneActive": "None active yet",
+      "topByVolume": "Top by volume",
+      "topByRevenue": "Top by revenue",
+      "unitsInMonth": "{units} units this month",
+      "thisMonth": "this month",
+      "movementPending": "Volume and revenue appear once orders are recorded"
+    },
+    "empty": {
+      "noData": {
+        "title": "No products yet",
+        "body": "Add what you sell — a 20-litre jar, a 1-litre bottle — and orders can be raised against it. You can change prices later without touching past orders.",
+        "action": "Add your first product"
+      },
+      "noResults": {
+        "title": "No products match your filters",
+        "body": "Nothing matches the filters you have on. Try widening them.",
+        "bodyWithQuery": "Nothing matches “{query}” with the filters you have on."
+      }
+    },
+    "error": {
+      "listTitle": "Couldn't load products",
+      "listBody": "The server didn't respond. Check your connection and try again."
+    },
+    "rowActions": {
+      "view": "View",
+      "edit": "Edit",
+      "duplicate": "Duplicate",
+      "deactivate": "Deactivate",
+      "reactivate": "Reactivate",
+      "menu": "More actions for {title}",
+      "more": "More actions"
+    },
+    "toast": {
+      "created": "{title} added",
+      "updated": "{title} updated",
+      "updatedWithPrice": "{title} updated — base price now {price}",
+      "deactivated": "{title} deactivated",
+      "reactivated": "{title} reactivated",
+      "undo": "Undo",
+      "actionFailed": "Couldn't save that. Nothing has been changed."
+    },
+    "deactivate": {
+      "title": "Deactivate {title}?",
+      "body": "It'll stop appearing on new order forms. Its past order lines stay exactly as they are, and you can reactivate it any time.",
+      "confirm": "Deactivate"
+    },
+    "discard": {
+      "createTitle": "Discard this product?",
+      "createBody": "“{title}” hasn't been saved. Everything you typed will be lost.",
+      "editTitle": "Discard your changes?",
+      "editBody": "Your changes to {title} haven't been saved.",
+      "confirm": "Discard"
+    },
+    "create": {
+      "title": "Add product",
+      "subtitle": "Define what you sell and the price orders start from"
+    },
+    "edit": {
+      "title": "Edit product",
+      "usedOnLines": "Used on {count} order lines"
+    },
+    "form": {
+      "snapshotBanner": "Changing this product never changes past orders. Every order line keeps a copy of the title, litres, tag, filter type, price and returnable flag exactly as it was when the order was made.",
+      "couldNotSave": "This product couldn't be saved",
+      "titleLabel": "Title",
+      "titlePlaceholder": "e.g. 20L Jar",
+      "titleHint": "English or ગુજરાતી — this is what staff see in the order form",
+      "duplicateTitle": "A product called “{title}” already exists ({code})",
+      "duplicateView": "View",
+      "litresLabel": "Litres",
+      "litresHint": "Up to 3 decimals — 0.500 for a pouch, 20.000 for a jar",
+      "basePriceLabel": "Base price",
+      "basePriceHint": "Staff can bargain below this on an order",
+      "tagLabel": "Tag",
+      "tagPlaceholder": "Select a tag",
+      "tagHint": "Not on the list? Add it — no developer needed",
+      "noTagsYet": "No tags yet — add the first one",
+      "filterTypeLabel": "Filter type",
+      "filterTypePlaceholder": "Select a filter type",
+      "noFilterTypesYet": "No filter types yet — add the first one",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "e.g. Standard blue jar, double filtered",
+      "handlingHeading": "Handling",
+      "returnableLabel": "Returnable",
+      "returnableHint": "Containers must come back — this product is counted in jar-return tracking. Turn off for sealed bottles that are sold outright.",
+      "returnableOffHint": "Sealed bottles are sold outright and never appear in jars-out figures.",
+      "sortOrderLabel": "Sort order",
+      "sortOrderHint": "Lower numbers appear first in the order form",
+      "statusHeading": "Status",
+      "activeLabel": "Active",
+      "activeHint": "Deactivated products leave new order forms. Past orders keep showing them exactly as they were sold.",
+      "submitCreate": "Save product",
+      "submitEdit": "Save changes",
+      "copySuffix": " (copy)",
+      "priceRise": "Was {was} — a {percent}% rise",
+      "priceCut": "Was {was} — a {percent}% cut",
+      "priceToZero": "Was {was} — this product becomes free",
+      "priceFromFree": "Was free — now {now}"
+    },
+    "detail": {
+      "backToProducts": "Back to products",
+      "addedOn": "Added {date}",
+      "returnable": "Returnable",
+      "nonReturnable": "Non-returnable",
+      "returnableYesLong": "Yes — containers must come back",
+      "returnableNoLong": "No — sold outright, never tracked for return",
+      "inactiveBanner": "This product is deactivated. It won't appear on new order forms. Every past order that used it still shows exactly as it was sold.",
+      "notFoundTitle": "That product doesn't exist",
+      "notFoundBody": "It may have been removed. Go back to the catalogue to find what you're looking for.",
+      "errorTitle": "Couldn't load this product",
+      "errorBody": "The server didn't respond. Check your connection and try again.",
+      "specification": "Specification",
+      "filterLabel": "Filter",
+      "priceHistory": "Price history",
+      "priceUnchanged": "Price hasn't changed since this product was added — it has been {price} throughout.",
+      "priceSetAt": "Set at {price}",
+      "movementHeading": "Movement by channel · {month}",
+      "movementEmptyTitle": "Nothing sold yet",
+      "movementEmptyBody": "Once this product appears on an order, its volume and revenue show up here.",
+      "movement": {
+        "channel": "Channel",
+        "units": "Units",
+        "revenue": "Revenue",
+        "avg": "Avg ₹",
+        "total": "Total"
+      },
+      "channels": {
+        "delivery": "Delivery",
+        "party": "Party",
+        "walkIn": "Walk-in"
+      },
+      "summary": {
+        "basePrice": "Base price",
+        "priceSetOn": "set {date}",
+        "avgRealised": "Avg realised",
+        "noSalesYet": "no sales yet",
+        "unitsThisMonth": "Units this month",
+        "unitsLifetime": "Units lifetime",
+        "sinceAdded": "since {date}"
+      }
+    },
+    "errors": {
+      "titleRequired": "Enter a product title",
+      "titleTooLong": "Title can be at most 120 characters",
+      "descriptionTooLong": "Description can be at most 500 characters",
+      "litresRequired": "Enter how many litres this holds",
+      "litresPositive": "Litres must be more than 0",
+      "litresTooLarge": "Litres can be at most 9,999.999",
+      "litresDecimals": "Litres can have at most 3 decimal places",
+      "basePriceRequired": "Enter a base price",
+      "basePriceInvalid": "Enter an amount like 35 or 35.50",
+      "basePriceNegative": "Base price can't be negative. Enter 0 if this product is free.",
+      "basePriceTooLarge": "That base price is too large. Check the figure.",
+      "basePriceDecimals": "Base price can have at most 2 decimal places",
+      "tagRequired": "Choose a tag",
+      "filterTypeRequired": "Choose a filter type",
+      "sortOrderInteger": "Sort order must be a whole number",
+      "sortOrderRange": "Sort order must be between 0 and 32767",
+      "nothingToUpdate": "Nothing has changed, so there is nothing to save.",
+      "tagMissing": "That tag no longer exists. Choose another one and try again.",
+      "tagRetired": "That tag was retired while you were typing. Choose another one and try again.",
+      "filterTypeMissing": "That filter type no longer exists. Choose another one and try again.",
+      "filterTypeRetired": "That filter type was retired while you were typing. Choose another one and try again.",
+      "couldNotSave": "This product couldn't be saved"
+    }
+  },
+  "coins": {
+    "types": {
+      "title": "Coin Types",
+      "subtitle": "Your prepaid tokens, their value, and what is left in stock",
+      "new": "New coin type",
+      "searchPlaceholder": "Search coin type name…",
+      "mobileMeta": "{coinsPerPacket} per packet",
+      "columns": {
+        "name": "Name",
+        "coinsPerPacket": "Coins/pkt",
+        "packetAmount": "Packet amount",
+        "perCoinPrice": "Per-coin value",
+        "stockCoins": "Stock (coins)",
+        "stockPackets": "Stock (packets)",
+        "stockValue": "Stock value",
+        "status": "Status",
+        "actions": "Actions"
+      },
+      "chips": {
+        "active": "Active",
+        "inactive": "Inactive"
+      },
+      "stock": {
+        "low": "Low",
+        "packets": "<fig>{packets}</fig> packets",
+        "packetsPlusCoins": "<fig>{packets}</fig> packets + <fig>{coins}</fig> coins",
+        "packetsPlain": "{packets} packets",
+        "packetsPlusCoinsPlain": "{packets} packets + {coins} coins"
+      },
+      "kpi": {
+        "count": "Coin types",
+        "countBreakdown": "{active} active · {inactive} inactive",
+        "noneYet": "No coin types yet",
+        "coinsInStock": "Coins in stock",
+        "noStockYet": "Nothing in stock",
+        "valueInStock": "Total value in stock",
+        "valueBreakdown": "across {count} types",
+        "outWithStaff": "Coins out with staff",
+        "outWithStaffBreakdown": "{amount} owed by staff",
+        "nothingOut": "Nothing out with staff"
+      },
+      "empty": {
+        "title": "No coin types yet",
+        "body": "A coin type is one kind of token — a name, how many coins are in a packet, and what a packet costs. Add your first one to start issuing coins."
+      },
+      "noResults": {
+        "title": "No coin types match your filters"
+      },
+      "error": {
+        "title": "Couldn't load coin types",
+        "body": "The server didn't respond. Your data is safe."
+      },
+      "actions": {
+        "viewLedger": "View ledger",
+        "edit": "Edit",
+        "deactivate": "Deactivate",
+        "reactivate": "Reactivate",
+        "rowMenu": "More actions for {name}"
+      },
+      "deactivate": {
+        "title": "Deactivate {name}?",
+        "body": "It stays on all past issues and ledger entries, but you won't be able to issue it or add stock. You can turn it back on later.",
+        "confirm": "Deactivate coin type",
+        "success": "{name} deactivated",
+        "blockedBalance": "{coins} coins are still in stock",
+        "blockedOutWithStaff": "{coins} coins are still out with staff"
+      },
+      "reactivate": {
+        "success": "{name} reactivated"
+      },
+      "detail": {
+        "back": "Coin Types",
+        "editAction": "Edit",
+        "meta": "{coinsPerPacket} coins/packet · {packetAmount}/packet · {perCoin} per coin · Created {created}",
+        "summary": {
+          "stockCoins": "Stock (coins)",
+          "stockPackets": "Stock (packets)",
+          "stockValue": "Stock value",
+          "outWithStaff": "Out with staff"
+        },
+        "tabs": {
+          "ledger": "Ledger",
+          "issues": "Issues",
+          "adjustments": "Adjustments",
+          "circulation": "Circulation",
+          "soon": "Arrives with coin issues"
+        }
+      },
+      "form": {
+        "back": "Coin Types",
+        "newTitle": "New coin type",
+        "newSubtitle": "Define a token: how many coins in a packet, and what a packet costs",
+        "editTitle": "Edit {name}",
+        "editSubtitle": "Changing the packet amount only affects future issues. Past issues keep the value they were issued at.",
+        "nameLabel": "Name",
+        "namePlaceholder": "e.g. Blue Token",
+        "nameHint": "Any script. Must be unique.",
+        "coinsPerPacketLabel": "Coins per packet",
+        "coinsPerPacketHint": "How many coins in one sealed packet",
+        "packetAmountLabel": "Packet amount",
+        "packetAmountHint": "What a full packet is worth",
+        "derivedLabel": "Per-coin value",
+        "derivedBadge": "derived",
+        "derivedEmpty": "Enter a packet size and amount to see the per-coin value",
+        "derivedFormula": "{amount} ÷ {coins} coins. Held to 6 decimals, rows round to 2.",
+        "derivedFormulaUneven": "{amount} ÷ {coins} coins. Held to 6 decimals, rows round to 2 — returning them one at a time credits {credited}, {shortfall} short.",
+        "openingStockLabel": "Opening stock (coins)",
+        "openingStockHint": "Writes the first ledger entry. You can't change it later — use a stock adjustment instead.",
+        "openingStockLocked": "Opening stock is locked once the ledger has entries. Record a stock adjustment instead.",
+        "colourLabel": "Badge colour",
+        "colourOption": "Colour {index}",
+        "activeLabel": "Active",
+        "ledgerWarning": "{name} has {count} ledger entries. Changing the packet amount changes the value of future issues only — past issues keep the {rate} they were issued at.",
+        "formError": "This coin type couldn't be saved",
+        "submit": "Save coin type",
+        "submitEdit": "Save changes",
+        "submitting": "Saving…",
+        "createdToast": "{name} created with {coins} coins in stock",
+        "createdToastNoStock": "{name} created",
+        "updatedToast": "{name} updated",
+        "discardTitle": "Discard this coin type?",
+        "discardBody": "Nothing you've typed will be saved.",
+        "discardConfirm": "Discard"
+      },
+      "errors": {
+        "nameRequired": "Enter a name",
+        "nameTooLong": "Name can be at most 120 characters",
+        "nameTaken": "A coin type with that name already exists",
+        "coinsPerPacketRequired": "Enter how many coins are in a packet",
+        "coinsPerPacketPositive": "Coins per packet must be more than 0",
+        "coinsPerPacketTooLarge": "Coins per packet can be at most 10,00,000",
+        "wholeCoinsOnly": "Whole coins only — you can't have half a coin",
+        "packetAmountRequired": "Enter what a full packet is worth",
+        "packetAmountNegative": "Packet amount can't be negative",
+        "packetAmountTooLarge": "That packet amount is too large. Check the figure.",
+        "packetAmountPaise": "Packet amount can have at most 2 decimal places",
+        "openingStockRequired": "Enter the opening stock, or leave it at 0",
+        "openingStockNegative": "Opening stock can't be negative",
+        "openingStockTooLarge": "That opening stock is too large. Check the figure.",
+        "colourInvalid": "Choose one of the badge colours",
+        "cannotDeactivate": "This coin type can't be deactivated yet"
+      }
+    },
+    "ledger": {
+      "caption": "Coin ledger for {name}",
+      "columns": {
+        "seq": "#",
+        "date": "Date",
+        "movement": "Movement",
+        "reference": "Reference",
+        "note": "Note",
+        "in": "In",
+        "out": "Out",
+        "balance": "Balance"
+      },
+      "balanceNotSortable": "Running balance always follows entry order",
+      "chips": {
+        "all": "All",
+        "issuedOut": "Issued out",
+        "returnedIn": "Returned in",
+        "orderReceipts": "Order receipts",
+        "adjustments": "Adjustments"
+      },
+      "movements": {
+        "OPENING": "Opening",
+        "ISSUE": "Issue",
+        "ISSUE_RETURN": "Issue return",
+        "ORDER_RECEIPT": "Order receipt",
+        "ADJUSTMENT_IN": "Adjustment in",
+        "ADJUSTMENT_OUT": "Adjustment out",
+        "ISSUE_CANCELLED": "Issue cancelled"
+      },
+      "reconciled": "Opening {opening} + In {coinsIn} − Out {coinsOut} = Balance {balance} coins",
+      "reconciledMeta": "Reconciled just now · {count} entries",
+      "filteredCaveat": "Showing {shown} of {total} entries — the balance above is the full-ledger balance, not the filtered one.",
+      "openingRow": "Opening balance · {date}",
+      "carriedForward": "Carried forward",
+      "closingBalance": "Closing balance",
+      "empty": {
+        "title": "This ledger is empty",
+        "body": "Nothing has moved yet. Issue coins to staff, or record a stock adjustment, and every movement will appear here with a running balance."
+      },
+      "noResults": {
+        "title": "No movements match your filters"
+      }
+    },
+    "drift": {
+      "title": "Coin balance mismatch — {name}",
+      "body": "The stored balance says {stored} coins but the ledger adds up to {ledger}. A difference of {difference} coins.",
+      "reassurance": "Nothing has been changed. Recheck the ledger before issuing more."
+    }
+  },
+  "expenseCategories": {
+    "title": "Expense Categories",
+    "subtitle": "Your own list — rename, add or switch off. Ten to start with.",
+    "addLabel": "Add category",
+    "addPlaceholder": "e.g. Borewell repair",
+    "summary": "{total} categories · {active} active",
+    "footnote": "A category is switched off, never deleted — every past expense keeps the name it was filed under.",
+    "empty": {
+      "title": "No categories yet",
+      "description": "Categories are how you'll read your spending later — Fuel, Staff salary, Electricity. Add the ones that match how you think about the business."
+    },
+    "error": {
+      "title": "Couldn't load categories",
+      "description": "The server didn't respond. Check your connection and try again."
+    },
+    "deactivate": {
+      "title": "Switch off “{name}”?",
+      "description": "It stays on every past expense, but won't appear when you add a new one. You can switch it back on any time.",
+      "confirm": "Switch off"
+    },
+    "errors": {
+      "duplicate": "A category called “{name}” already exists",
+      "nameRequired": "Enter a category name",
+      "nameTooLong": "Category name can't be longer than {max} characters"
+    },
+    "toasts": {
+      "added": "“{name}” added",
+      "renamed": "Category renamed to “{name}”",
+      "switchedOff": "“{name}” switched off",
+      "switchedOn": "“{name}” switched on"
+    }
   }
 }

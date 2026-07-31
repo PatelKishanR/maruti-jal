@@ -3,22 +3,18 @@ import type { EntityManager, EntityTarget } from "typeorm";
 import { BaseRepository } from "./base.repository";
 import { CoinIssue } from "@/lib/db/entities";
 import type { CoinIssueStatus } from "@/lib/db/entities/enums";
+import {
+  COIN_ISSUE_SORT_COLUMNS,
+  type CoinIssueSortKey,
+} from "@/lib/table/configs/coin-issue";
 
 /**
- * Public sort key → hard-coded SQL column. User input is a lookup key only,
- * never interpolated. See .claude/ARCHITECTURE.md §6.2
+ * The sort allowlist is imported, never re-declared — one map, shared by the
+ * table config and this ORDER BY. The config is client-safe (zod and types
+ * only), so this import couples nothing.
+ * See .claude/MODULE-RECIPE.md §1 and .claude/ARCHITECTURE.md §6.2
  */
-const SORTABLE = {
-  issueDate: "ci.issueDate",
-  code: "ci.issueNo",
-  staff: "s.name",
-  netPayable: "ci.netPayable",
-  outstandingAmount: "ci.outstandingAmount",
-  totalCoinsIssued: "ci.totalCoinsIssued",
-  createdAt: "ci.createdAt",
-} as const;
-
-export type CoinIssueSortKey = keyof typeof SORTABLE;
+export type { CoinIssueSortKey };
 
 export interface CoinIssueSearchParams {
   /** Free text over issue code, staff name and staff phone. */
@@ -108,7 +104,10 @@ class CoinIssueRepository extends BaseRepository<CoinIssue> {
     }
 
     const [rows, total] = await qb
-      .orderBy(SORTABLE[sortBy] ?? SORTABLE.issueDate, sortDir)
+      .orderBy(
+        COIN_ISSUE_SORT_COLUMNS[sortBy] ?? COIN_ISSUE_SORT_COLUMNS.issueDate,
+        sortDir,
+      )
       // Stable tiebreaker — without one, equal dates shuffle between pages.
       .addOrderBy("ci.issueNo", "DESC")
       // skip/take, never offset/limit: with a joined relation, LIMIT limits

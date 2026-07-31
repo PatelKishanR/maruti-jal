@@ -59,6 +59,13 @@ export interface KpiCardProps {
   zeroHint?: string;
   /** 3px destructive left border, value in Danger. §8 */
   variant?: "default" | "alert";
+  /**
+   * `"figure"` (default) — 28px mono, for amounts and counts.
+   * `"name"` — 18px Inter semibold, for cards whose value is a proper noun
+   * such as "20L Jar". A name set in tabular figures reads as a code, and
+   * Gujarati clips at 28px. DESIGN-STANDARDS §8 documents this exception.
+   */
+  valueTypography?: "figure" | "name";
   loading?: boolean;
   error?: boolean;
   onRetry?: () => void;
@@ -77,6 +84,7 @@ export function KpiCard({
   breakdown,
   zeroHint,
   variant = "default",
+  valueTypography = "figure",
   loading = false,
   error = false,
   onRetry,
@@ -116,7 +124,13 @@ export function KpiCard({
         ) : (
           <p
             className={cn(
-              "font-mono text-h2 font-bold tabular-nums",
+              // A card whose value is a NAME ("20L Jar") must not be set in
+              // 28px mono — a proper noun in tabular figures reads as a code,
+              // and Gujanati at that size clips. DESIGN-STANDARDS §8 documents
+              // this exception for the "top by volume/revenue" cards.
+              valueTypography === "name"
+                ? "text-h4 font-semibold leading-snug"
+                : "font-mono text-h2 font-bold tabular-nums",
               variant === "alert"
                 ? "text-destructive"
                 : isZero || isBlank

@@ -4,23 +4,21 @@ import { In } from "typeorm";
 import { BaseRepository } from "./base.repository";
 import { Product } from "@/lib/db/entities";
 import { NotFoundError } from "@/lib/errors";
+import {
+  PRODUCT_SORT_COLUMNS,
+  type ProductSortColumnKey,
+} from "@/lib/table/configs/product";
 
 /**
- * Public sort key → hard-coded SQL. User input is only a lookup key into this
- * map, so an injected sort parameter misses it and falls back to the default.
- * See .claude/ARCHITECTURE.md §6.2
+ * The sort allowlist is imported, never re-declared.
+ *
+ * `PRODUCT_SORT_COLUMNS` carries every key this ORDER BY can serve, including
+ * the two the URL does not expose (`sortOrder`, `code`) — the service sorts the
+ * picker by `sortOrder`. The config is client-safe (zod and types only), so
+ * this import couples nothing.
+ * See .claude/MODULE-RECIPE.md §1 and .claude/ARCHITECTURE.md §6.2
  */
-const SORT_COLUMNS = {
-  sortOrder: "p.sortOrder",
-  title: "p.title",
-  /** The identity number, not the text code — 'PRD-9' must precede 'PRD-10'. */
-  code: "p.productNo",
-  litres: "p.litres",
-  basePrice: "p.basePrice",
-  createdAt: "p.createdAt",
-} as const;
-
-export type ProductSortKey = keyof typeof SORT_COLUMNS;
+export type ProductSortKey = ProductSortColumnKey;
 
 export interface ProductSearchQuery {
   search?: string;
@@ -87,9 +85,10 @@ class ProductRepository extends BaseRepository<Product> {
     }
 
     const column =
-      SORT_COLUMNS[query.sort as ProductSortKey] ?? SORT_COLUMNS.sortOrder;
+      PRODUCT_SORT_COLUMNS[query.sort as ProductSortKey] ??
+      PRODUCT_SORT_COLUMNS.sortOrder;
     qb.orderBy(column, query.dir === "DESC" ? "DESC" : "ASC");
-    if (column !== SORT_COLUMNS.title) qb.addOrderBy("p.title", "ASC");
+    if (column !== PRODUCT_SORT_COLUMNS.title) qb.addOrderBy("p.title", "ASC");
     // Stable tiebreaker: equal-valued rows must not shuffle between pages.
     qb.addOrderBy("p.id", "ASC");
 

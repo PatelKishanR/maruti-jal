@@ -18,6 +18,7 @@ export function FormActions({
   submitLabel,
   submittingLabel,
   dirty = true,
+  alwaysEnabled = false,
   submitting = false,
   disabled = false,
   extra,
@@ -27,6 +28,13 @@ export function FormActions({
   submitLabel: string;
   submittingLabel?: string;
   dirty?: boolean;
+  /**
+   * CREATE forms pass this. Disabling the primary until a create form is
+   * dirty is wrong: pressing it is how the owner discovers WHICH fields are
+   * required. Disable-until-dirty is an EDIT-form behaviour, where it
+   * genuinely prevents a pointless no-op save. DESIGN-STANDARDS §6.5
+   */
+  alwaysEnabled?: boolean;
   submitting?: boolean;
   disabled?: boolean;
   /** e.g. "Save as draft" */
@@ -59,7 +67,7 @@ export function FormActions({
 
       <Button
         type="submit"
-        disabled={disabled || !dirty}
+        disabled={disabled || (!alwaysEnabled && !dirty)}
         loading={submitting}
         loadingText={submittingLabel ?? t("saving")}
       >

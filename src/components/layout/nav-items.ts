@@ -55,10 +55,10 @@ export const navGroups: NavGroup[] = [
   {
     labelKey: "masters",
     items: [
-      { key: "staff", href: "/staff", icon: Users, ready: false },
-      { key: "products", href: "/products", icon: Package, ready: false },
-      { key: "coinTypes", href: "/coins/types", icon: Coins, ready: false },
-      { key: "expenseCategories", href: "/expenses/categories", icon: Tags, ready: false },
+      { key: "staff", href: "/staff", icon: Users, ready: true },
+      { key: "products", href: "/products", icon: Package, ready: true },
+      { key: "coinTypes", href: "/coins/types", icon: Coins, ready: true },
+      { key: "expenseCategories", href: "/expenses/categories", icon: Tags, ready: true },
     ],
   },
   {

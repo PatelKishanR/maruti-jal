@@ -2,21 +2,18 @@ import "server-only";
 import type { EntityManager, EntityTarget } from "typeorm";
 import { BaseRepository } from "./base.repository";
 import { DirectSale } from "@/lib/db/entities";
+import {
+  DIRECT_SALE_SORT_COLUMNS,
+  type DirectSaleSortKey,
+} from "@/lib/table/configs/direct-sale";
 
 /**
- * Public sort key → hard-coded SQL. User input is only a lookup key into this
- * map. See .claude/ARCHITECTURE.md §6.2
+ * The sort allowlist is imported, never re-declared — one map, shared by the
+ * table config and this ORDER BY. The config is client-safe (zod and types
+ * only), so this import couples nothing.
+ * See .claude/MODULE-RECIPE.md §1 and .claude/ARCHITECTURE.md §6.2
  */
-const SORT_COLUMNS = {
-  saleDate: "ds.saleDate",
-  soldAt: "ds.soldAt",
-  /** The identity number, not the text code — 'DWS-9' must precede 'DWS-10'. */
-  code: "ds.saleNo",
-  amount: "ds.amount",
-  customerName: "ds.customerName",
-} as const;
-
-export type DirectSaleSortKey = keyof typeof SORT_COLUMNS;
+export type { DirectSaleSortKey };
 
 export interface DirectSaleSearchQuery {
   search?: string;
@@ -78,7 +75,8 @@ class DirectSaleRepository extends BaseRepository<DirectSale> {
     }
 
     const column =
-      SORT_COLUMNS[query.sort as DirectSaleSortKey] ?? SORT_COLUMNS.saleDate;
+      DIRECT_SALE_SORT_COLUMNS[query.sort as DirectSaleSortKey] ??
+      DIRECT_SALE_SORT_COLUMNS.saleDate;
     qb.orderBy(column, query.dir === "ASC" ? "ASC" : "DESC");
     // Stable tiebreaker — a busy day produces dozens of rows on one date.
     qb.addOrderBy("ds.saleNo", "DESC");
