@@ -28,8 +28,17 @@ import { getDataSource } from "@/lib/db/data-source";
  *
  * See .claude/ARCHITECTURE.md §4
  */
-/** Every entity in this schema has a uuid primary key named `id`. */
-type HasId = ObjectLiteral & { id: string };
+/**
+ * Every entity in this schema has a primary key named `id`.
+ *
+ * It is a uuid on every business table (DATA-MODEL D-1). The two exceptions
+ * are the high-volume append-only logs — `audit_logs` and `document_revisions`
+ * — which use a `bigint` identity so new rows append to the end of the index
+ * instead of scattering random uuids through it. Hence `string | number`;
+ * methods below take `T["id"]`, so each repository still gets exactly one
+ * concrete key type. See .claude/DATA-MODEL.md §5.20, §5.21
+ */
+type HasId = ObjectLiteral & { id: string | number };
 
 export abstract class BaseRepository<T extends HasId> {
   protected abstract readonly target: EntityTarget<T>;
@@ -51,7 +60,7 @@ export abstract class BaseRepository<T extends HasId> {
     return repo.createQueryBuilder(this.alias);
   }
 
-  async findById(id: string, em?: EntityManager): Promise<T | null> {
+  async findById(id: T["id"], em?: EntityManager): Promise<T | null> {
     const repo = await this.repo(em);
     return repo.findOne({ where: { id } as unknown as FindOptionsWhere<T> });
   }
@@ -100,7 +109,7 @@ export abstract class BaseRepository<T extends HasId> {
 
   /** Partial update by id. Does not run entity subscribers — use save() when they matter. */
   async updateById(
-    id: string,
+    id: T["id"],
     data: Parameters<Repository<T>["update"]>[1],
     em?: EntityManager,
   ): Promise<void> {
@@ -109,12 +118,12 @@ export abstract class BaseRepository<T extends HasId> {
   }
 
   /** Soft delete — nothing transactional is ever hard-deleted. */
-  async softDeleteById(id: string, em?: EntityManager): Promise<void> {
+  async softDeleteById(id: T["id"], em?: EntityManager): Promise<void> {
     const repo = await this.repo(em);
     await repo.softDelete({ id } as unknown as FindOptionsWhere<T>);
   }
 
-  async restoreById(id: string, em?: EntityManager): Promise<void> {
+  async restoreById(id: T["id"], em?: EntityManager): Promise<void> {
     const repo = await this.repo(em);
     await repo.restore({ id } as unknown as FindOptionsWhere<T>);
   }
@@ -127,7 +136,7 @@ export abstract class BaseRepository<T extends HasId> {
    * grandparent — or you get intermittent deadlocks that are miserable to
    * reproduce. See .claude/ARCHITECTURE.md §4.2
    */
-  async findByIdForUpdate(id: string, em: EntityManager): Promise<T | null> {
+  async findByIdForUpdate(id: T["id"], em: EntityManager): Promise<T | null> {
     return em
       .getRepository(this.target)
       .createQueryBuilder(this.alias)
