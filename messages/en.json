@@ -917,5 +917,442 @@
       "switchedOff": "“{name}” switched off",
       "switchedOn": "“{name}” switched on"
     }
+  },
+  "directSales": {
+    "title": "Direct Sales",
+    "subtitle": "Walk-in customers who fill their own cans and pay cash",
+    "kpi": {
+      "walkIns": "Walk-ins today",
+      "walkInsUp": "{count} more than yesterday",
+      "walkInsDown": "{count} fewer than yesterday",
+      "walkInsFlat": "Same as yesterday",
+      "walkInsZero": "No walk-ins yet today",
+      "collected": "Collected today",
+      "vsYesterday": "vs yesterday",
+      "collectedZero": "Nothing collected yet",
+      "month": "This month",
+      "monthBreakdown": "{count, plural, one {# sale} other {# sales}} since {date}",
+      "monthZero": "Nothing this month yet",
+      "average": "Average sale",
+      "averageBreakdown": "across {count} today",
+      "averageZero": "No sales to average yet"
+    },
+    "columns": {
+      "code": "Code",
+      "time": "Time",
+      "date": "Date",
+      "customer": "Customer",
+      "phone": "Phone",
+      "litres": "Litres",
+      "amount": "Amount",
+      "status": "Status",
+      "actions": "Actions"
+    },
+    "chips": {
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "week": "This week",
+      "month": "This month",
+      "all": "All"
+    },
+    "band": {
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "continued": "(continued)",
+      "sales": "{count, plural, one {# sale} other {# sales}}",
+      "voided": "{count} voided"
+    },
+    "list": {
+      "searchPlaceholder": "Search customer name or phone…",
+      "empty": {
+        "title": "No walk-in sales yet",
+        "body": "Someone drives up with their own cans, fills them, pays cash and leaves. Type a name and an amount in the row above and press Enter — that's the whole job.",
+        "cta": "Record the first sale"
+      },
+      "emptyToday": {
+        "title": "Nothing yet today",
+        "body": "Today's total will build up here as you record sales. Yesterday you took {amount} from {count, plural, one {# walk-in} other {# walk-ins}}.",
+        "cta": "See yesterday"
+      },
+      "noResults": {
+        "title": "No walk-ins match your filters",
+        "bodyQuery": "Nothing matches “{query}” in {window}.",
+        "bodyFilters": "Nothing was recorded in {window}."
+      },
+      "error": {
+        "title": "Couldn't load walk-in sales",
+        "body": "The server didn't respond. Check your connection and try again.",
+        "cta": "Try again"
+      }
+    },
+    "entry": {
+      "new": "New",
+      "namePlaceholder": "Customer name",
+      "amountPlaceholder": "Amount",
+      "submit": "Add sale",
+      "saving": "Adding…",
+      "addDetails": "Add details",
+      "detailsTooltip": "Add details (⌘D)",
+      "backdated": "Recording for {date} · not today",
+      "backToToday": "Back to today",
+      "phone": "Phone",
+      "phonePlaceholder": "e.g. 9825014477",
+      "address": "Address",
+      "addressPlaceholder": "e.g. Nr. Kalupur Gate, Ahmedabad",
+      "litres": "Litres",
+      "litresPlaceholder": "0",
+      "product": "Product",
+      "productSearch": "Search products…",
+      "productEmpty": "No products match that",
+      "saleDate": "Sale date",
+      "note": "Note",
+      "optional": "Optional",
+      "retry": "Retry",
+      "discard": "Discard",
+      "saveFailed": "Couldn't save this sale",
+      "saveFailedShort": "Not saved"
+    },
+    "badges": {
+      "cash": "Cash",
+      "voided": "Voided",
+      "repeat": "{count, selectordinal, one {#st visit} two {#nd visit} few {#rd visit} other {#th visit}}"
+    },
+    "filters": {
+      "from": "From",
+      "to": "To",
+      "min": "Min",
+      "max": "Max",
+      "showVoided": "Show voided sales"
+    },
+    "actions": {
+      "menuLabel": "More actions for {code}",
+      "view": "View",
+      "edit": "Edit",
+      "editBlocked": "Only today's entries can be edited",
+      "editVoided": "A voided sale can't be edited",
+      "void": "Void sale",
+      "unvoid": "Unvoid",
+      "unvoidBlocked": "A voided sale can't be brought back. Record it again instead."
+    },
+    "toasts": {
+      "recorded": "Sale recorded — {amount} from {name}",
+      "voided": "{code} voided"
+    },
+    "detail": {
+      "visit": "{count, selectordinal, one {#st visit} two {#nd visit} few {#rd visit} other {#th visit}}",
+      "someone": "someone",
+      "voidedBanner": "This sale was voided on {date} by {name}.",
+      "voidedReason": "Reason: “{reason}”",
+      "notFound": {
+        "title": "That sale doesn't exist",
+        "body": "It may have been removed. Go back to the list to find what you're looking for.",
+        "cta": "Back to direct sales"
+      }
+    },
+    "summary": {
+      "amount": "Amount paid",
+      "amountContext": "cash, in full",
+      "litres": "Litres filled",
+      "product": "Product",
+      "perLitre": "{amount} per litre",
+      "amountOnly": "Amount only — nothing was recorded about what was filled",
+      "noProduct": "No product recorded",
+      "recorded": "Recorded",
+      "recordedBy": "by {name}"
+    },
+    "customer": {
+      "title": "Customer",
+      "name": "Name",
+      "phone": "Phone",
+      "address": "Address",
+      "note": "Note"
+    },
+    "others": {
+      "title": "This customer's other walk-ins",
+      "matchedPhone": "matched on {phone}",
+      "matchedName": "matched on the name “{name}”",
+      "firstVisit": {
+        "title": "First visit",
+        "body": "Nothing else has been recorded for this customer."
+      },
+      "unmatchable": {
+        "title": "Can't match earlier visits",
+        "body": "This sale has no phone number, so only exact name matches can be found — and there are none."
+      },
+      "earlier": "{count, plural, one {# earlier visit} other {# earlier visits}}"
+    },
+    "void": {
+      "title": "Void {code}?",
+      "consequence": "This stays in the list, struck through, and drops out of every total. It can't be undone.",
+      "amountOnly": "Amount only",
+      "reasonLabel": "Reason",
+      "reasonPlaceholder": "e.g. Customer paid by mistake, refunded at the counter",
+      "reasonHelper": "Everyone who opens this sale will see this",
+      "impactToday": "Today's total drops from <from></from> to <to></to>",
+      "impactDay": "The total for {date} drops from <from></from> to <to></to>",
+      "submit": "Void sale",
+      "submitting": "Voiding…",
+      "failed": "Couldn't void this sale. The server didn't respond and nothing has changed. Try again.",
+      "alreadyVoided": "This sale is already voided.",
+      "alreadyVoidedAt": "This sale is already voided — it was voided at {time}."
+    },
+    "errors": {
+      "nameRequired": "Enter a customer name",
+      "nameTooLong": "The customer name can't be longer than 120 characters",
+      "amountRequired": "Enter the amount collected",
+      "amountInvalid": "Enter an amount like 120 or 120.50",
+      "amountPositive": "Amount must be more than ₹0",
+      "amountTooLarge": "That amount is too large. Check the figure.",
+      "litresInvalid": "Enter litres like 40 or 0.5",
+      "litresNegative": "Litres can't be negative",
+      "litresTooLarge": "Litres can't be more than 9,999.999",
+      "saleDateInvalid": "Enter a date like 14 Aug 2026",
+      "saleDateFuture": "A sale can't be dated in the future",
+      "saleDateNotToday": "Same-day entries only — you can't move a sale to another date",
+      "phoneLength": "Enter a 10-digit mobile number",
+      "addressTooLong": "The address can't be longer than 500 characters",
+      "noteTooLong": "The note can't be longer than 500 characters",
+      "productInvalid": "Choose a product from the list",
+      "voidReasonRequired": "Say why this sale is being voided",
+      "voidReasonShort": "Add a few more words — this is the only record of why",
+      "voidReasonTooLong": "The reason can't be longer than 500 characters",
+      "voidedNotEditable": "This sale was voided while you were editing. Your changes can't be saved.",
+      "editWindowClosed": "This sale can no longer be edited. The day has rolled over — void it and record it again if it's wrong.",
+      "alreadyVoided": "This sale is already voided."
+    }
+  },
+  "expenses": {
+    "title": "Expenses",
+    "subtitle": "What the business paid out, and what's left after income",
+    "backToList": "Expenses",
+    "noPayee": "an unnamed payee",
+    "searchPlaceholder": "Search paid to, note, expense no…",
+    "viewReceipt": "View receipt",
+    "viewReceiptFor": "View the receipt for {code}",
+    "actions": {
+      "add": "Add expense"
+    },
+    "chips": {
+      "all": "All"
+    },
+    "columns": {
+      "code": "Expense",
+      "date": "Date",
+      "category": "Category",
+      "paidTo": "Paid to",
+      "amount": "Amount",
+      "mode": "Mode",
+      "attachment": "Attachment",
+      "actions": "Actions"
+    },
+    "dates": {
+      "today": "Today",
+      "yesterday": "Yesterday"
+    },
+    "paymentModes": {
+      "CASH": "Cash",
+      "UPI": "UPI",
+      "BANK_TRANSFER": "Bank transfer",
+      "CHEQUE": "Cheque"
+    },
+    "activity": {
+      "created": "Expense created",
+      "deleted": "Expense deleted"
+    },
+    "kpi": {
+      "thisMonth": "This month's expenses",
+      "expenseCount": "{count} expenses",
+      "nothingThisMonth": "Nothing recorded in {month}",
+      "biggestCategory": "Biggest category",
+      "categoryShare": "{amount} · {percent}%",
+      "noSpendYet": "Nothing spent yet",
+      "vsLastMonth": "Vs last month",
+      "vsMonth": "vs {month}",
+      "moreThan": "{amount} more than {month}",
+      "lessThan": "{amount} less than {month}",
+      "noPreviousMonth": "Nothing was recorded in {month}",
+      "sameAsLastMonth": "Same as {month}",
+      "profit": "This month's profit",
+      "profitBreakdown": "Income {income} − Expenses {expenses}",
+      "profitPending": "Income figures unavailable"
+    },
+    "total": {
+      "month": "{month} total",
+      "filtered": "{category} in {month} total",
+      "filteredGeneric": "Filtered total for {month}"
+    },
+    "empty": {
+      "noData": {
+        "title": "No expenses recorded yet",
+        "body": "Diesel, salary, electricity, repairs — record what goes out and the dashboard can show real profit instead of just turnover.",
+        "action": "Add expense"
+      },
+      "noMonth": {
+        "title": "Nothing recorded in {month}",
+        "body": "Try another month, or add the first expense for this one.",
+        "viewPrevious": "View {month}"
+      },
+      "noResults": {
+        "title": "No expenses match your filters",
+        "body": "Nothing matches the filters above. Try widening them."
+      }
+    },
+    "error": {
+      "listTitle": "Couldn't load expenses",
+      "listBody": "The server didn't respond. Nothing has been changed."
+    },
+    "filters": {
+      "month": "Month",
+      "category": "Category",
+      "anyCategory": "Any category",
+      "mode": "Payment mode",
+      "anyMode": "Any mode",
+      "staff": "Linked staff",
+      "anyStaff": "Any staff",
+      "receipt": "Receipt",
+      "receiptAny": "Any",
+      "receiptWith": "With receipt",
+      "receiptWithout": "Without receipt",
+      "dateRange": "Date range",
+      "amountRange": "Amount range",
+      "amountMin": "Min",
+      "amountMax": "Max"
+    },
+    "rowActions": {
+      "menu": "More actions for {code}",
+      "view": "View",
+      "edit": "Edit",
+      "downloadReceipt": "Download receipt",
+      "delete": "Delete"
+    },
+    "delete": {
+      "title": "Delete {code}?",
+      "body": "{amount} to {paidTo} on {date} will be removed from this month's profit. It stays in the records and can be restored.",
+      "confirm": "Delete expense"
+    },
+    "discard": {
+      "title": "Discard this expense?",
+      "body": "{amount} for {paidTo}, and any attached receipt, will be lost.",
+      "confirm": "Discard",
+      "noAmount": "This expense"
+    },
+    "toast": {
+      "saved": "Expense of {amount} recorded",
+      "savedWithReceipt": "Expense of {amount} recorded with receipt",
+      "deleted": "{code} deleted — {amount}",
+      "undo": "Undo",
+      "restored": "{code} restored",
+      "actionFailed": "That didn't work. Nothing has been changed."
+    },
+    "create": {
+      "title": "Add expense",
+      "subtitle": "Record one payment out — diesel, salary, electricity, repairs"
+    },
+    "edit": {
+      "title": "Edit {code}",
+      "subtitle": "Recorded for {date}. Changes are kept in the activity log."
+    },
+    "detail": {
+      "backToExpenses": "Back to expenses",
+      "notFoundTitle": "That expense doesn't exist",
+      "notFoundBody": "It may have been deleted. Go back to the list to find what you're looking for.",
+      "errorTitle": "Couldn't load this expense",
+      "errorBody": "The server didn't respond. Nothing has been changed.",
+      "deletedBanner": "Deleted on {date}. This expense no longer counts towards profit.",
+      "restore": "Restore",
+      "recordedOn": "Recorded on {date}",
+      "downloadReceipt": "Download receipt",
+      "summary": {
+        "amount": "Amount",
+        "category": "Category",
+        "paymentMode": "Payment mode",
+        "staff": "Linked staff"
+      },
+      "note": "Note",
+      "noNote": "No note was added",
+      "activity": "Activity",
+      "activityPending": "Field-level history isn't recorded yet, so only the entries above are shown.",
+      "receipt": "Receipt",
+      "viewFullSize": "View full size",
+      "download": "Download",
+      "noReceiptTitle": "No receipt attached",
+      "noReceiptBody": "Add a photo of the bill so you can check it later.",
+      "addReceipt": "Add receipt"
+    },
+    "form": {
+      "amountLabel": "Amount",
+      "dateLabel": "Date",
+      "categoryLabel": "Category",
+      "categoryPlaceholder": "Choose a category",
+      "noCategories": "No categories yet",
+      "categoryInactiveSuffix": " · inactive",
+      "categoryInactiveHint": "This category is no longer active. Leave it, or pick another.",
+      "addCategory": "Add category",
+      "addCategoryTitle": "Add category",
+      "addCategoryConfirm": "Add category",
+      "categoryNameLabel": "Category name",
+      "categoryNamePlaceholder": "e.g. Borewell repair",
+      "categoryAdded": "“{name}” added",
+      "paymentModeLabel": "Payment mode",
+      "paidToLabel": "Paid to",
+      "paidToPlaceholder": "e.g. Shakti Petroleum",
+      "paidToHint": "Vendor or person. Any script",
+      "staffLabel": "Linked staff",
+      "staffHint": "For salary, advances, reimbursements",
+      "staffSelectedHint": "This will appear on {name}'s cost summary",
+      "noStaff": "No linked staff",
+      "noteLabel": "Note",
+      "notePlaceholder": "e.g. Tempo diesel, 42 litres, Sector 7 route",
+      "submitCreate": "Save expense",
+      "submitEdit": "Save changes",
+      "couldNotSave": "This expense couldn't be saved",
+      "monthImpact": "{code} is in {month}. Changing the amount or date will change that month's profit figure."
+    },
+    "receipt": {
+      "label": "Receipt",
+      "hint": "Optional. A photo of the bill makes it easy to check later.",
+      "dropToAttach": "Drop to attach",
+      "empty": {
+        "title": "Drop the bill photo here, or click to choose",
+        "hint": "JPG, PNG or PDF · up to 5 MB"
+      },
+      "uploading": "Uploading… {percent}%",
+      "attached": "uploaded",
+      "view": "View",
+      "replace": "Replace",
+      "retry": "Retry",
+      "remove": "Remove receipt",
+      "removed": "Receipt removed",
+      "undo": "Undo",
+      "errors": {
+        "tooLarge": "That file is {size}. Receipts must be under 5 MB — try photographing it again at a lower quality.",
+        "heic": ".heic files can't be read. Save it as JPG or PNG and try again.",
+        "wrongType": "{extension} files can't be attached. Use JPG, PNG or PDF.",
+        "uploadFailed": "Upload failed. Your expense hasn't been saved yet, so nothing is lost.",
+        "offline": "You're offline. The receipt will need to be attached again once you're back on.",
+        "storageNotConfigured": "Receipt storage isn't set up yet. Save the expense and attach the bill afterwards."
+      }
+    },
+    "errors": {
+      "amountRequired": "Enter an amount",
+      "amountInvalid": "Enter an amount like 4850 or 4850.50",
+      "amountPositive": "Amount must be more than ₹0.00",
+      "amountTooLarge": "That amount is too large. Check the figure.",
+      "amountDecimals": "An amount can have at most two decimal places",
+      "dateRequired": "Choose a date",
+      "dateFuture": "The date can't be in the future",
+      "categoryRequired": "Choose a category",
+      "categoryMissing": "That category no longer exists. Pick another.",
+      "categoryRetired": "That category has been switched off. Pick another.",
+      "paymentModeRequired": "Choose a payment mode",
+      "paidToTooLong": "Paid to can't be longer than 120 characters",
+      "noteTooLong": "The note can't be longer than 500 characters",
+      "staffInvalid": "Choose a staff member from the list",
+      "staffMissing": "That staff member no longer exists. Pick another.",
+      "staffInactive": "That staff member is no longer active. Pick another.",
+      "receiptUrlTooLong": "That receipt link is too long",
+      "nothingToUpdate": "Nothing has been changed",
+      "couldNotSave": "This expense couldn't be saved"
+    }
   }
 }

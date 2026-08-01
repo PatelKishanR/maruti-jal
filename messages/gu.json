@@ -917,5 +917,442 @@
       "switchedOff": "“{name}” બંધ કર્યું",
       "switchedOn": "“{name}” ચાલુ કર્યું"
     }
+  },
+  "directSales": {
+    "title": "સીધું વેચાણ",
+    "subtitle": "ગ્રાહકો પોતાના કેન ભરાવે છે અને રોકડ ચૂકવે છે",
+    "kpi": {
+      "walkIns": "આજના વોક-ઇન",
+      "walkInsUp": "ગઈકાલ કરતાં {count} વધુ",
+      "walkInsDown": "ગઈકાલ કરતાં {count} ઓછા",
+      "walkInsFlat": "ગઈકાલ જેટલા જ",
+      "walkInsZero": "આજે હજી કોઈ વોક-ઇન નથી",
+      "collected": "આજની વસૂલી",
+      "vsYesterday": "ગઈકાલની સરખામણીએ",
+      "collectedZero": "હજી કંઈ વસૂલ થયું નથી",
+      "month": "આ મહિને",
+      "monthBreakdown": "{date} થી {count} વેચાણ",
+      "monthZero": "આ મહિને હજી કંઈ નથી",
+      "average": "સરેરાશ વેચાણ",
+      "averageBreakdown": "આજના {count} પરથી",
+      "averageZero": "સરેરાશ કાઢવા માટે હજી વેચાણ નથી"
+    },
+    "columns": {
+      "code": "કોડ",
+      "time": "સમય",
+      "date": "તારીખ",
+      "customer": "ગ્રાહક",
+      "phone": "ફોન",
+      "litres": "લિટર",
+      "amount": "રકમ",
+      "status": "સ્થિતિ",
+      "actions": "ક્રિયાઓ"
+    },
+    "chips": {
+      "today": "આજે",
+      "yesterday": "ગઈકાલે",
+      "week": "આ અઠવાડિયે",
+      "month": "આ મહિને",
+      "all": "બધા"
+    },
+    "band": {
+      "today": "આજે",
+      "yesterday": "ગઈકાલે",
+      "continued": "(ચાલુ)",
+      "sales": "{count} વેચાણ",
+      "voided": "{count} રદ"
+    },
+    "list": {
+      "searchPlaceholder": "ગ્રાહકનું નામ કે ફોન શોધો…",
+      "empty": {
+        "title": "હજી કોઈ વોક-ઇન વેચાણ નથી",
+        "body": "ગ્રાહક પોતાના કેન લઈને આવે છે, ભરાવે છે, રોકડ ચૂકવે છે અને જાય છે. ઉપરની હરોળમાં નામ અને રકમ લખો અને Enter દબાવો — બસ આટલું જ.",
+        "cta": "પહેલું વેચાણ નોંધો"
+      },
+      "emptyToday": {
+        "title": "આજે હજી કંઈ નથી",
+        "body": "તમે વેચાણ નોંધતા જશો તેમ આજનું કુલ અહીં બનતું જશે. ગઈકાલે {count} વોક-ઇનમાંથી {amount} મળ્યા હતા.",
+        "cta": "ગઈકાલનું જુઓ"
+      },
+      "noResults": {
+        "title": "તમારા ફિલ્ટર સાથે કોઈ વોક-ઇન મળ્યું નહીં",
+        "bodyQuery": "{window} માં “{query}” સાથે કંઈ મેળ ખાતું નથી.",
+        "bodyFilters": "{window} માં કંઈ નોંધાયું નથી."
+      },
+      "error": {
+        "title": "વોક-ઇન વેચાણ લોડ થઈ શક્યું નહીં",
+        "body": "સર્વરે જવાબ આપ્યો નહીં. તમારું કનેક્શન તપાસો અને ફરી પ્રયાસ કરો.",
+        "cta": "ફરી પ્રયાસ કરો"
+      }
+    },
+    "entry": {
+      "new": "નવું",
+      "namePlaceholder": "ગ્રાહકનું નામ",
+      "amountPlaceholder": "રકમ",
+      "submit": "વેચાણ ઉમેરો",
+      "saving": "ઉમેરાઈ રહ્યું છે…",
+      "addDetails": "વિગતો ઉમેરો",
+      "detailsTooltip": "વિગતો ઉમેરો (⌘D)",
+      "backdated": "{date} માટે નોંધાઈ રહ્યું છે · આજની તારીખ નથી",
+      "backToToday": "આજની તારીખ પર",
+      "phone": "ફોન",
+      "phonePlaceholder": "દા.ત. 9825014477",
+      "address": "સરનામું",
+      "addressPlaceholder": "દા.ત. કાલુપુર ગેટ પાસે, અમદાવાદ",
+      "litres": "લિટર",
+      "litresPlaceholder": "0",
+      "product": "પ્રોડક્ટ",
+      "productSearch": "પ્રોડક્ટ શોધો…",
+      "productEmpty": "તેની સાથે કોઈ પ્રોડક્ટ મેળ ખાતી નથી",
+      "saleDate": "વેચાણ તારીખ",
+      "note": "નોંધ",
+      "optional": "વૈકલ્પિક",
+      "retry": "ફરી પ્રયાસ",
+      "discard": "કાઢી નાખો",
+      "saveFailed": "આ વેચાણ સાચવી શકાયું નહીં",
+      "saveFailedShort": "સચવાયું નથી"
+    },
+    "badges": {
+      "cash": "રોકડ",
+      "voided": "રદ કરેલ",
+      "repeat": "{count}મી મુલાકાત"
+    },
+    "filters": {
+      "from": "થી",
+      "to": "સુધી",
+      "min": "ન્યૂનતમ",
+      "max": "મહત્તમ",
+      "showVoided": "રદ કરેલાં વેચાણ બતાવો"
+    },
+    "actions": {
+      "menuLabel": "{code} માટે વધુ ક્રિયાઓ",
+      "view": "જુઓ",
+      "edit": "ફેરફાર કરો",
+      "editBlocked": "ફક્ત આજની નોંધમાં જ ફેરફાર થઈ શકે",
+      "editVoided": "રદ કરેલા વેચાણમાં ફેરફાર થઈ શકતો નથી",
+      "void": "વેચાણ રદ કરો",
+      "unvoid": "રદ પાછું લો",
+      "unvoidBlocked": "રદ કરેલું વેચાણ પાછું લાવી શકાતું નથી. તેના બદલે ફરી નોંધો."
+    },
+    "toasts": {
+      "recorded": "વેચાણ નોંધાયું — {name} પાસેથી {amount}",
+      "voided": "{code} રદ કર્યું"
+    },
+    "detail": {
+      "visit": "{count}મી મુલાકાત",
+      "someone": "કોઈએ",
+      "voidedBanner": "આ વેચાણ {date} ના રોજ {name} દ્વારા રદ કરાયું હતું.",
+      "voidedReason": "કારણ: “{reason}”",
+      "notFound": {
+        "title": "તે વેચાણ અસ્તિત્વમાં નથી",
+        "body": "કદાચ તે કાઢી નાખવામાં આવ્યું છે. તમે જે શોધો છો તે યાદીમાં પાછા જઈને જુઓ.",
+        "cta": "સીધા વેચાણ પર પાછા"
+      }
+    },
+    "summary": {
+      "amount": "ચૂકવેલી રકમ",
+      "amountContext": "રોકડ, પૂરેપૂરી",
+      "litres": "ભરેલા લિટર",
+      "product": "પ્રોડક્ટ",
+      "perLitre": "લિટર દીઠ {amount}",
+      "amountOnly": "ફક્ત રકમ — શું ભરાયું તે વિશે કંઈ નોંધાયું નથી",
+      "noProduct": "કોઈ પ્રોડક્ટ નોંધાઈ નથી",
+      "recorded": "નોંધાયું",
+      "recordedBy": "{name} દ્વારા"
+    },
+    "customer": {
+      "title": "ગ્રાહક",
+      "name": "નામ",
+      "phone": "ફોન",
+      "address": "સરનામું",
+      "note": "નોંધ"
+    },
+    "others": {
+      "title": "આ ગ્રાહકનાં બીજાં વોક-ઇન",
+      "matchedPhone": "{phone} પરથી મેળવ્યું",
+      "matchedName": "“{name}” નામ પરથી મેળવ્યું",
+      "firstVisit": {
+        "title": "પહેલી મુલાકાત",
+        "body": "આ ગ્રાહક માટે બીજું કંઈ નોંધાયું નથી."
+      },
+      "unmatchable": {
+        "title": "જૂની મુલાકાતો મેળવી શકાતી નથી",
+        "body": "આ વેચાણમાં ફોન નંબર નથી, એટલે ફક્ત નામ બરાબર મળે તો જ મળી શકે — અને એવું કંઈ નથી."
+      },
+      "earlier": "{count} જૂની મુલાકાત"
+    },
+    "void": {
+      "title": "{code} રદ કરવું છે?",
+      "consequence": "તે યાદીમાં જ રહેશે, લીટી મારેલું, અને દરેક કુલમાંથી બહાર નીકળી જશે. આ પાછું વાળી શકાતું નથી.",
+      "amountOnly": "ફક્ત રકમ",
+      "reasonLabel": "કારણ",
+      "reasonPlaceholder": "દા.ત. ગ્રાહકે ભૂલથી ચૂકવ્યું, કાઉન્ટર પર પાછું આપ્યું",
+      "reasonHelper": "આ વેચાણ ખોલનાર દરેકને આ દેખાશે",
+      "impactToday": "આજનું કુલ <from></from> થી ઘટીને <to></to> થશે",
+      "impactDay": "{date} નું કુલ <from></from> થી ઘટીને <to></to> થશે",
+      "submit": "વેચાણ રદ કરો",
+      "submitting": "રદ થઈ રહ્યું છે…",
+      "failed": "આ વેચાણ રદ થઈ શક્યું નહીં. સર્વરે જવાબ આપ્યો નહીં અને કંઈ બદલાયું નથી. ફરી પ્રયાસ કરો.",
+      "alreadyVoided": "આ વેચાણ પહેલેથી રદ થયેલું છે.",
+      "alreadyVoidedAt": "આ વેચાણ પહેલેથી રદ થયેલું છે — {time} વાગ્યે રદ કરાયું હતું."
+    },
+    "errors": {
+      "nameRequired": "ગ્રાહકનું નામ દાખલ કરો",
+      "nameTooLong": "ગ્રાહકનું નામ 120 અક્ષરથી લાંબું ન હોઈ શકે",
+      "amountRequired": "વસૂલ કરેલી રકમ દાખલ કરો",
+      "amountInvalid": "120 કે 120.50 જેવી રકમ દાખલ કરો",
+      "amountPositive": "રકમ ₹0 થી વધુ હોવી જોઈએ",
+      "amountTooLarge": "આ રકમ ઘણી મોટી છે. આંકડો તપાસો.",
+      "litresInvalid": "40 કે 0.5 જેવા લિટર દાખલ કરો",
+      "litresNegative": "લિટર ઋણ ન હોઈ શકે",
+      "litresTooLarge": "લિટર 9,999.999 થી વધુ ન હોઈ શકે",
+      "saleDateInvalid": "14 Aug 2026 જેવી તારીખ દાખલ કરો",
+      "saleDateFuture": "વેચાણની તારીખ ભવિષ્યની ન હોઈ શકે",
+      "saleDateNotToday": "ફક્ત આજની નોંધ — વેચાણને બીજી તારીખે ખસેડી શકાતું નથી",
+      "phoneLength": "10 આંકડાનો મોબાઇલ નંબર દાખલ કરો",
+      "addressTooLong": "સરનામું 500 અક્ષરથી લાંબું ન હોઈ શકે",
+      "noteTooLong": "નોંધ 500 અક્ષરથી લાંબી ન હોઈ શકે",
+      "productInvalid": "યાદીમાંથી પ્રોડક્ટ પસંદ કરો",
+      "voidReasonRequired": "આ વેચાણ કેમ રદ થાય છે તે લખો",
+      "voidReasonShort": "થોડા વધુ શબ્દો ઉમેરો — કારણનો આ એકમાત્ર રેકોર્ડ છે",
+      "voidReasonTooLong": "કારણ 500 અક્ષરથી લાંબું ન હોઈ શકે",
+      "voidedNotEditable": "તમે ફેરફાર કરતા હતા ત્યારે આ વેચાણ રદ થઈ ગયું. તમારા ફેરફારો સાચવી શકાતા નથી.",
+      "editWindowClosed": "આ વેચાણમાં હવે ફેરફાર થઈ શકતો નથી. દિવસ બદલાઈ ગયો છે — ખોટું હોય તો રદ કરીને ફરી નોંધો.",
+      "alreadyVoided": "આ વેચાણ પહેલેથી રદ થયેલું છે."
+    }
+  },
+  "expenses": {
+    "title": "ખર્ચ",
+    "subtitle": "ધંધાએ શું ચૂકવ્યું, અને આવક પછી શું બચ્યું",
+    "backToList": "ખર્ચ",
+    "noPayee": "નામ વગરના લેનાર",
+    "searchPlaceholder": "કોને ચૂકવ્યું, નોંધ કે ખર્ચ નંબર શોધો…",
+    "viewReceipt": "રસીદ જુઓ",
+    "viewReceiptFor": "{code} ની રસીદ જુઓ",
+    "actions": {
+      "add": "ખર્ચ ઉમેરો"
+    },
+    "chips": {
+      "all": "બધા"
+    },
+    "columns": {
+      "code": "ખર્ચ",
+      "date": "તારીખ",
+      "category": "શ્રેણી",
+      "paidTo": "કોને ચૂકવ્યું",
+      "amount": "રકમ",
+      "mode": "પ્રકાર",
+      "attachment": "જોડાણ",
+      "actions": "ક્રિયાઓ"
+    },
+    "dates": {
+      "today": "આજે",
+      "yesterday": "ગઈકાલે"
+    },
+    "paymentModes": {
+      "CASH": "રોકડ",
+      "UPI": "UPI",
+      "BANK_TRANSFER": "બેંક ટ્રાન્સફર",
+      "CHEQUE": "ચેક"
+    },
+    "activity": {
+      "created": "ખર્ચ નોંધાયો",
+      "deleted": "ખર્ચ કાઢી નાખ્યો"
+    },
+    "kpi": {
+      "thisMonth": "આ મહિનાનો ખર્ચ",
+      "expenseCount": "{count} ખર્ચ",
+      "nothingThisMonth": "{month} માં કંઈ નોંધાયું નથી",
+      "biggestCategory": "સૌથી મોટી શ્રેણી",
+      "categoryShare": "{amount} · {percent}%",
+      "noSpendYet": "હજી કંઈ ખર્ચાયું નથી",
+      "vsLastMonth": "ગયા મહિનાની સરખામણીએ",
+      "vsMonth": "{month} ની સરખામણીએ",
+      "moreThan": "{month} કરતાં {amount} વધુ",
+      "lessThan": "{month} કરતાં {amount} ઓછા",
+      "noPreviousMonth": "{month} માં કંઈ નોંધાયું ન હતું",
+      "sameAsLastMonth": "{month} જેટલો જ",
+      "profit": "આ મહિનાનો નફો",
+      "profitBreakdown": "આવક {income} − ખર્ચ {expenses}",
+      "profitPending": "આવકના આંકડા ઉપલબ્ધ નથી"
+    },
+    "total": {
+      "month": "{month} નું કુલ",
+      "filtered": "{month} માં {category} નું કુલ",
+      "filteredGeneric": "{month} નું ફિલ્ટર કરેલું કુલ"
+    },
+    "empty": {
+      "noData": {
+        "title": "હજી કોઈ ખર્ચ નોંધાયો નથી",
+        "body": "ડીઝલ, પગાર, વીજળી, સમારકામ — જે બહાર જાય તે નોંધો, પછી ડેશબોર્ડ ફક્ત ઉથલો નહીં પણ સાચો નફો બતાવી શકશે.",
+        "action": "ખર્ચ ઉમેરો"
+      },
+      "noMonth": {
+        "title": "{month} માં કંઈ નોંધાયું નથી",
+        "body": "બીજો મહિનો જુઓ, અથવા આ મહિનાનો પહેલો ખર્ચ ઉમેરો.",
+        "viewPrevious": "{month} જુઓ"
+      },
+      "noResults": {
+        "title": "તમારા ફિલ્ટર સાથે કોઈ ખર્ચ મળ્યો નહીં",
+        "body": "ઉપરના ફિલ્ટર સાથે કંઈ મેળ ખાતું નથી. ફિલ્ટર પહોળા કરો."
+      }
+    },
+    "error": {
+      "listTitle": "ખર્ચ લોડ થઈ શક્યા નહીં",
+      "listBody": "સર્વરે જવાબ આપ્યો નહીં. કંઈ બદલાયું નથી."
+    },
+    "filters": {
+      "month": "મહિનો",
+      "category": "શ્રેણી",
+      "anyCategory": "કોઈ પણ શ્રેણી",
+      "mode": "ચુકવણી પ્રકાર",
+      "anyMode": "કોઈ પણ પ્રકાર",
+      "staff": "જોડાયેલ સ્ટાફ",
+      "anyStaff": "કોઈ પણ સ્ટાફ",
+      "receipt": "રસીદ",
+      "receiptAny": "કોઈ પણ",
+      "receiptWith": "રસીદ સાથે",
+      "receiptWithout": "રસીદ વગર",
+      "dateRange": "તારીખ શ્રેણી",
+      "amountRange": "રકમ શ્રેણી",
+      "amountMin": "ન્યૂનતમ",
+      "amountMax": "મહત્તમ"
+    },
+    "rowActions": {
+      "menu": "{code} માટે વધુ ક્રિયાઓ",
+      "view": "જુઓ",
+      "edit": "ફેરફાર કરો",
+      "downloadReceipt": "રસીદ ડાઉનલોડ કરો",
+      "delete": "કાઢી નાખો"
+    },
+    "delete": {
+      "title": "{code} કાઢી નાખવો છે?",
+      "body": "{date} ના રોજ {paidTo} ને ચૂકવેલા {amount} આ મહિનાના નફામાંથી નીકળી જશે. રેકોર્ડમાં તે રહેશે અને પાછો લાવી શકાશે.",
+      "confirm": "ખર્ચ કાઢી નાખો"
+    },
+    "discard": {
+      "title": "આ ખર્ચ પડતો મૂકવો છે?",
+      "body": "{paidTo} માટેના {amount}, અને જોડેલી રસીદ, જતાં રહેશે.",
+      "confirm": "પડતું મૂકો",
+      "noAmount": "આ ખર્ચ"
+    },
+    "toast": {
+      "saved": "{amount} નો ખર્ચ નોંધાયો",
+      "savedWithReceipt": "{amount} નો ખર્ચ રસીદ સાથે નોંધાયો",
+      "deleted": "{code} કાઢી નાખ્યો — {amount}",
+      "undo": "પાછું લો",
+      "restored": "{code} પાછો લાવ્યો",
+      "actionFailed": "તે થઈ શક્યું નહીં. કંઈ બદલાયું નથી."
+    },
+    "create": {
+      "title": "ખર્ચ ઉમેરો",
+      "subtitle": "એક ચુકવણી નોંધો — ડીઝલ, પગાર, વીજળી, સમારકામ"
+    },
+    "edit": {
+      "title": "{code} માં ફેરફાર",
+      "subtitle": "{date} માટે નોંધાયેલો. ફેરફારો પ્રવૃત્તિ લોગમાં રહે છે."
+    },
+    "detail": {
+      "backToExpenses": "ખર્ચ પર પાછા",
+      "notFoundTitle": "તે ખર્ચ અસ્તિત્વમાં નથી",
+      "notFoundBody": "કદાચ તે કાઢી નાખવામાં આવ્યો છે. તમે જે શોધો છો તે યાદીમાં પાછા જઈને જુઓ.",
+      "errorTitle": "આ ખર્ચ લોડ થઈ શક્યો નહીં",
+      "errorBody": "સર્વરે જવાબ આપ્યો નહીં. કંઈ બદલાયું નથી.",
+      "deletedBanner": "{date} ના રોજ કાઢી નાખ્યો. આ ખર્ચ હવે નફામાં ગણાતો નથી.",
+      "restore": "પાછો લાવો",
+      "recordedOn": "{date} ના રોજ નોંધાયો",
+      "downloadReceipt": "રસીદ ડાઉનલોડ કરો",
+      "summary": {
+        "amount": "રકમ",
+        "category": "શ્રેણી",
+        "paymentMode": "ચુકવણી પ્રકાર",
+        "staff": "જોડાયેલ સ્ટાફ"
+      },
+      "note": "નોંધ",
+      "noNote": "કોઈ નોંધ ઉમેરાઈ નથી",
+      "activity": "પ્રવૃત્તિ",
+      "activityPending": "ક્ષેત્ર-સ્તરનો ઇતિહાસ હજી નોંધાતો નથી, એટલે ફક્ત ઉપરની નોંધો જ દેખાય છે.",
+      "receipt": "રસીદ",
+      "viewFullSize": "પૂરા કદમાં જુઓ",
+      "download": "ડાઉનલોડ કરો",
+      "noReceiptTitle": "કોઈ રસીદ જોડેલી નથી",
+      "noReceiptBody": "બિલનો ફોટો ઉમેરો, જેથી પછીથી તપાસી શકાય.",
+      "addReceipt": "રસીદ ઉમેરો"
+    },
+    "form": {
+      "amountLabel": "રકમ",
+      "dateLabel": "તારીખ",
+      "categoryLabel": "શ્રેણી",
+      "categoryPlaceholder": "શ્રેણી પસંદ કરો",
+      "noCategories": "હજી કોઈ શ્રેણી નથી",
+      "categoryInactiveSuffix": " · નિષ્ક્રિય",
+      "categoryInactiveHint": "આ શ્રેણી હવે સક્રિય નથી. તેને રહેવા દો, અથવા બીજી પસંદ કરો.",
+      "addCategory": "શ્રેણી ઉમેરો",
+      "addCategoryTitle": "શ્રેણી ઉમેરો",
+      "addCategoryConfirm": "શ્રેણી ઉમેરો",
+      "categoryNameLabel": "શ્રેણીનું નામ",
+      "categoryNamePlaceholder": "દા.ત. બોરવેલ સમારકામ",
+      "categoryAdded": "“{name}” ઉમેરાયું",
+      "paymentModeLabel": "ચુકવણી પ્રકાર",
+      "paidToLabel": "કોને ચૂકવ્યું",
+      "paidToPlaceholder": "દા.ત. શક્તિ પેટ્રોલિયમ",
+      "paidToHint": "વેપારી કે વ્યક્તિ. કોઈ પણ લિપિ",
+      "staffLabel": "જોડાયેલ સ્ટાફ",
+      "staffHint": "પગાર, પેશગી, ખર્ચ પરત માટે",
+      "staffSelectedHint": "આ {name} ના ખર્ચ સારાંશમાં દેખાશે",
+      "noStaff": "કોઈ સ્ટાફ જોડ્યો નથી",
+      "noteLabel": "નોંધ",
+      "notePlaceholder": "દા.ત. ટેમ્પો ડીઝલ, 42 લિટર, સેક્ટર 7 રૂટ",
+      "submitCreate": "ખર્ચ સાચવો",
+      "submitEdit": "ફેરફારો સાચવો",
+      "couldNotSave": "આ ખર્ચ સાચવી શકાયો નહીં",
+      "monthImpact": "{code} {month} માં છે. રકમ કે તારીખ બદલશો તો તે મહિનાનો નફો બદલાશે."
+    },
+    "receipt": {
+      "label": "રસીદ",
+      "hint": "વૈકલ્પિક. બિલનો ફોટો હોય તો પછીથી તપાસવું સહેલું રહે છે.",
+      "dropToAttach": "જોડવા માટે અહીં મૂકો",
+      "empty": {
+        "title": "બિલનો ફોટો અહીં મૂકો, અથવા પસંદ કરવા ક્લિક કરો",
+        "hint": "JPG, PNG કે PDF · 5 MB સુધી"
+      },
+      "uploading": "અપલોડ થઈ રહ્યું છે… {percent}%",
+      "attached": "અપલોડ થયું",
+      "view": "જુઓ",
+      "replace": "બદલો",
+      "retry": "ફરી પ્રયાસ",
+      "remove": "રસીદ દૂર કરો",
+      "removed": "રસીદ દૂર કરી",
+      "undo": "પાછું લો",
+      "errors": {
+        "tooLarge": "આ ફાઇલ {size} છે. રસીદ 5 MB થી ઓછી હોવી જોઈએ — ઓછી ગુણવત્તાએ ફરી ફોટો પાડો.",
+        "heic": ".heic ફાઇલ વાંચી શકાતી નથી. તેને JPG કે PNG તરીકે સાચવીને ફરી પ્રયાસ કરો.",
+        "wrongType": "{extension} ફાઇલ જોડી શકાતી નથી. JPG, PNG કે PDF વાપરો.",
+        "uploadFailed": "અપલોડ થઈ શક્યું નહીં. તમારો ખર્ચ હજી સચવાયો નથી, એટલે કંઈ ગુમાવ્યું નથી.",
+        "offline": "તમે ઑફલાઇન છો. ફરી ઑનલાઇન થાઓ ત્યારે રસીદ ફરીથી જોડવી પડશે.",
+        "storageNotConfigured": "રસીદ સંગ્રહ હજી ગોઠવાયો નથી. ખર્ચ સાચવો અને બિલ પછીથી જોડો."
+      }
+    },
+    "errors": {
+      "amountRequired": "રકમ દાખલ કરો",
+      "amountInvalid": "4850 કે 4850.50 જેવી રકમ દાખલ કરો",
+      "amountPositive": "રકમ ₹0.00 થી વધુ હોવી જોઈએ",
+      "amountTooLarge": "આ રકમ ઘણી મોટી છે. આંકડો તપાસો.",
+      "amountDecimals": "રકમમાં વધુમાં વધુ બે દશાંશ સ્થાન હોઈ શકે",
+      "dateRequired": "તારીખ પસંદ કરો",
+      "dateFuture": "તારીખ ભવિષ્યની ન હોઈ શકે",
+      "categoryRequired": "શ્રેણી પસંદ કરો",
+      "categoryMissing": "તે શ્રેણી હવે અસ્તિત્વમાં નથી. બીજી પસંદ કરો.",
+      "categoryRetired": "તે શ્રેણી બંધ કરેલી છે. બીજી પસંદ કરો.",
+      "paymentModeRequired": "ચુકવણી પ્રકાર પસંદ કરો",
+      "paidToTooLong": "કોને ચૂકવ્યું તે 120 અક્ષરથી લાંબું ન હોઈ શકે",
+      "noteTooLong": "નોંધ 500 અક્ષરથી લાંબી ન હોઈ શકે",
+      "staffInvalid": "યાદીમાંથી સ્ટાફ પસંદ કરો",
+      "staffMissing": "તે સ્ટાફ હવે અસ્તિત્વમાં નથી. બીજો પસંદ કરો.",
+      "staffInactive": "તે સ્ટાફ હવે સક્રિય નથી. બીજો પસંદ કરો.",
+      "receiptUrlTooLong": "તે રસીદ લિંક ઘણી લાંબી છે",
+      "nothingToUpdate": "કંઈ બદલાયું નથી",
+      "couldNotSave": "આ ખર્ચ સાચવી શકાયો નહીં"
+    }
   }
 }
