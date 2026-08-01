@@ -1,4 +1,6 @@
 import {
+  Calendar,
+  CalendarPlus,
   BarChart3,
   Inbox,
   SearchX,
@@ -48,6 +50,8 @@ export const APP_ICONS = {
   coin: Coins,
   ledger: BookOpen,
   party: PartyPopper,
+  calendar: Calendar,
+  calendarAdd: CalendarPlus,
   directSale: Droplet,
   expense: Receipt,
   payment: Banknote,

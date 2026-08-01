@@ -40,6 +40,52 @@ class CoinTypeRepository extends BaseRepository<CoinType> {
   protected readonly target: EntityTarget<CoinType> = CoinType;
   protected readonly alias = "ct";
 
+  /**
+   * `v_coin_balance_drift` — the view whose job is to return NO rows.
+   *
+   * Three independent statements of the same number must agree: the cached
+   * `coin_types.balance_coins`, the sum of every `coins_delta`, and the running
+   * balance the ledger itself recorded. The view returns one row per coin type
+   * where they do not, and a single row is a Sev-1 — which is why the banner it
+   * drives is non-dismissible. See .claude/DATA-MODEL.md §8.3 and design §13
+   *
+   * A raw query because a VIEW is not an entity and never will be: it has no
+   * primary key, nothing writes to it, and mapping it onto `CoinType` would
+   * imply it could be saved. Repositories are the only layer allowed to speak
+   * SQL, and this is the whole of it — no user input reaches the statement.
+   */
+  async findBalanceDrift(em?: EntityManager): Promise<
+    Array<{
+      coinTypeId: string;
+      coinTypeName: string;
+      balanceCoins: number;
+      ledgerSum: number;
+      latestBalanceAfter: number;
+      entryCount: number;
+    }>
+  > {
+    const repository = await this.repo(em);
+    const rows = await repository.query(
+      `SELECT coin_type_id,
+              coin_type_name,
+              balance_coins,
+              ledger_sum,
+              latest_balance_after,
+              entry_count
+         FROM v_coin_balance_drift
+        ORDER BY coin_type_name ASC`,
+    );
+
+    return (rows as Array<Record<string, string | number>>).map((row) => ({
+      coinTypeId: String(row.coin_type_id),
+      coinTypeName: String(row.coin_type_name),
+      balanceCoins: Number(row.balance_coins),
+      ledgerSum: Number(row.ledger_sum),
+      latestBalanceAfter: Number(row.latest_balance_after),
+      entryCount: Number(row.entry_count),
+    }));
+  }
+
   /** The picker list on the issue form — active types only, alphabetical. */
   async findActive(em?: EntityManager): Promise<CoinType[]> {
     const qb = await this.qb(em);

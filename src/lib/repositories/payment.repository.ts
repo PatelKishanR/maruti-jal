@@ -114,6 +114,24 @@ class PaymentRepository extends BaseRepository<Payment> {
       .getExists();
   }
 
+  /**
+   * The row a retry lands on.
+   *
+   * `existsByClientRequestId` answers "has this been seen?"; this answers "what
+   * did it produce?", which is what an idempotent write actually needs — a
+   * second tap after a timeout should return the ORIGINAL result, not a
+   * conflict the owner has to interpret. See .claude/DATA-MODEL.md §10.11
+   */
+  async findByClientRequestId(
+    clientRequestId: string,
+    em?: EntityManager,
+  ): Promise<Payment | null> {
+    const qb = await this.qb(em);
+    return qb
+      .where("p.clientRequestId = :clientRequestId", { clientRequestId })
+      .getOne();
+  }
+
   /* ── Append-only guards ────────────────────────────────────────────────
      Zero-parameter overrides, so calling one is a COMPILE error rather than a
      runtime surprise. Insert new payments with create(). ------------------ */

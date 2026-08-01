@@ -111,6 +111,34 @@ export function formatDate(iso: string, locale: Locale): string {
 }
 
 /**
+ * `Fri` — the localised short weekday, `શુક્ર` in Gujarati.
+ *
+ * A party schedule reads as `14 Aug 2026 · Fri`, and the calendar header is
+ * seven of these. It lives here rather than in the components that need it for
+ * the same reason every other formatter does: nothing outside `lib/dates.ts`
+ * and `lib/money.ts` calls `Intl` directly. The `Date` built here is UTC
+ * midnight of a business date and is only ever formatted in UTC, so it cannot
+ * shift a day.
+ */
+export function formatWeekday(iso: string, locale: Locale): string {
+  if (!isBusinessDate(iso)) return "—";
+  return new Intl.DateTimeFormat(intlLocale(locale), {
+    weekday: "short",
+    timeZone: "UTC",
+  }).format(new Date(`${iso}T00:00:00Z`));
+}
+
+/** `August 2026` — the calendar's month heading. Latin digits in both languages. */
+export function formatMonth(iso: string, locale: Locale): string {
+  if (!isBusinessDate(iso)) return "—";
+  return new Intl.DateTimeFormat(intlLocale(locale), {
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(`${iso}T00:00:00Z`));
+}
+
+/**
  * `Today` / `Yesterday`, else the full date.
  *
  * Worth the branch: most rows the owner looks at are from the last two days,

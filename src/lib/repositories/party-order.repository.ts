@@ -227,6 +227,61 @@ class PartyOrderRepository extends BaseRepository<PartyOrder> {
    * conversion, at the boundary, once.
    * See .claude/ARCHITECTURE.md §9.1
    */
+  /** `ACTIVE PARTIES` — how many bookings are in any of these states. */
+  async countByStatus(
+    statuses: readonly PartyOrderStatus[],
+    em?: EntityManager,
+  ): Promise<number> {
+    if (statuses.length === 0) return 0;
+    const qb = await this.qb(em);
+    return qb
+      .where("po.deletedAt IS NULL")
+      .andWhere("po.status IN (:...statuses)", { statuses })
+      .getCount();
+  }
+
+  /**
+   * `2 start this week`.
+   *
+   * STARTING in the window, not overlapping it — an event that began last
+   * Tuesday and runs to Friday has already started, and counting it under "what
+   * is coming up" is how a KPI stops being trusted. Cancelled bookings are not
+   * starting anything.
+   */
+  async countStartingBetween(
+    from: string,
+    to: string,
+    em?: EntityManager,
+  ): Promise<number> {
+    const qb = await this.qb(em);
+    return qb
+      .where("po.deletedAt IS NULL")
+      .andWhere("po.status <> :cancelled", { cancelled: "CANCELLED" })
+      .andWhere("po.firstServiceDate BETWEEN :from AND :to", { from, to })
+      .getCount();
+  }
+
+  /** The booking picker — "add a day to which booking?". */
+  async findActive(search: string | undefined, em?: EntityManager): Promise<PartyOrder[]> {
+    const qb = await this.qb(em);
+    qb.where("po.deletedAt IS NULL").andWhere(
+      "po.status NOT IN (:...closed)",
+      { closed: ["CANCELLED", "COMPLETED"] },
+    );
+
+    if (search?.trim()) {
+      qb.andWhere("(po.searchBlob ILIKE :like OR po.code ILIKE :like)", {
+        like: `%${search.trim()}%`,
+      });
+    }
+
+    return qb
+      .orderBy("po.firstServiceDate", "ASC")
+      .addOrderBy("po.partyNo", "DESC")
+      .take(50)
+      .getMany();
+  }
+
   async sumOutstanding(em?: EntityManager): Promise<PartyOutstandingTotals> {
     const qb = await this.qb(em);
     const row = await qb

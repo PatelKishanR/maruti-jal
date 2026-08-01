@@ -47,8 +47,8 @@ export const navGroups: NavGroup[] = [
     labelKey: "operations",
     items: [
       { key: "deliveryOrders", href: "/orders", icon: ClipboardList, ready: false },
-      { key: "coinIssues", href: "/coins/issues", icon: Coins, ready: false },
-      { key: "partyOrders", href: "/party-orders", icon: PartyPopper, ready: false },
+      { key: "coinIssues", href: "/coins/issues", icon: Coins, ready: true },
+      { key: "partyOrders", href: "/party-orders", icon: PartyPopper, ready: true },
       { key: "directSales", href: "/direct-sales", icon: Droplet, ready: true },
     ],
   },
@@ -72,7 +72,9 @@ export const navGroups: NavGroup[] = [
     labelKey: "insights",
     items: [
       { key: "reports", href: "/reports", icon: FileBarChart, ready: false },
-      { key: "coinLedger", href: "/coins/ledger", icon: BookOpen, ready: false },
+      /* The coin ledger is a tab on each coin type, not a standalone route —
+         a top-level link here would 404. Stock adjustments is the real page. */
+      { key: "coinAdjustments", href: "/coins/adjustments", icon: BookOpen, ready: true },
     ],
   },
 ];

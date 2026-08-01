@@ -21,6 +21,27 @@ class PartyOrderItemRepository extends BaseRepository<PartyOrderItem> {
       .orderBy("i.lineNo", "ASC")
       .getMany();
   }
+
+  /**
+   * Clears a day's lines so they can be re-inserted.
+   *
+   * A HARD delete, and the exception proves the rule: line items extend
+   * `LineItemBase` and have no `deleted_at`, because they are children of the
+   * party-order aggregate rather than independently owned rows — removing a
+   * line is recorded as a revision on the booking, not as a tombstone.
+   * The snapshot columns are immutable, so "change what is on this day" is
+   * always delete-then-insert. See .claude/DATA-MODEL.md §4, §6
+   *
+   * One statement rather than one per line: `(day, line_no)` is a plain unique
+   * index, so every old line must be gone before the new line 1 arrives.
+   */
+  async deleteByDayId(
+    partyOrderDayId: string,
+    em?: EntityManager,
+  ): Promise<void> {
+    const repo = await this.repo(em);
+    await repo.delete({ partyOrderDayId });
+  }
 }
 
 export const partyOrderItemRepository = new PartyOrderItemRepository();

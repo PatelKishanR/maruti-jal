@@ -217,7 +217,8 @@
     "accountSettings": "ખાતા સેટિંગ્સ",
     "toggleSidebar": "સાઇડબાર બદલો",
     "toggleTheme": "થીમ બદલો",
-    "language": "ભાષા"
+    "language": "ભાષા",
+    "coinAdjustments": "સ્ટોક ગોઠવણ"
   },
   "dashboard": {
     "title": "ડેશબોર્ડ",
@@ -883,7 +884,927 @@
     "drift": {
       "title": "સિક્કાની સિલક મેળ ખાતી નથી — {name}",
       "body": "સંગ્રહેલી સિલક {stored} સિક્કા કહે છે પણ ખાતાવહીનો સરવાળો {ledger} થાય છે. {difference} સિક્કાનો ફરક છે.",
-      "reassurance": "કંઈ બદલાયું નથી. વધુ સિક્કા આપતાં પહેલાં ખાતાવહી ફરી તપાસો."
+      "reassurance": "કંઈ બદલાયું નથી. વધુ સિક્કા આપતાં પહેલાં ખાતાવહી ફરી તપાસો.",
+      "titleMany": "સિક્કાની સિલક મેળ ખાતી નથી — {count} સિક્કા પ્રકાર",
+      "line": "{name}: સંગ્રહેલી {stored}, ખાતાવહી {ledger} ({difference} સિક્કા)",
+      "openLedger": "ખાતાવહી ખોલો"
+    },
+    "issues": {
+      "title": "સિક્કા ઇશ્યૂ",
+      "subtitle": "સ્ટાફને આપેલા સિક્કા, શું પરત આવ્યું, અને શું બાકી છે",
+      "new": "સિક્કા ઇશ્યૂ કરો",
+      "searchPlaceholder": "ઇશ્યૂ નંબર, સ્ટાફનું નામ, ફોન શોધો…",
+      "coinsCount": "{coins} સિક્કા",
+      "coinTypeCount": "{count} સિક્કા પ્રકાર",
+      "refundTooltip": "{staff} એ ચૂકવવાપાત્ર રકમ કરતાં વધુ ચૂકવ્યું છે. તમારે તેને આ રકમ આપવાની છે.",
+      "columns": {
+        "expand": "ખોલો",
+        "expandRow": "{code} નું સિક્કા વિભાજન બતાવો",
+        "issue": "ઇશ્યૂ",
+        "date": "તારીખ",
+        "staff": "સ્ટાફ",
+        "issued": "આપેલા",
+        "returned": "પરત",
+        "netPayable": "ચોખ્ખું ચૂકવવાપાત્ર",
+        "collected": "વસૂલી",
+        "pending": "બાકી",
+        "status": "સ્થિતિ",
+        "actions": "ક્રિયાઓ"
+      },
+      "chips": {
+        "pending": "બાકી",
+        "partial": "આંશિક",
+        "settled": "પતાવટ થઈ",
+        "refundDue": "રિફંડ બાકી"
+      },
+      "badges": {
+        "rounding": "રાઉન્ડિંગ"
+      },
+      "modes": {
+        "CASH": "રોકડ",
+        "UPI": "UPI",
+        "BANK_TRANSFER": "બેંક ટ્રાન્સફર",
+        "WRITE_OFF": "માંડવાળ",
+        "COIN": "સિક્કા"
+      },
+      "breakdown": {
+        "coinType": "સિક્કા પ્રકાર",
+        "packets": "પેકેટ",
+        "coins": "સિક્કા",
+        "rate": "દર",
+        "issuedValue": "આપેલી કિંમત",
+        "returned": "પરત",
+        "net": "ચોખ્ખું",
+        "total": "કુલ",
+        "empty": "આ ઇશ્યૂ પર કોઈ સિક્કા લાઇન નથી.",
+        "paymentLine": "વસૂલી {collected} · બાકી {pending}"
+      },
+      "kpi": {
+        "openIssues": "ખુલ્લા ઇશ્યૂ",
+        "openIssuesBreakdown": "{total} ઇશ્યૂ માંથી",
+        "nothingOpen": "કંઈ ખુલ્લું નથી",
+        "coinsOut": "સિક્કા બહાર",
+        "coinsOutBreakdown": "{staff} સ્ટાફ પાસે",
+        "nothingOut": "સ્ટાફ પાસે કંઈ નથી",
+        "pending": "બાકી",
+        "nothingPending": "વસૂલવાનું કંઈ નથી",
+        "refundsDue": "રિફંડ બાકી",
+        "refundsDueBreakdown": "{staff} સ્ટાફ સભ્યો",
+        "noRefunds": "કોઈ રિફંડ બાકી નથી"
+      },
+      "empty": {
+        "title": "હજી કોઈ સિક્કા ઇશ્યૂ નથી",
+        "body": "જ્યારે તમે સ્ટાફના સભ્યને વેચવા માટે સિક્કાના પેકેટ આપો, ત્યારે અહીં નોંધો. તમને દેખાશે કે કેટલી રકમ ચૂકવવાપાત્ર છે, શું પરત આવ્યું, અને શું હજી બાકી છે."
+      },
+      "noResults": {
+        "title": "તમારા ફિલ્ટર સાથે કોઈ ઇશ્યૂ મેળ ખાતા નથી"
+      },
+      "error": {
+        "title": "સિક્કા ઇશ્યૂ લોડ કરી શકાયા નહીં",
+        "body": "સર્વરે જવાબ આપ્યો નહીં. કંઈ બદલાયું નથી.",
+        "cta": "ફરી પ્રયાસ કરો"
+      },
+      "actions": {
+        "rowMenu": "{code} માટે ક્રિયાઓ",
+        "recordPayment": "ચુકવણી નોંધો",
+        "recordRefund": "રિફંડ {amount} નોંધો",
+        "recordReturn": "પરત નોંધો",
+        "settleDifference": "તફાવત {amount} પતાવો",
+        "openIssue": "ઇશ્યૂ ખોલો",
+        "cancelIssue": "ઇશ્યૂ રદ કરો",
+        "settle": {
+          "title": "{code} પર {amount} માંડવાળ કરવી?",
+          "body": "રાઉન્ડિંગને કારણે {amount} બાકી રહી છે. તેની માંડવાળ કરવાથી ઇશ્યૂ બંધ થાય છે અને તેની સામે {amount} ની માંડવાળ નોંધાય છે. આ પાછું ફેરવી શકાતું નથી.",
+          "confirm": "{amount} માંડવાળ કરો",
+          "success": "{amount} માંડવાળ થઈ — {code} ની હવે પતાવટ થઈ"
+        },
+        "cancel": {
+          "title": "ઇશ્યૂ {code} રદ કરવો?",
+          "body": "{coins} સિક્કા સ્ટોકમાં પાછા જશે અને {staff} ની {payable} ની જવાબદારી પૂરી થશે. પહેલેથી ચૂકવાયેલા {collected} ને અડકવામાં આવતું નથી — રિફંડ અલગથી નોંધો. આ પાછું ફેરવી શકાતું નથી.",
+          "confirm": "ઇશ્યૂ રદ કરો",
+          "success": "{code} રદ થયો — સિક્કા સ્ટોકમાં પાછા આવ્યા"
+        }
+      },
+      "form": {
+        "back": "સિક્કા ઇશ્યૂ",
+        "title": "સિક્કા ઇશ્યૂ કરો",
+        "subtitle": "સ્ટાફ સભ્યને પેકેટ આપો અને હવે તેમના પર કેટલું બાકી છે તે નોંધો",
+        "sections": {
+          "details": "ઇશ્યૂ વિગતો",
+          "coins": "સિક્કા",
+          "payment": "ઇશ્યૂ સમયે ચુકવણી"
+        },
+        "staff": "સ્ટાફ",
+        "staffPlaceholder": "નામ કે ફોનથી સ્ટાફ શોધો…",
+        "staffEmpty": "કોઈ સ્ટાફ મળ્યો નથી",
+        "staffOwes": "{staff} પર હાલ {issues} ખુલ્લા ઇશ્યૂ પર {amount} બાકી છે",
+        "staffOwedByUs": "તમારે {staff} ને {amount} આપવાના છે",
+        "staffClear": "{staff} પર કંઈ બાકી નથી",
+        "issueDate": "ઇશ્યૂ તારીખ",
+        "note": "નોંધ",
+        "notePlaceholder": "દા.ત. સાંજનો રૂટ, સેક્ટર 7",
+        "columns": {
+          "coinType": "સિક્કા પ્રકાર",
+          "packets": "પેકેટ",
+          "coins": "સિક્કા",
+          "perCoin": "એક સિક્કાનો દર",
+          "amount": "રકમ",
+          "inStock": "સ્ટોકમાં"
+        },
+        "coinTypePlaceholder": "સિક્કા પ્રકાર પસંદ કરો",
+        "alreadyAdded": "· પહેલેથી ઉમેરેલ",
+        "removeLine": "આ સિક્કા પ્રકાર કાઢી નાખો",
+        "addLine": "સિક્કા પ્રકાર ઉમેરો",
+        "stockInline": "સ્ટોકમાં ફક્ત {available} {name} છે ({packets} પેકેટ + {coins}).",
+        "stockHint": "એક લાઇનમાં સ્ટોકમાં છે તેના કરતાં વધુ સિક્કા માંગ્યા છે. સાચવશો ત્યારે બરાબર કેટલા ઉપલબ્ધ છે તે જણાવવામાં આવશે.",
+        "breakdownEmpty": "વિગતવાર ગણતરી જોવા સિક્કા પ્રકાર ઉમેરો",
+        "breakdownLine": "{packets} પેકેટ × {perPacket} = {coins} સિક્કા × {rate} = {amount}",
+        "breakdownTotal": "કુલ",
+        "unevenRate": "{name} નો એક સિક્કાનો દર {rate} છે. લાઇનની રકમ 2 દશાંશ સુધી ગોળ થાય છે, તેથી કુલમાં થોડા પૈસાનો ફરક આવી શકે.",
+        "paidNow": "અત્યારે ચૂકવેલી રકમ",
+        "mode": "ચુકવણી પ્રકાર",
+        "payFull": "પૂરા {amount}",
+        "payNothing": "અત્યારે કંઈ નહીં",
+        "settlementLine": "કુલ ચૂકવવાપાત્ર {total} · અત્યારે ચૂકવ્યા {paid} · બાકી રકમ {balance}",
+        "overpayWarning": "અત્યારે ચૂકવેલી રકમ ({paid}) કુલ ચૂકવવાપાત્ર ({total}) કરતાં વધુ છે. સાચવવાથી {staff} ને {extra} રિફંડ બાકી થશે.",
+        "formErrorTitle": "આ ઇશ્યૂ સાચવી શકાયો નહીં",
+        "submit": "સિક્કા ઇશ્યૂ કરો",
+        "submitting": "ઇશ્યૂ થઈ રહ્યું છે…",
+        "createdToast": "{code} ઇશ્યૂ થયો — {staff} ને {coins} સિક્કા, {amount} હજી બાકી",
+        "discardTitle": "આ ઇશ્યૂ રદ કરવો છે?",
+        "discardBody": "{lines} સિક્કા લાઇન અને {amount} ની ચુકવણી જતી રહેશે.",
+        "discardConfirm": "રદ કરો",
+        "noCoinTypes": {
+          "title": "હજી કોઈ સિક્કા પ્રકાર નથી",
+          "body": "સિક્કા ઇશ્યૂ કરતાં પહેલાં ઓછામાં ઓછો એક સિક્કા પ્રકાર જોઈએ. પહેલાં તેની પેકેટ સાઇઝ અને પેકેટ રકમ નક્કી કરો.",
+          "cta": "સિક્કા પ્રકાર ઉમેરો"
+        }
+      },
+      "errors": {
+        "staffRequired": "સ્ટાફ સભ્ય પસંદ કરો",
+        "staffInactive": "આ સ્ટાફ સભ્ય હવે સક્રિય નથી.",
+        "coinTypeRequired": "સિક્કા પ્રકાર પસંદ કરો",
+        "coinTypeInactive": "{coinTypeName} હવે સક્રિય નથી. આ લાઇન કાઢી નાખો અથવા સિક્કા પ્રકાર ફરી સક્રિય કરો.",
+        "duplicateCoinType": "આ સિક્કા પ્રકાર ઇશ્યૂમાં પહેલેથી ઉમેરેલો છે",
+        "atLeastOneLine": "ઓછામાં ઓછો એક સિક્કા પ્રકાર ઉમેરો",
+        "tooManyLines": "એક ઇશ્યૂમાં વધુમાં વધુ 50 સિક્કા પ્રકાર રાખી શકાય",
+        "packetsRequired": "કેટલા પેકેટ છે તે દાખલ કરો",
+        "packetsPositive": "પેકેટ 0 થી વધુ હોવા જોઈએ",
+        "wholePacketsOnly": "ફક્ત આખા પેકેટ",
+        "packetsTooLarge": "પ્લાન્ટમાં હોય તેના કરતાં આ પેકેટ વધુ છે",
+        "coinsRequired": "કેટલા સિક્કા પરત આવે છે તે દાખલ કરો",
+        "coinsNegative": "સિક્કા 0 થી ઓછા ન હોઈ શકે",
+        "wholeCoinsOnly": "ફક્ત આખા સિક્કા",
+        "coinsTooLarge": "પ્લાન્ટમાં હોય તેના કરતાં આ સિક્કા વધુ છે",
+        "amountRequired": "રકમ દાખલ કરો",
+        "amountPositive": "રકમ ₹0.00 થી વધુ હોવી જોઈએ",
+        "amountNegative": "રકમ 0 થી ઓછી ન હોઈ શકે",
+        "amountPaise": "રકમ પૈસા સુધી જ લખી શકાય, તેથી આગળ નહીં",
+        "amountTooLarge": "આ રકમ ઘણી મોટી છે",
+        "modeRequired": "ચુકવણી પ્રકાર પસંદ કરો",
+        "referenceTooLong": "આ રેફરન્સ ઘણો લાંબો છે",
+        "noteTooLong": "આ નોંધ ઘણી લાંબી છે",
+        "issueDateFuture": "ઇશ્યૂ તારીખ ભવિષ્યની ન હોઈ શકે",
+        "returnDateFuture": "પરત તારીખ ભવિષ્યની ન હોઈ શકે",
+        "paymentDateFuture": "તારીખ ભવિષ્યની ન હોઈ શકે",
+        "returnBeforeIssue": "પરત તારીખ ઇશ્યૂ તારીખ ({issueDate}) પહેલાંની ન હોઈ શકે.",
+        "returnNothing": "કેટલા સિક્કા પરત આવે છે તે દાખલ કરો",
+        "returnAllZero": "દરેક લાઇન 0 છે. ઓછામાં ઓછા એક સિક્કા પ્રકાર પર જથ્થો દાખલ કરો.",
+        "overReturn": "આ ઇશ્યૂમાં ફક્ત {remainingCoins} {coinTypeName} બહાર બાકી છે. {remainingCoins} અથવા તેથી ઓછા દાખલ કરો.",
+        "insufficientStock": "સ્ટોકમાં ફક્ત {availableCoins} {coinTypeName} છે. જથ્થો ઘટાડો અથવા પહેલાં સ્ટોક ઉમેરો.",
+        "stockChanged": "તમે આ ભરી રહ્યા હતા ત્યારે {coinTypeName} નો સ્ટોક બદલાયો — હવે ફક્ત {availableCoins} બાકી છે. તમારી એન્ટ્રી સુરક્ષિત છે. પેકેટ અપડેટ કરીને ફરી પ્રયાસ કરો.",
+        "refundExceeds": "આ ઇશ્યૂ પર તમે વધુમાં વધુ {maxAmount} રિફંડ કરી શકો છો.",
+        "nothingToRefund": "આ ઇશ્યૂ પર રિફંડ કરવા જેવું કંઈ નથી.",
+        "nothingToSettle": "આ ઇશ્યૂ પર કંઈ બાકી નથી.",
+        "tooLargeToWriteOff": "{outstandingAmount} એ ખરેખરી બાકી રકમ છે, રાઉન્ડિંગ નથી. તેને માંડવાળ કરવાને બદલે વસૂલ કરો અથવા રિફંડ કરો.",
+        "cancelledNoChanges": "{code} રદ કરેલ છે. તેની સામે હવે કંઈ નોંધી શકાશે નહીં.",
+        "stockChangedUnknown": "તમે ભરતા હતા ત્યારે સિક્કાનો સ્ટોક બદલાયો અને હવે પૂરતા સિક્કા નથી. તમારી એન્ટ્રી સલામત છે — વર્તમાન સ્ટોક જોવા માટે સિક્કા પ્રકાર ખોલો, પછી ફરી પ્રયાસ કરો."
+      },
+      "detail": {
+        "back": "સિક્કા ઇશ્યૂ",
+        "meta": "{staff} · {phone} · {date} ના રોજ આપ્યા",
+        "coinsCount": "{coins} સિક્કા",
+        "summary": {
+          "issued": "આપેલી કિંમત",
+          "returned": "પરત કિંમત",
+          "netPayable": "ચોખ્ખું ચૂકવવાપાત્ર",
+          "collected": "વસૂલી",
+          "pending": "બાકી",
+          "refundDue": "રિફંડ બાકી",
+          "stillToCollect": "હજી વસૂલવાનું",
+          "settled": "પતાવટ થઈ"
+        },
+        "refundBanner": {
+          "title": "તમારે {staff} ને {amount} આપવાના છે",
+          "body": "તેણે {payable} ચૂકવવાપાત્ર સામે {paid} ચૂકવ્યા. રોકડ આપો ત્યારે રિફંડ નોંધો — પહેલેથી ચૂકવાયેલી રકમમાં ક્યારેય ફેરફાર થતો નથી."
+        },
+        "roundingBanner": "રાઉન્ડિંગના કારણે આ ઇશ્યૂમાં {amount} હજી બાકી છે. બંધ કરવા તમે તેની માંડવાળ કરી શકો છો.",
+        "cancelledBanner": "રદ કરેલ. {coins} સિક્કા સ્ટોકમાં પાછા ગયા. વસૂલ થયેલા {collected} ને અડ્યા નથી.",
+        "tabs": {
+          "coins": "સિક્કા {count}",
+          "returns": "પરત {count}",
+          "payments": "ચુકવણીઓ {count}"
+        },
+        "breakdown": {
+          "coinType": "સિક્કા પ્રકાર",
+          "packets": "પેકેટ",
+          "coins": "સિક્કા",
+          "rate": "દર",
+          "issuedValue": "આપેલી કિંમત",
+          "returned": "પરત",
+          "net": "ચોખ્ખું",
+          "total": "કુલ"
+        },
+        "timeline": {
+          "returned": "{coins} {name} પરત આવ્યા — {amount} જમા",
+          "paid": "{mode} થી {amount} ચૂકવ્યા",
+          "refunded": "{mode} થી {amount} રિફંડ આપ્યા"
+        },
+        "emptyReturns": {
+          "title": "હજી કંઈ પરત આવ્યું નથી",
+          "body": "{staff} વણવેચાયેલા સિક્કા પાછા લાવે ત્યારે અહીં નોંધો. તેમની બાકી રકમ એટલી ઘટશે."
+        },
+        "emptyPayments": {
+          "title": "કોઈ ચુકવણી નોંધાઈ નથી",
+          "body": "આ ઇશ્યૂ પર {staff} પાસે {amount} બાકી છે."
+        },
+        "notFound": {
+          "title": "તે ઇશ્યૂ હવે અસ્તિત્વમાં નથી",
+          "body": "તે કાઢી નાખવામાં આવ્યો હોઈ શકે. કંઈ બદલાયું નથી.",
+          "cta": "સિક્કા ઇશ્યૂ પર પાછા જાઓ"
+        },
+        "error": {
+          "title": "આ ઇશ્યૂ લોડ કરી શકાયો નહીં",
+          "body": "આ ઇશ્યૂ રદ કરાયો હોઈ શકે. કંઈ બદલાયું નથી."
+        }
+      },
+      "returnModal": {
+        "title": "સિક્કા પરત નોંધો",
+        "subtitle": "{code} · {staff} · ઇશ્યૂ {date}",
+        "returnDate": "પરત તારીખ",
+        "columns": {
+          "coinType": "સિક્કા પ્રકાર",
+          "issued": "ઇશ્યૂ કરેલા",
+          "alreadyReturned": "અગાઉ પરત",
+          "returningNow": "હમણાં પરત",
+          "remaining": "બાકી"
+        },
+        "overReturn": "આ ઇશ્યૂમાં ફક્ત {remaining} {name} બહાર છે.",
+        "returnEverything": "બધું પરત કરો",
+        "note": "નોંધ",
+        "notePlaceholder": "દા.ત. વેચાયા નથી, પ્લાન્ટ પર ગણીને લીધા",
+        "panel": {
+          "returning": "પરત આવતા {coins} સિક્કાની કિંમત",
+          "netPayable": "ચોખ્ખું ચૂકવવાપાત્ર",
+          "collected": "વસૂલ થયું",
+          "newPending": "નવી બાકી રકમ"
+        },
+        "refundFlip": "આ પરત પછી તમારે {staff} ને {amount} ચૂકવવાના થશે. ઇશ્યૂ પર વાદળી રિફંડ બેજ દેખાશે. રોકડ આપો ત્યારે ઇશ્યૂ પેજ પરથી રિફંડ નોંધો.",
+        "fixQuantity": "પહેલાં દર્શાવેલ જથ્થો સુધારો",
+        "submit": "પરત નોંધો",
+        "submitting": "નોંધાઈ રહ્યું છે…",
+        "success": "{coins} સિક્કા પરત આવ્યા — {staff} પાસેથી {amount} બાકી",
+        "successRefund": "{coins} સિક્કા પરત આવ્યા — હવે તમારે {staff} ને {amount} ચૂકવવાના છે",
+        "empty": {
+          "title": "બધું પરત આવી ગયું છે",
+          "body": "{code} ના બધા {coins} સિક્કા સ્ટોકમાં પાછા આવી ગયા છે."
+        }
+      },
+      "paymentModal": {
+        "title": "ચુકવણી નોંધો",
+        "titleRefund": "રિફંડ નોંધો",
+        "subtitle": "{code} · {staff} · {amount} બાકી",
+        "subtitleRefund": "{code} · {staff} · તમારે {amount} ચૂકવવાના છે",
+        "directionIn": "{staff} પાસેથી પૈસા આવે છે",
+        "directionOut": "{staff} ને પૈસા જાય છે",
+        "amount": "રકમ",
+        "amountHelper": "{amount} બાકી",
+        "amountHelperRefund": "પૂરું રિફંડ {amount} છે",
+        "mode": "ચુકવણી પ્રકાર",
+        "date": "તારીખ",
+        "reference": "રેફરન્સ",
+        "referencePlaceholder": "UPI રેફ / ચેક નં.",
+        "note": "નોંધ",
+        "notePlaceholder": "વૈકલ્પિક",
+        "resultLabel": "બાકી",
+        "overpayWarning": "{paid} એ બાકી {due} કરતાં વધારે છે. વધારાના {extra} {staff} ને આપવાના રિફંડ તરીકે દેખાશે.",
+        "errors": {
+          "refundExceeds": "આ ઇશ્યૂ પર વધુમાં વધુ {amount} નું જ રિફંડ થઈ શકે."
+        },
+        "submit": "ચુકવણી નોંધો",
+        "submitRefund": "રિફંડ નોંધો",
+        "submitting": "નોંધાઈ રહ્યું છે…",
+        "success": "{amount} ની ચુકવણી નોંધાઈ — {code} ની હવે પતાવટ થઈ",
+        "successRefund": "{amount} નું રિફંડ નોંધાયું — {code} ની હવે પતાવટ થઈ",
+        "empty": {
+          "title": "કંઈ બાકી નથી",
+          "body": "{code} ની પૂરી પતાવટ થઈ ગઈ છે. વસૂલ કરવાનું કે રિફંડ કરવાનું કંઈ નથી."
+        }
+      }
+    },
+    "adjustments": {
+      "title": "સ્ટોક ગોઠવણો",
+      "subtitle": "સિક્કાના સ્ટોકમાં હાથે કરેલા સુધારા, અને દરેક કેમ કરાયો",
+      "new": "નવો સુધારો",
+      "searchPlaceholder": "કારણ, નોંધ, સુધારા નંબર શોધો…",
+      "backToTypes": "સિક્કાના પ્રકાર પર પાછા",
+      "columns": {
+        "date": "તારીખ",
+        "coinType": "સિક્કા પ્રકાર",
+        "reason": "કારણ",
+        "coins": "સિક્કા",
+        "value": "કિંમત",
+        "note": "નોંધ"
+      },
+      "chips": {
+        "increases": "વધારો",
+        "decreases": "ઘટાડો",
+        "reconciliation": "મેળવણી"
+      },
+      "reasons": {
+        "OPENING_STOCK": "શરૂઆતનો સ્ટોક",
+        "MINTED": "નવો સ્ટોક",
+        "PURCHASED": "ખરીદેલા",
+        "LOST": "ખોવાયેલા",
+        "DAMAGED": "બગડેલા",
+        "STOLEN": "ચોરાયેલા",
+        "RECONCILIATION": "મેળવણી"
+      },
+      "empty": {
+        "title": "હજી કોઈ સ્ટોક ગોઠવણ નથી",
+        "body": "સામાન્ય આપ-લે બહાર જે સિક્કા આવે કે ગુમ થાય તેના માટે સુધારા હોય છે — નવી છપાઈ, નુકસાન, અથવા ગણતરીમાં ન મળેલો મેળ. દરેક માટે કારણ આપવું જરૂરી છે."
+      },
+      "noResults": {
+        "title": "તમારા ફિલ્ટર સાથે કોઈ સુધારો મળ્યો નહીં"
+      },
+      "error": {
+        "title": "સુધારા લોડ કરી શકાયા નહીં",
+        "body": "સર્વરે જવાબ આપ્યો નહીં. કંઈ બદલાયું નથી.",
+        "cta": "ફરી પ્રયાસ કરો"
+      },
+      "form": {
+        "title": "નવી સ્ટોક ગોઠવણ",
+        "subtitle": "ઇશ્યૂ અને પરતના સામાન્ય વ્યવહાર બહાર સ્ટોક સુધારે છે",
+        "permanence": "આ ખાતાવહીમાં કાયમી એન્ટ્રી લખે છે. પછીથી તેમાં ફેરફાર કે તેને કાઢી શકાતી નથી — ફક્ત ઉલટાવી શકાય છે.",
+        "coinType": "સિક્કા પ્રકાર",
+        "coinTypePlaceholder": "સિક્કા પ્રકાર પસંદ કરો",
+        "stockContext": "સ્ટોકમાં {coins} સિક્કા ({packets} પેકેટ + {loose})",
+        "date": "તારીખ",
+        "direction": "દિશા",
+        "directionIn": "આવક — નવા સિક્કા",
+        "directionOut": "જાવક — ખોવાયેલા કે બગડેલા",
+        "coins": "સિક્કા",
+        "liveResult": "= {value} · નવી સિલક {balance}",
+        "insufficient": "સ્ટોકમાં ફક્ત {available} {name} છે. તમે {requested} કાઢી શકતા નથી.",
+        "reason": "કારણ",
+        "reasonPlaceholder": "કારણ પસંદ કરો",
+        "noteLabel": "શું થયું?",
+        "noteHelper": "જરૂરી છે. ખુલાસા વગરના સ્ટોક ફેરફારની પછીથી તપાસ થઈ શકતી નથી.",
+        "notePlaceholder": "દા.ત. સ્ટોર રૂમમાં બગડ્યા — છાજલી પર પાણી લીક થયું",
+        "submit": "સુધારો નોંધો",
+        "submitting": "નોંધાઈ રહ્યું છે…",
+        "successIn": "{coins} {name} ઉમેરાયા — નવી સિલક {balance} સિક્કા",
+        "successOut": "{coins} {name} કાઢ્યા — નવી સિલક {balance} સિક્કા"
+      },
+      "errors": {
+        "coinTypeRequired": "સિક્કા પ્રકાર પસંદ કરો",
+        "coinTypeInactive": "{coinTypeName} હવે સક્રિય નથી.",
+        "directionRequired": "દિશા પસંદ કરો",
+        "coinsRequired": "કેટલા સિક્કા છે તે દાખલ કરો",
+        "coinsPositive": "સિક્કા 0 થી વધારે હોવા જોઈએ",
+        "wholeCoinsOnly": "આખા સિક્કા જ ચાલે",
+        "coinsTooLarge": "પ્લાન્ટ પાસે છે તેના કરતાં આ વધારે સિક્કા છે",
+        "reasonRequired": "કારણ પસંદ કરો",
+        "reasonDirectionMismatch": "તમે પસંદ કરેલી દિશા સાથે આ કારણ મેળ ખાતું નથી",
+        "noteRequired": "સ્ટોક કેમ બદલાયો તે સમજાવો — દાખલા તરીકે “મહિનાના અંતની ગણતરીમાં 12 ઓછા નીકળ્યા”.",
+        "noteTooLong": "આ નોંધ ઘણી લાંબી છે",
+        "dateFuture": "સુધારાની તારીખ ભવિષ્યની ન હોઈ શકે.",
+        "insufficientStock": "સ્ટોકમાં ફક્ત {availableCoins} {coinTypeName} છે. તમે {requestedCoins} કાઢી શકતા નથી.",
+        "insufficientStockUnknown": "તે ગોઠવણ માટે સ્ટોકમાં પૂરતા સિક્કા નથી. વર્તમાન બેલેન્સ જોવા માટે સિક્કા પ્રકાર ખોલો."
+      }
+    }
+  },
+  "partyOrders": {
+    "title": "પાર્ટી ઓર્ડર",
+    "subtitle": "ઘણા દિવસના પ્રસંગનાં બુકિંગ, તેમનું ડિલિવરી સમયપત્રક અને તેમના પૈસા",
+    "searchPlaceholder": "કોડ, પાર્ટીનું નામ, ફોન, સરનામું શોધો…",
+    "noSchedule": "હજી કોઈ દિવસ નથી",
+    "progressTooltip": "{total} માંથી {delivered} દિવસ પહોંચાડ્યા · {skipped} છોડી દીધા · {scheduled} હજી નિર્ધારિત",
+    "meta": {
+      "days": "{count, plural, one {# દિવસ} other {# દિવસો}}"
+    },
+    "actions": {
+      "add": "+ નવું બુકિંગ",
+      "calendar": "કૅલેન્ડર",
+      "addDay": "દિવસ ઉમેરો",
+      "recordPayment": "ચુકવણી નોંધો",
+      "editBooking": "બુકિંગમાં ફેરફાર કરો",
+      "cancelBooking": "બુકિંગ રદ કરો",
+      "more": "વધુ ક્રિયાઓ",
+      "cancel": "રદ કરો",
+      "dismiss": "બંધ કરો"
+    },
+    "columns": {
+      "code": "કોડ",
+      "party": "પાર્ટી",
+      "address": "સરનામું",
+      "dates": "તારીખો",
+      "days": "દિવસો",
+      "payable": "ચૂકવવાપાત્ર",
+      "received": "મળેલી રકમ",
+      "outstanding": "બાકી રકમ",
+      "status": "સ્થિતિ",
+      "actions": "ક્રિયાઓ"
+    },
+    "chips": {
+      "all": "બધા",
+      "upcoming": "આગામી",
+      "inProgress": "ચાલુ",
+      "moneyPending": "પૈસા બાકી",
+      "completed": "પૂર્ણ"
+    },
+    "filters": {
+      "delivery": "ડિલિવરી સ્થિતિ",
+      "payment": "ચુકવણી સ્થિતિ",
+      "from": "થી",
+      "to": "સુધી",
+      "deliveryOptions": {
+        "all": "કોઈપણ ડિલિવરી સ્થિતિ",
+        "upcoming": "આગામી",
+        "inProgress": "ચાલુ",
+        "completed": "પૂર્ણ",
+        "cancelled": "રદ કરેલ"
+      },
+      "paymentOptions": {
+        "all": "કોઈપણ ચુકવણી સ્થિતિ",
+        "unpaid": "ચૂકવ્યું નથી",
+        "partial": "આંશિક ચૂકવાયું",
+        "paid": "ચૂકવાયું",
+        "overpaid": "વધુ ચૂકવાયું",
+        "refundDue": "રિફંડ બાકી"
+      }
+    },
+    "delivery": {
+      "upcoming": "આગામી",
+      "inProgress": "ચાલુ",
+      "completed": "પૂર્ણ",
+      "skipped": "{count, plural, one {# દિવસ છોડ્યો} other {# દિવસ છોડ્યા}}",
+      "cancelled": "રદ કરેલ"
+    },
+    "empty": {
+      "noData": {
+        "title": "હજી કોઈ પાર્ટી બુકિંગ નથી",
+        "body": "પાર્ટી ઓર્ડર એટલે ડિલિવરીનું કૅલેન્ડર — 14 તારીખે 50 જાર, 15 તારીખે કંઈ નહીં, 16 તારીખે 80. પાર્ટી એક વાર બુક કરો, પછી દિવસવાર સમયપત્રક બનાવો."
+      },
+      "noResults": {
+        "title": "તમારા ફિલ્ટર સાથે કોઈ પાર્ટી ઓર્ડર મળ્યો નહીં",
+        "body": "આ ફિલ્ટર સાથે કોઈ બુકિંગ મળતું નથી. તારીખની શ્રેણી પહોળી કરો અથવા ચુકવણી ફિલ્ટર સાફ કરો.",
+        "bodyWithQuery": "“{query}” સાથે કંઈ મળતું નથી. શોધ કોડ, પાર્ટીનું નામ, ફોન નંબર અને સરનામામાં થાય છે."
+      }
+    },
+    "error": {
+      "listTitle": "પાર્ટી ઓર્ડર લોડ કરી શકાયા નહીં",
+      "listBody": "સર્વરે જવાબ આપ્યો નહીં. તમારાં બુકિંગ સુરક્ષિત છે — કંઈ ખોવાયું નથી.",
+      "retry": "ફરી પ્રયાસ કરો"
+    },
+    "rowActions": {
+      "menu": "{party} માટે વધુ ક્રિયાઓ",
+      "view": "બુકિંગ જુઓ",
+      "recordPayment": "ચુકવણી નોંધો",
+      "addDay": "ડિલિવરી દિવસ ઉમેરો",
+      "edit": "બુકિંગમાં ફેરફાર કરો",
+      "cancel": "બુકિંગ રદ કરો"
+    },
+    "kpis": {
+      "activeLabel": "સક્રિય પાર્ટીઓ",
+      "activeBreakdown": "{starting} આ અઠવાડિયે શરૂ · {days} દિવસ નિર્ધારિત",
+      "activeZero": "કોઈ ચાલુ બુકિંગ નથી",
+      "todayLabel": "આજની ડિલિવરી",
+      "todayUnits": "{units} જાર જવાના છે",
+      "todayZero": "આજે કંઈ જવાનું નથી",
+      "revenueLabel": "આ મહિને પાર્ટી આવક",
+      "revenueBookings": "{count, plural, one {# બુકિંગ} other {# બુકિંગ}}",
+      "revenueZero": "આ મહિને કંઈ બિલ થયું નથી",
+      "vsPreviousMonth": "{month} ની સરખામણીએ",
+      "outstandingLabel": "પાર્ટી બાકી રકમ",
+      "outstandingParties": "{count, plural, one {# પાર્ટીમાં} other {# પાર્ટીઓમાં}}",
+      "outstandingOldest": "સૌથી જૂનું {days} દિવસ",
+      "outstandingZero": "બધું પતી ગયું"
+    },
+    "totals": {
+      "days": "નિર્ધારિત દિવસો",
+      "units": "કુલ નંગ",
+      "payable": "કુલ ચૂકવવાપાત્ર"
+    },
+    "tabs": {
+      "schedule": "સમયપત્રક",
+      "payments": "ચુકવણીઓ",
+      "activity": "પ્રવૃત્તિ"
+    },
+    "address": {
+      "heading": "ડિલિવરી સરનામું",
+      "copy": "કૉપી કરો",
+      "copied": "સરનામું કૉપી થયું"
+    },
+    "banners": {
+      "cancelled": "{code} રદ કરવામાં આવ્યો. તેના બાકીના દિવસો રદ થયા અને જે પહોંચાડ્યું હોય તેનું જ બિલ થાય છે.",
+      "refundDue": "{amount} પરત આપવાના થાય છે. {party} એ {paid} ચૂકવ્યા હતા અને કુલ હવે {total} છે."
+    },
+    "cancelBooking": {
+      "title": "{code} રદ કરવો છે?",
+      "body": "{party} ના {days} દિવસ હજી પહોંચાડવાના બાકી છે. તે રદ થઈ જશે અને જે પહેલેથી બહાર ગયું છે તેનું જ બિલ રહેશે. {from} થી {received} મળ્યા છે.",
+      "confirm": "બુકિંગ રદ કરો"
+    },
+    "editBooking": {
+      "title": "બુકિંગમાં ફેરફાર",
+      "save": "ફેરફારો સાચવો",
+      "saving": "સાચવી રહ્યું છે…"
+    },
+    "notFound": {
+      "title": "એવો કોઈ પાર્ટી ઓર્ડર નથી",
+      "body": "આવું કોઈ બુકિંગ નથી, અથવા તે કાયમ માટે કાઢી નાખવામાં આવ્યું છે. કોડ તપાસો.",
+      "cta": "પાર્ટી ઓર્ડર પર પાછા"
+    },
+    "wizard": {
+      "title": "નવું પાર્ટી બુકિંગ",
+      "subtitle": "પાર્ટી બુક કરો, દિવસવાર સમયપત્રક બનાવો, એડવાન્સ લો",
+      "back": "‹ પાછળ",
+      "nextSchedule": "આગળ: સમયપત્રક ›",
+      "nextAdvance": "આગળ: એડવાન્સ ›",
+      "nextReview": "આગળ: સમીક્ષા ›",
+      "book": "પાર્ટી ઓર્ડર બુક કરો",
+      "booking": "બુક થઈ રહ્યું છે…",
+      "scheduleSummary": "{days} દિવસ · {amount}",
+      "advanceSummary": "{amount} એડવાન્સ",
+      "toast": "{code} બુક થયું · {party} · {days} દિવસ · {amount}",
+      "toastWithAdvance": "{code} બુક થયું · {advance} એડવાન્સ નોંધાયું · {outstanding} બાકી",
+      "discard": {
+        "title": "આ બુકિંગ રદ કરવું છે?",
+        "body": "તમે {party} અને {days} ડિલિવરી દિવસ દાખલ કર્યા છે. હજી કંઈ સાચવાયું નથી.",
+        "confirm": "રદ કરો",
+        "noName": "હજી પાર્ટીનું નામ નથી"
+      },
+      "steps": {
+        "details": {
+          "title": "પાર્ટી વિગતો",
+          "hint": "નામ, ફોન, સરનામું"
+        },
+        "schedule": {
+          "title": "સમયપત્રક",
+          "hint": "ડિલિવરી દિવસો અને વસ્તુઓ"
+        },
+        "advance": {
+          "title": "એડવાન્સ",
+          "hint": "વૈકલ્પિક એડવાન્સ"
+        },
+        "review": {
+          "title": "સમીક્ષા",
+          "hint": "પુષ્ટિ કરો અને બુક કરો"
+        }
+      }
+    },
+    "details": {
+      "heading": "પાર્ટી વિગતો",
+      "nameLabel": "પાર્ટીનું નામ",
+      "nameHint": "જે નામ તમે તે દિવસે ઓળખી શકો — હોલ, પરિવાર કે સંપર્ક વ્યક્તિ",
+      "namePlaceholder": "દા.ત. શ્રીજી વેડિંગ હોલ",
+      "phoneLabel": "ફોન",
+      "phonePlaceholder": "દા.ત. 9825044556",
+      "altPhoneLabel": "વૈકલ્પિક ફોન",
+      "altPhonePlaceholder": "દા.ત. 9909112233",
+      "addressLabel": "ડિલિવરી સરનામું",
+      "addressPlaceholder": "પ્લોટ, લેન્ડમાર્ક, વિસ્તાર, શહેર અને PIN",
+      "notesLabel": "નોંધ",
+      "notesHint": "પ્રવેશની સૂચના, સંપર્ક વ્યક્તિ, તે દિવસે ઉપયોગી હોય એવું કંઈ પણ",
+      "notesPlaceholder": "પ્રવેશની સૂચના, સંપર્ક વ્યક્તિ, તે દિવસે ઉપયોગી હોય એવું કંઈ પણ"
+    },
+    "advance": {
+      "heading": "એડવાન્સ ચુકવણી",
+      "intro": "એડવાન્સ લેવું વૈકલ્પિક છે. બુકિંગ પછી ગમે ત્યારે ચુકવણી નોંધી શકો છો.",
+      "toggle": "અત્યારે એડવાન્સ નોંધો",
+      "dateLabel": "તારીખ",
+      "amountLabel": "રકમ",
+      "modeLabel": "ચુકવણી પ્રકાર",
+      "modes": {
+        "CASH": "રોકડ",
+        "UPI": "UPI",
+        "BANK_TRANSFER": "બેંક ટ્રાન્સફર"
+      },
+      "reference": "રેફરન્સ",
+      "upiReference": "UPI રેફરન્સ",
+      "bankReference": "ટ્રાન્ઝેક્શન રેફરન્સ",
+      "referencePlaceholder": "દા.ત. ભાવેશે પ્લાન્ટ પર ચૂકવ્યા",
+      "later": "બુકિંગ પેજ પરથી ચુકવણી નોંધી શકશો.",
+      "exceeds": "{amount} એ અત્યારના કુલ {total} કરતાં વધુ છે. સમયપત્રક પૂરું થાય તે પહેલાં લીધેલા એડવાન્સ માટે આ બરાબર છે — વધુ દિવસો ઉમેરાય ત્યાં સુધી બુકિંગમાં {refund} રિફંડ બાકી તરીકે દેખાશે.",
+      "totalPayable": "કુલ ચૂકવવાપાત્ર",
+      "advanceNow": "અત્યારે એડવાન્સ",
+      "outstandingAfter": "બુકિંગ પછી બાકી રકમ"
+    },
+    "review": {
+      "partyHeading": "પાર્ટી વિગતો",
+      "scheduleHeading": "સમયપત્રક · {days} દિવસ · {range}",
+      "scheduleUnits": "સમયપત્રકમાં કુલ {units} નંગ",
+      "advanceHeading": "એડવાન્સ",
+      "edit": "ફેરફાર કરો",
+      "addAdvance": "એડવાન્સ ઉમેરો",
+      "noAdvance": "કોઈ એડવાન્સ લીધું નથી. આખી {amount} બાકી છે.",
+      "totalPayable": "કુલ ચૂકવવાપાત્ર",
+      "advanceLine": "એડવાન્સ",
+      "outstanding": "બાકી રકમ"
+    },
+    "schedule": {
+      "summary": "{days, plural, one {# ડિલિવરી દિવસ} other {# ડિલિવરી દિવસ}} · {range} · {units} નંગ",
+      "summaryEmpty": "હજી કોઈ ડિલિવરી દિવસ નથી",
+      "total": "કુલ",
+      "addDay": "+ દિવસ ઉમેરો",
+      "repeat": "પુનરાવર્તન પેટર્ન",
+      "duplicate": "દિવસની નકલ કરો",
+      "duplicateDisabled": "પહેલાં એક દિવસ ઉમેરો",
+      "generatedBanner": "{from} થી {to} સુધીના {count} દિવસ બનાવ્યા. તેમાંથી કોઈપણમાં અલગથી ફેરફાર કરી શકો છો — હવે એ સામાન્ય દિવસ જ છે.",
+      "empty": {
+        "title": "હજી કોઈ ડિલિવરી દિવસ નથી",
+        "body": "પાર્ટી ઓર્ડર એટલે એક કૅલેન્ડર. પહેલો દિવસ ઉમેરો, અથવા સળંગ દિવસો બનાવીને પછી તેમાં ફેરફાર કરો — 14 તારીખે 50 જાર, 15 તારીખે કંઈ નહીં, 16 તારીખે 80 — આવું સમયપત્રક તદ્દન સામાન્ય છે.",
+        "add": "+ પહેલો દિવસ ઉમેરો"
+      },
+      "remove": {
+        "title": "{date} કાઢી નાખવો છે?",
+        "body": "{amount} ની {items} વસ્તુ આ સમયપત્રકમાંથી નીકળી જશે. કુલ ચૂકવવાપાત્ર {from} થી {to} થશે.",
+        "confirm": "દિવસ કાઢી નાખો"
+      }
+    },
+    "day": {
+      "today": "આજે",
+      "edit": "દિવસમાં ફેરફાર",
+      "duplicate": "નકલ કરો",
+      "duplicateTo": "બીજી તારીખે નકલ કરો",
+      "markDelivered": "પહોંચાડ્યું નોંધો",
+      "markSkipped": "છોડી દીધું નોંધો",
+      "removeDay": "દિવસ કાઢી નાખો",
+      "cancelDay": "દિવસ રદ કરો",
+      "restore": "દિવસ પાછો લાવો",
+      "menu": "{date} માટે વધુ ક્રિયાઓ",
+      "generated": "બનાવેલ",
+      "notAssigned": "સોંપ્યું નથી",
+      "deliveredAt": "પહોંચાડ્યું {time}",
+      "dayTotal": "દિવસનો કુલ",
+      "notBilled": "બિલમાં નથી",
+      "billedOnDelivered": "પહોંચાડેલા જથ્થા પર બિલ",
+      "noItems": "આ દિવસે હજી કોઈ વસ્તુ નથી",
+      "pastWarning": "આ દિવસ વીતી ગયો છે અને પહોંચાડ્યું નોંધાયું નથી",
+      "rateOverride": "દર {price} સામે મૂળ {base} · {difference}/નંગ",
+      "status": {
+        "SCHEDULED": "નિર્ધારિત",
+        "DELIVERED": "પહોંચાડ્યું",
+        "SKIPPED": "છોડી દીધું",
+        "CANCELLED": "રદ કરેલ"
+      }
+    },
+    "gap": {
+      "noDelivery": "{date} — કોઈ ડિલિવરી નથી",
+      "collapsed": "{range} · {count, plural, one {# દિવસ} other {# દિવસ}} ડિલિવરી નથી",
+      "showDays": "દિવસો બતાવો",
+      "hideDays": "દિવસો છુપાવો",
+      "addDay": "+ દિવસ ઉમેરો",
+      "addDayOn": "{date} ના રોજ ડિલિવરી દિવસ ઉમેરો"
+    },
+    "dayModal": {
+      "addTitle": "ડિલિવરી દિવસ ઉમેરો",
+      "editTitle": "ડિલિવરી દિવસમાં ફેરફાર",
+      "dateLabel": "ડિલિવરી તારીખ",
+      "statusLabel": "સ્થિતિ",
+      "statusLocked": "નવો દિવસ હંમેશાં નિર્ધારિત તરીકે શરૂ થાય છે",
+      "staffLabel": "સોંપાયેલ સ્ટાફ",
+      "staffPlaceholder": "કોઈને સોંપ્યું નથી",
+      "staffSearch": "સ્ટાફ શોધો…",
+      "staffEmpty": "એવો કોઈ સ્ટાફ મળતો નથી.",
+      "itemsLabel": "વસ્તુઓ",
+      "colProduct": "પ્રોડક્ટ",
+      "colPlanned": "નક્કી કરેલ",
+      "colDelivered": "પહોંચાડ્યું",
+      "colBase": "મૂળ કિંમત",
+      "colUnitPrice": "નંગનો દર",
+      "colTotal": "કુલ",
+      "productPlaceholder": "પ્રોડક્ટ પસંદ કરો",
+      "productSearch": "પ્રોડક્ટ શોધો…",
+      "productEmpty": "એવી કોઈ પ્રોડક્ટ મળતી નથી. જોડણી તપાસો, અથવા પ્રોડક્ટમાં ઉમેરી દો.",
+      "addItem": "+ વસ્તુ ઉમેરો",
+      "removeItem": "આ વસ્તુ કાઢી નાખો",
+      "deliveredHelp": "પહોંચાડેલો જથ્થો વૈકલ્પિક છે — દિવસને પહોંચાડ્યું નોંધો ત્યારે ભરો, પછી બિલ ખરેખર જે બહાર ગયું તેના પર થશે.",
+      "billedOnDelivered": "બિલ {delivered} પહોંચાડેલા પર, {planned} નક્કી કરેલા પર નહીં",
+      "rateOverridden": "દર બદલ્યો {difference}/નંગ · {line}",
+      "notesLabel": "નોંધ",
+      "notesPlaceholder": "દા.ત. સવારે 10 વાગ્યા સુધીમાં પહોંચાડો, મંડપ 11 વાગ્યે શરૂ",
+      "dayTotal": "દિવસનો કુલ",
+      "bookingTotal": "બુકિંગનો કુલ",
+      "deliveredWarning": "આ દિવસ પહેલેથી પહોંચાડ્યું નોંધાયેલો છે. બદલશો તો બુકિંગનું બિલ ફરી બનશે અને કુલ રકમ બદલાશે.",
+      "add": "દિવસ ઉમેરો",
+      "save": "દિવસ સાચવો",
+      "saving": "સાચવી રહ્યું છે…"
+    },
+    "generator": {
+      "title": "પુનરાવર્તન પેટર્ન",
+      "subtitle": "સળંગ ડિલિવરી દિવસો બનાવો, પછી તેમાંથી કોઈપણમાં ફેરફાર કરી શકો છો",
+      "startLabel": "શરૂ તારીખ",
+      "endLabel": "છેલ્લી તારીખ",
+      "repeatLabel": "પુનરાવર્તન",
+      "modes": {
+        "daily": "દરરોજ",
+        "alternate": "એકાંતરે",
+        "custom": "દર N દિવસે"
+      },
+      "days": "દિવસ",
+      "itemsLabel": "દરેક બનાવેલા દિવસ માટે વસ્તુઓ",
+      "perDayTotal": "રોજનો કુલ",
+      "staffLabel": "સ્ટાફ સોંપો (વૈકલ્પિક)",
+      "staffPlaceholder": "દરેક દિવસ માટે એક જ સ્ટાફ (વૈકલ્પિક)",
+      "preview": "ઝલક",
+      "previewCount": "{count, plural, one {# દિવસ} other {# દિવસ}}",
+      "previewEmpty": "ઝલક જોવા માટે શરૂ અને છેલ્લી તારીખ પસંદ કરો.",
+      "conflict": "પહેલેથી નિર્ધારિત છે, છોડી દેવાશે",
+      "footerSummary": "{days, plural, one {# દિવસ} other {# દિવસ}} · {units} નંગ ઉમેરાશે",
+      "generate": "{count, plural, one {# દિવસ} other {# દિવસ}} બનાવો",
+      "generating": "બનાવી રહ્યું છે…",
+      "errors": {
+        "endBeforeStart": "છેલ્લી તારીખ શરૂ તારીખ પહેલાંની છે.",
+        "noItems": "ઓછામાં ઓછી એક વસ્તુ ઉમેરો — દરેક બનાવેલા દિવસે પહોંચાડવા માટે કંઈક જોઈએ.",
+        "tooManyDays": "આ પેટર્નથી {count} દિવસ બને છે. સમયગાળો ટૂંકો કરો — {max} દિવસથી લાંબું બુકિંગ લગભગ હંમેશાં ટાઇપની ભૂલ હોય છે.",
+        "allConflict": "આ સમયગાળાની દરેક તારીખ પહેલેથી નિર્ધારિત છે. સમયગાળો બદલો, અથવા હાલના દિવસોમાં ફેરફાર કરો.",
+        "noneSelected": "બનાવવા માટે ઓછામાં ઓછી એક તારીખ પસંદ કરો."
+      }
+    },
+    "duplicate": {
+      "title": "{date} ની નકલ કરો",
+      "body": "{items, plural, one {# વસ્તુ} other {# વસ્તુ}} · {units} નંગ · {amount} તમે પસંદ કરેલી તારીખે નકલ થશે.",
+      "dateLabel": "નકલ કરવાની તારીખ",
+      "clash": "{date} આ સમયપત્રકમાં પહેલેથી છે. બીજી તારીખ પસંદ કરો, અથવા એ દિવસમાં જ ફેરફાર કરો.",
+      "copyStaff": "સોંપાયેલ સ્ટાફ ({name}) પણ નકલ કરો",
+      "copyNotes": "દિવસની નોંધ પણ નકલ કરો",
+      "confirm": "દિવસની નકલ કરો",
+      "duplicating": "નકલ થઈ રહી છે…"
+    },
+    "scheduleTab": {
+      "empty": {
+        "title": "હજી કોઈ ડિલિવરી દિવસ નથી",
+        "body": "આ બુકિંગનું કોઈ સમયપત્રક નથી. દિવસો નક્કી થાય તેમ ઉમેરતા જાઓ.",
+        "action": "+ પહેલો દિવસ ઉમેરો"
+      }
+    },
+    "skipDay": {
+      "title": "{date} છોડી દીધું નોંધવું છે?",
+      "body": "દિવસ સમયપત્રકમાં રહેશે પણ તેનું બિલ નહીં થાય. કુલ ચૂકવવાપાત્ર {from} થી {to} થશે.",
+      "confirm": "છોડી દીધું નોંધો"
+    },
+    "removeDay": {
+      "title": "{date} કાઢી નાખવો છે?",
+      "body": "{amount} ની {items} વસ્તુ આ સમયપત્રકમાંથી નીકળી જશે. કુલ ચૂકવવાપાત્ર {from} થી {to} થશે.",
+      "deliveredBody": "પહોંચાડેલો દિવસ કાઢી શકાતો નથી — બિલનો ઇતિહાસ સાચવી રખાય છે. તેના બદલે તે રદ થશે, અને તેની રકમ બુકિંગમાંથી નીકળી જશે.",
+      "confirm": "દિવસ કાઢી નાખો",
+      "cancelDay": "દિવસ રદ કરો"
+    },
+    "toast": {
+      "cancelled": "{code} રદ કર્યું · બાકીના દિવસો પણ રદ થયા",
+      "updated": "{code} અપડેટ થયું",
+      "actionFailed": "તે સાચવી શકાયું નહીં. કંઈ બદલાયું નથી.",
+      "dayAdded": "{date} ઉમેરાયું · બુકિંગનું કુલ હવે {total}",
+      "dayUpdated": "{date} અપડેટ થયું · બુકિંગનું કુલ હવે {total}",
+      "dayRemoved": "{date} કાઢી નાખ્યું · બુકિંગનું કુલ હવે {total}",
+      "dayRestored": "{date} ફરી સમયપત્રકમાં આવ્યું",
+      "daySkipped": "{date} છોડી દીધું · બુકિંગનું કુલ હવે {total}"
+    },
+    "payment": {
+      "title": "ચુકવણી નોંધો",
+      "subtitle": "{code} · {party} · {amount} બાકી",
+      "subtitleSettled": "{code} · {party} · પૂરેપૂરું ચૂકવાયું",
+      "dateLabel": "તારીખ",
+      "amountLabel": "રકમ",
+      "payFull": "પૂરા {amount} ચૂકવો",
+      "modeLabel": "ચુકવણી પ્રકાર",
+      "modes": {
+        "CASH": "રોકડ",
+        "UPI": "UPI",
+        "BANK_TRANSFER": "બેંક ટ્રાન્સફર"
+      },
+      "reference": "રેફરન્સ",
+      "upiReference": "UPI રેફરન્સ",
+      "bankReference": "ટ્રાન્ઝેક્શન રેફરન્સ",
+      "upiPlaceholder": "દા.ત. 421884993201",
+      "bankPlaceholder": "દા.ત. NEFT/HDFC/8841002",
+      "advanceLabel": "આ એડવાન્સ છે",
+      "advanceHelp": "ચુકવણી ઇતિહાસમાં તેને ડિપોઝિટ તરીકે નોંધે છે",
+      "advanceBadge": "એડવાન્સ",
+      "noteLabel": "નોંધ",
+      "notePlaceholder": "દા.ત. બીજો હપ્તો, બાકી રકમ છેલ્લા દિવસે",
+      "totalPayable": "કુલ ચૂકવવાપાત્ર",
+      "alreadyReceived": "પહેલેથી મળેલી રકમ",
+      "thisPayment": "આ ચુકવણી",
+      "outstandingAfter": "પછી બાકી રકમ",
+      "settles": "આ બુકિંગની પતાવટ થાય છે",
+      "record": "ચુકવણી નોંધો",
+      "recording": "નોંધાઈ રહ્યું છે…",
+      "advanceExceeds": "{amount} એ બાકી રકમ {outstanding} થી વધુ છે. આને એડવાન્સ તરીકે નોંધ્યું છે, એટલે તે ચાલશે — વધુ દિવસો ઉમેરાય ત્યાં સુધી બુકિંગમાં {refund} રિફંડ બાકી તરીકે દેખાશે.",
+      "overpayWarning": "{amount} એ બાકી રકમ {outstanding} થી વધુ છે. તે ચાલશે — {refund} રિફંડ બાકી તરીકે દેખાશે. હજી વધુ દિવસો નક્કી કરવાના હોય તો “આ એડવાન્સ છે” પર ટિક કરો.",
+      "toastPartial": "{amount} ની ચુકવણી નોંધાઈ · {outstanding} હજી બાકી",
+      "toastSettles": "{amount} ની ચુકવણી નોંધાઈ · {code} પૂરેપૂરું ચૂકવાયું",
+      "toastAdvance": "{amount} નું એડવાન્સ નોંધાયું · {outstanding} બાકી"
+    },
+    "payments": {
+      "empty": {
+        "title": "હજી કોઈ ચુકવણી નોંધાઈ નથી",
+        "body": "{days} ડિલિવરી દિવસો માટે {amount} ચૂકવવાના છે. એડવાન્સ, આંશિક ચુકવણી કે પૂરી પતાવટ — જે ખરેખર આવ્યું હોય તે નોંધો."
+      },
+      "reference": "રેફ {reference}",
+      "reversed": "પાછું ફેરવ્યું",
+      "advanceNote": "બુકિંગ વખતે લીધું, કોઈ ડિલિવરી પહેલાં",
+      "running": "{total} માંથી {paid} મળ્યા · {outstanding} બાકી",
+      "settled": "પૂરેપૂરું ચૂકવાયું · {amount} મળ્યા"
+    },
+    "summary": {
+      "payable": "કુલ ચૂકવવાપાત્ર",
+      "payableContext": "{days} દિવસ · {units} નંગ",
+      "received": "મળેલી રકમ",
+      "receivedContext": "{advance} એડવાન્સ · {payments} ચુકવણી",
+      "outstanding": "બાકી રકમ",
+      "dueFrom": "{date} થી બાકી",
+      "progress": "પ્રગતિ",
+      "progressValue": "{total} માંથી {delivered} દિવસ",
+      "next": "આગામી {date}",
+      "noneScheduled": "પહોંચાડવાનું કંઈ બાકી નથી"
+    },
+    "activity": {
+      "created": "બુકિંગ બન્યું · {days} દિવસ · {amount}",
+      "payment": "ચુકવણી નોંધાઈ · {amount} {mode}",
+      "advance": "એડવાન્સ નોંધાયું · {amount} {mode}",
+      "delivered": "{date} પહોંચાડ્યું તરીકે નોંધ્યું · {units} નંગ",
+      "empty": "આ બુકિંગમાં હજી કંઈ થયું નથી"
+    },
+    "calendar": {
+      "title": "પાર્ટી ડિલિવરી કૅલેન્ડર",
+      "subtitle": "તારીખ પ્રમાણે દરેક નિર્ધારિત પાર્ટી ડિલિવરી",
+      "listView": "યાદી દૃશ્ય",
+      "today": "આજે",
+      "previousMonth": "પાછલો મહિનો",
+      "nextMonth": "આગળનો મહિનો",
+      "staffLabel": "આ મહિને બહાર:",
+      "more": "+{count} વધુ",
+      "pillTooltip": "{party} · {items} · {staff} · {amount}",
+      "footer": "{bookings} બુકિંગ · આ મહિને {days} ડિલિવરી દિવસ · {units} નંગ · {amount}",
+      "empty": {
+        "title": "કોઈ પાર્ટી ડિલિવરી નિર્ધારિત નથી",
+        "body": "{month} માટે કંઈ બુક થયું નથી. બુકિંગનું સમયપત્રક બનતાં જ ડિલિવરી અહીં દેખાશે."
+      },
+      "error": {
+        "title": "કૅલેન્ડર લોડ કરી શકાયું નહીં",
+        "body": "સર્વરે જવાબ આપ્યો નહીં. તમારા બુકિંગ સુરક્ષિત છે.",
+        "cta": "ફરી પ્રયાસ કરો"
+      }
+    },
+    "errors": {
+      "nameRequired": "પાર્ટી કે હૉલનું નામ દાખલ કરો.",
+      "nameTooLong": "આ નામ ઘણું લાંબું છે.",
+      "phoneRequired": "10 આંકડાનો મોબાઇલ નંબર દાખલ કરો.",
+      "phoneInvalid": "10 આંકડાનો મોબાઇલ નંબર દાખલ કરો.",
+      "altPhoneInvalid": "10 આંકડાનો મોબાઇલ નંબર દાખલ કરો, અથવા ખાલી રહેવા દો.",
+      "altPhoneSame": "વૈકલ્પિક નંબર મુખ્ય નંબર જેવો જ છે.",
+      "addressRequired": "ડિલિવરીનું સરનામું દાખલ કરો — તે દિવસે ડ્રાઇવર આ જ વાંચે છે.",
+      "addressTooLong": "આ સરનામું ઘણું લાંબું છે.",
+      "notesTooLong": "આ નોંધ ઘણી લાંબી છે.",
+      "dateRequired": "ડિલિવરીની તારીખ પસંદ કરો.",
+      "dateInFuture": "ચુકવણીની તારીખ ભવિષ્યની ન હોઈ શકે.",
+      "duplicateDate": "આ તારીખ પહેલેથી આ સમયપત્રકમાં છે.",
+      "duplicateDateOn": "{date} પહેલેથી આ સમયપત્રકમાં છે. બીજી તારીખ પસંદ કરો, અથવા તે દિવસમાં ફેરફાર કરો.",
+      "duplicateDateShort": "પહેલેથી નિર્ધારિત",
+      "noDays": "આગળ વધતાં પહેલાં ઓછામાં ઓછો એક ડિલિવરી દિવસ ઉમેરો.",
+      "tooManyDays": "એક બુકિંગમાં આટલા દિવસો સમાઈ શકે નહીં — 60 દિવસથી લાંબું બુકિંગ લગભગ હંમેશાં ટાઇપિંગની ભૂલ હોય છે.",
+      "dayWithoutItems": "{date} માં કોઈ વસ્તુ નથી. ઓછામાં ઓછી એક ઉમેરો, અથવા દિવસ કાઢી નાખો.",
+      "noItems": "ઓછામાં ઓછી એક વસ્તુ ઉમેરો — ડિલિવરીના દિવસે પહોંચાડવા માટે કંઈક જોઈએ.",
+      "tooManyItems": "એક દિવસમાં આટલી વસ્તુની લાઇન સમાઈ શકે નહીં.",
+      "productRequired": "પ્રોડક્ટ પસંદ કરો.",
+      "productMissing": "તેમાંની એક પ્રોડક્ટ હવે અસ્તિત્વમાં નથી. ફરીથી પસંદ કરો.",
+      "quantityRequired": "નક્કી કરેલ જથ્થો દાખલ કરો.",
+      "quantityPositive": "0 થી વધુ નક્કી કરેલ જથ્થો દાખલ કરો.",
+      "quantityWhole": "જથ્થો પૂર્ણ આંકમાં જ હોય.",
+      "quantityTooLarge": "આ જથ્થો ઘણો મોટો છે.",
+      "deliveredInvalid": "પહોંચાડેલો જથ્થો પૂર્ણ આંકમાં દાખલ કરો.",
+      "deliveredNegative": "પહોંચાડેલો જથ્થો ઋણ ન હોઈ શકે.",
+      "priceRequired": "નંગ દીઠ કિંમત ₹0.00 કે તેથી વધુ દાખલ કરો.",
+      "priceInvalid": "નંગ દીઠ કિંમત ₹0.00 કે તેથી વધુ દાખલ કરો.",
+      "priceNegative": "નંગ દીઠ કિંમત ₹0.00 કે તેથી વધુ દાખલ કરો.",
+      "priceDecimals": "કિંમતમાં વધુમાં વધુ બે દશાંશ સ્થાન હોઈ શકે.",
+      "priceTooLarge": "આ કિંમત ઘણી મોટી છે.",
+      "amountRequired": "₹0.00 થી વધુ રકમ દાખલ કરો.",
+      "amountInvalid": "₹0.00 થી વધુ રકમ દાખલ કરો.",
+      "amountPositive": "₹0.00 થી વધુ રકમ દાખલ કરો.",
+      "amountDecimals": "રકમમાં વધુમાં વધુ બે દશાંશ સ્થાન હોઈ શકે.",
+      "amountTooLarge": "આ રકમ ઘણી મોટી છે.",
+      "advanceAmount": "₹0.00 થી વધુ રકમ દાખલ કરો, અથવા “અત્યારે એડવાન્સ નોંધો” બંધ કરો.",
+      "modeRequired": "પૈસા કઈ રીતે આવ્યા તે પસંદ કરો.",
+      "referenceRequired": "રેફરન્સ દાખલ કરો, અથવા ચુકવણી પ્રકાર બદલીને રોકડ કરો.",
+      "referenceTooLong": "આ રેફરન્સ ઘણો લાંબો છે.",
+      "nothingToUpdate": "કંઈ બદલાયું નથી.",
+      "couldNotSave": "આ બુકિંગ સાચવી શકાયું નહીં. કંઈ બુક થયું નથી — તમારી વિગતો અને દરેક દિવસ અહીં જ છે.",
+      "bookingCancelled": "આ બુકિંગ રદ કરેલ છે અને તેમાં ફેરફાર થઈ શકે નહીં.",
+      "staleVersion": "તમે ફેરફાર કરતા હતા ત્યારે આ બુકિંગ બદલાયું. હાલની આવૃત્તિ જોવા માટે ફરી લોડ કરો — તમારા અહીંના ફેરફારો સચવાયા નથી.",
+      "deliveredDayNotRemovable": "પહોંચાડેલો દિવસ કાઢી શકાતો નથી, ફક્ત રદ થઈ શકે — બિલિંગનો ઇતિહાસ સચવાઈ રહે છે."
     }
   },
   "expenseCategories": {

@@ -14,7 +14,13 @@ class CoinIssueItemRepository extends BaseRepository<CoinIssueItem> {
   protected readonly target: EntityTarget<CoinIssueItem> = CoinIssueItem;
   protected readonly alias = "cii";
 
-  /** The lines of one handover, with each line's live coin type for the badge. */
+  /**
+   * The lines of one handover, with each line's live coin type for the badge.
+   *
+   * There is deliberately no `deleted_at` predicate: `CoinIssueItem` extends
+   * `LineItemBase`, which has NO soft-delete column — a line has no life
+   * without its header and cascades with it. See DATA-MODEL §4.
+   */
   async findByIssueId(
     coinIssueId: string,
     em?: EntityManager,
@@ -23,8 +29,49 @@ class CoinIssueItemRepository extends BaseRepository<CoinIssueItem> {
     return qb
       .leftJoinAndSelect("cii.coinType", "ct")
       .where("cii.coinIssueId = :coinIssueId", { coinIssueId })
-      .andWhere("cii.deletedAt IS NULL")
       .orderBy("cii.createdAt", "ASC")
+      .getMany();
+  }
+
+  /**
+   * The lines of a WHOLE PAGE of the register, in one query.
+   *
+   * The expandable row shows a per-coin-type breakdown, and fetching it per row
+   * would be 25 round trips for a table that has to feel instant. One `IN`
+   * against the indexed foreign key answers all of them.
+   */
+  async findByIssueIds(
+    coinIssueIds: string[],
+    em?: EntityManager,
+  ): Promise<CoinIssueItem[]> {
+    if (coinIssueIds.length === 0) return [];
+    const qb = await this.qb(em);
+    return qb
+      .leftJoinAndSelect("cii.coinType", "ct")
+      .where("cii.coinIssueId IN (:...coinIssueIds)", { coinIssueIds })
+      .orderBy("cii.createdAt", "ASC")
+      .getMany();
+  }
+
+  /**
+   * Every line of one handover, ROW-LOCKED IN ASCENDING ID ORDER.
+   *
+   * The order is not cosmetic. Two admins recording returns against the same
+   * issue take the same locks, and taking them in different orders deadlocks
+   * intermittently — the kind of failure that never reproduces on demand.
+   * PostgreSQL locks rows in the order the query yields them, so the ORDER BY
+   * is the fix. See .claude/ARCHITECTURE.md §4.3
+   */
+  async findByIssueIdForUpdate(
+    coinIssueId: string,
+    em: EntityManager,
+  ): Promise<CoinIssueItem[]> {
+    return em
+      .getRepository(CoinIssueItem)
+      .createQueryBuilder("cii")
+      .setLock("pessimistic_write")
+      .where("cii.coinIssueId = :coinIssueId", { coinIssueId })
+      .orderBy("cii.id", "ASC")
       .getMany();
   }
 }

@@ -217,7 +217,8 @@
     "accountSettings": "Account settings",
     "toggleSidebar": "Toggle sidebar",
     "toggleTheme": "Toggle theme",
-    "language": "Language"
+    "language": "Language",
+    "coinAdjustments": "Stock Adjustments"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -883,7 +884,927 @@
     "drift": {
       "title": "Coin balance mismatch — {name}",
       "body": "The stored balance says {stored} coins but the ledger adds up to {ledger}. A difference of {difference} coins.",
-      "reassurance": "Nothing has been changed. Recheck the ledger before issuing more."
+      "reassurance": "Nothing has been changed. Recheck the ledger before issuing more.",
+      "titleMany": "Coin balance mismatch — {count} coin types",
+      "line": "{name}: stored {stored}, ledger {ledger} ({difference} coins)",
+      "openLedger": "Open ledger"
+    },
+    "issues": {
+      "title": "Coin Issues",
+      "subtitle": "Coins handed to staff, what came back, and what is still owed",
+      "new": "Issue coins",
+      "searchPlaceholder": "Search issue no, staff name, phone…",
+      "coinsCount": "{coins} coins",
+      "coinTypeCount": "{count} coin types",
+      "refundTooltip": "{staff} paid more than was payable. You owe him this amount.",
+      "columns": {
+        "expand": "Expand",
+        "expandRow": "Show the coin breakdown for {code}",
+        "issue": "ISSUE",
+        "date": "DATE",
+        "staff": "STAFF",
+        "issued": "ISSUED",
+        "returned": "RETURNED",
+        "netPayable": "NET PAYABLE",
+        "collected": "COLLECTED",
+        "pending": "PENDING",
+        "status": "STATUS",
+        "actions": "Actions"
+      },
+      "chips": {
+        "pending": "Pending",
+        "partial": "Partial",
+        "settled": "Settled",
+        "refundDue": "Refund due"
+      },
+      "badges": {
+        "rounding": "Rounding"
+      },
+      "modes": {
+        "CASH": "Cash",
+        "UPI": "UPI",
+        "BANK_TRANSFER": "Bank transfer",
+        "WRITE_OFF": "Write-off",
+        "COIN": "Coins"
+      },
+      "breakdown": {
+        "coinType": "COIN TYPE",
+        "packets": "PACKETS",
+        "coins": "COINS",
+        "rate": "RATE",
+        "issuedValue": "ISSUED VALUE",
+        "returned": "RETURNED",
+        "net": "NET",
+        "total": "Total",
+        "empty": "No coin lines on this issue.",
+        "paymentLine": "Collected {collected} · Pending {pending}"
+      },
+      "kpi": {
+        "openIssues": "OPEN ISSUES",
+        "openIssuesBreakdown": "of {total} issues",
+        "nothingOpen": "Nothing open",
+        "coinsOut": "COINS OUT",
+        "coinsOutBreakdown": "with {staff} staff",
+        "nothingOut": "Nothing out with staff",
+        "pending": "PENDING",
+        "nothingPending": "Nothing to collect",
+        "refundsDue": "REFUNDS DUE",
+        "refundsDueBreakdown": "{staff} staff members",
+        "noRefunds": "No refunds owed"
+      },
+      "empty": {
+        "title": "No coin issues yet",
+        "body": "When you hand packets of coins to a staff member to sell, record it here. You'll see what's owed, what came back, and what's still pending."
+      },
+      "noResults": {
+        "title": "No issues match your filters"
+      },
+      "error": {
+        "title": "Couldn't load coin issues",
+        "body": "The server didn't respond. Nothing has been changed.",
+        "cta": "Try again"
+      },
+      "actions": {
+        "rowMenu": "Actions for {code}",
+        "recordPayment": "Record payment",
+        "recordRefund": "Record refund {amount}",
+        "recordReturn": "Record return",
+        "settleDifference": "Settle difference {amount}",
+        "openIssue": "Open issue",
+        "cancelIssue": "Cancel issue",
+        "settle": {
+          "title": "Write off {amount} on {code}?",
+          "body": "Rounding left {amount} outstanding. Writing it off closes the issue and records a {amount} write-off against it. This can't be undone.",
+          "confirm": "Write off {amount}",
+          "success": "{amount} written off — {code} is now settled"
+        },
+        "cancel": {
+          "title": "Cancel issue {code}?",
+          "body": "{coins} coins go back into stock and {staff} stops owing {payable}. The {collected} already paid is not touched — record a refund separately. This can't be undone.",
+          "confirm": "Cancel issue",
+          "success": "{code} cancelled — the coins are back in stock"
+        }
+      },
+      "form": {
+        "back": "Coin Issues",
+        "title": "Issue coins",
+        "subtitle": "Hand packets to a staff member and record what they now owe",
+        "sections": {
+          "details": "Issue details",
+          "coins": "Coins",
+          "payment": "Payment at issue"
+        },
+        "staff": "Staff",
+        "staffPlaceholder": "Search staff by name or phone…",
+        "staffEmpty": "No staff found",
+        "staffOwes": "{staff} currently owes {amount} on {issues} open issues",
+        "staffOwedByUs": "You owe {staff} {amount}",
+        "staffClear": "{staff} has nothing outstanding",
+        "issueDate": "Issue date",
+        "note": "Note",
+        "notePlaceholder": "e.g. Evening route, Sector 7",
+        "columns": {
+          "coinType": "COIN TYPE",
+          "packets": "PACKETS",
+          "coins": "COINS",
+          "perCoin": "PER-COIN",
+          "amount": "AMOUNT",
+          "inStock": "IN STOCK"
+        },
+        "coinTypePlaceholder": "Choose a coin type",
+        "alreadyAdded": "· already added",
+        "removeLine": "Remove this coin type",
+        "addLine": "Add coin type",
+        "stockInline": "Only {available} {name} are in stock ({packets} packets + {coins}).",
+        "stockHint": "One line asks for more coins than are in stock. You'll be told exactly what's available when you save.",
+        "breakdownEmpty": "Add a coin type to see the breakdown",
+        "breakdownLine": "{packets} packets × {perPacket} = {coins} coins × {rate} = {amount}",
+        "breakdownTotal": "Total",
+        "unevenRate": "{name} is {rate} per coin. Line amounts round to 2 decimals, so totals can differ by a few paise.",
+        "paidNow": "Amount paid now",
+        "mode": "Payment mode",
+        "payFull": "Full {amount}",
+        "payNothing": "Nothing now",
+        "settlementLine": "Total payable {total} · Paid now {paid} · Balance {balance}",
+        "overpayWarning": "Paid now ({paid}) is more than the total payable ({total}). Saving will create a {extra} refund due to {staff}.",
+        "formErrorTitle": "This issue couldn't be saved",
+        "submit": "Issue coins",
+        "submitting": "Issuing…",
+        "createdToast": "{code} issued — {coins} coins to {staff}, {amount} still due",
+        "discardTitle": "Discard this issue?",
+        "discardBody": "{lines} coin lines and a {amount} payment will be lost.",
+        "discardConfirm": "Discard",
+        "noCoinTypes": {
+          "title": "No coin types yet",
+          "body": "You need at least one coin type before you can issue coins. Define its packet size and packet amount first.",
+          "cta": "Add a coin type"
+        }
+      },
+      "errors": {
+        "staffRequired": "Choose a staff member",
+        "staffInactive": "That staff member is no longer active.",
+        "coinTypeRequired": "Choose a coin type",
+        "coinTypeInactive": "{coinTypeName} is no longer active. Remove this line or reactivate the coin type.",
+        "duplicateCoinType": "That coin type is already on this issue",
+        "atLeastOneLine": "Add at least one coin type",
+        "tooManyLines": "An issue can hold at most 50 coin types",
+        "packetsRequired": "Enter how many packets",
+        "packetsPositive": "Packets must be more than 0",
+        "wholePacketsOnly": "Whole packets only",
+        "packetsTooLarge": "That is more packets than the plant holds",
+        "coinsRequired": "Enter how many coins are coming back",
+        "coinsNegative": "Coins can't be negative",
+        "wholeCoinsOnly": "Whole coins only",
+        "coinsTooLarge": "That is more coins than the plant holds",
+        "amountRequired": "Enter an amount",
+        "amountPositive": "Amount must be more than ₹0.00",
+        "amountNegative": "Amount can't be negative",
+        "amountPaise": "Amounts go to paise, not further",
+        "amountTooLarge": "That amount is too large",
+        "modeRequired": "Choose a payment mode",
+        "referenceTooLong": "That reference is too long",
+        "noteTooLong": "That note is too long",
+        "issueDateFuture": "Issue date can't be in the future",
+        "returnDateFuture": "The return date can't be in the future",
+        "paymentDateFuture": "The date can't be in the future",
+        "returnBeforeIssue": "The return date can't be before the issue date ({issueDate}).",
+        "returnNothing": "Enter how many coins are coming back",
+        "returnAllZero": "Every line is 0. Enter a quantity on at least one coin type.",
+        "overReturn": "Only {remainingCoins} {coinTypeName} are still out on this issue. Enter {remainingCoins} or fewer.",
+        "insufficientStock": "Only {availableCoins} {coinTypeName} are in stock. Reduce the quantity or add stock first.",
+        "stockChanged": "{coinTypeName} stock changed while you were filling this in — only {availableCoins} are left. Your entry is safe. Update the packets and try again.",
+        "refundExceeds": "You can only refund up to {maxAmount} on this issue.",
+        "nothingToRefund": "There's nothing to refund on this issue.",
+        "nothingToSettle": "There's nothing outstanding on this issue.",
+        "tooLargeToWriteOff": "{outstandingAmount} is a real balance, not rounding. Collect it or refund it rather than writing it off.",
+        "cancelledNoChanges": "{code} was cancelled. Nothing more can be recorded against it.",
+        "stockChangedUnknown": "Coin stock changed while you were filling this in and there are no longer enough coins. Your entry is safe — open the coin type to see the current stock, then try again."
+      },
+      "detail": {
+        "back": "Coin Issues",
+        "meta": "{staff} · {phone} · Issued {date}",
+        "coinsCount": "{coins} coins",
+        "summary": {
+          "issued": "Issued value",
+          "returned": "Returned value",
+          "netPayable": "Net payable",
+          "collected": "Collected",
+          "pending": "Pending",
+          "refundDue": "Refund due",
+          "stillToCollect": "Still to collect",
+          "settled": "Settled"
+        },
+        "refundBanner": {
+          "title": "You owe {staff} {amount}",
+          "body": "He paid {paid} against {payable} payable. Record the refund when you hand over the cash — the amount already paid is never edited."
+        },
+        "roundingBanner": "{amount} is still open on this issue because of rounding. You can write it off to close it.",
+        "cancelledBanner": "Cancelled. {coins} coins went back into stock. The {collected} collected was not touched.",
+        "tabs": {
+          "coins": "Coins {count}",
+          "returns": "Returns {count}",
+          "payments": "Payments {count}"
+        },
+        "breakdown": {
+          "coinType": "COIN TYPE",
+          "packets": "PACKETS",
+          "coins": "COINS",
+          "rate": "RATE",
+          "issuedValue": "ISSUED VALUE",
+          "returned": "RETURNED",
+          "net": "NET",
+          "total": "Total"
+        },
+        "timeline": {
+          "returned": "Returned {coins} {name} — {amount} credited",
+          "paid": "Paid {amount} by {mode}",
+          "refunded": "Refunded {amount} by {mode}"
+        },
+        "emptyReturns": {
+          "title": "Nothing returned yet",
+          "body": "When {staff} brings back unsold coins, record them here and his balance drops."
+        },
+        "emptyPayments": {
+          "title": "No payments recorded",
+          "body": "{staff} owes {amount} on this issue."
+        },
+        "notFound": {
+          "title": "That issue no longer exists",
+          "body": "It may have been removed. Nothing has been changed.",
+          "cta": "Back to Coin Issues"
+        },
+        "error": {
+          "title": "Couldn't load this issue",
+          "body": "The issue may have been cancelled. Nothing has been changed."
+        }
+      },
+      "returnModal": {
+        "title": "Record coin return",
+        "subtitle": "{code} · {staff} · Issued {date}",
+        "returnDate": "Return date",
+        "columns": {
+          "coinType": "COIN TYPE",
+          "issued": "ISSUED",
+          "alreadyReturned": "ALREADY RETURNED",
+          "returningNow": "RETURNING NOW",
+          "remaining": "REMAINING"
+        },
+        "overReturn": "Only {remaining} {name} are still out on this issue.",
+        "returnEverything": "Return everything",
+        "note": "Note",
+        "notePlaceholder": "e.g. Unsold, counted back at the plant",
+        "panel": {
+          "returning": "Returning {coins} coins worth",
+          "netPayable": "Net payable",
+          "collected": "Collected",
+          "newPending": "New pending"
+        },
+        "refundFlip": "After this return you will owe {staff} {amount}. The issue will show a blue Refund badge. Record the refund from the issue page when you hand the cash over.",
+        "fixQuantity": "Fix the highlighted quantity first",
+        "submit": "Record return",
+        "submitting": "Recording…",
+        "success": "{coins} coins returned — {amount} still due from {staff}",
+        "successRefund": "{coins} coins returned — you now owe {staff} {amount}",
+        "empty": {
+          "title": "Everything has been returned",
+          "body": "All {coins} coins on {code} are back in stock."
+        }
+      },
+      "paymentModal": {
+        "title": "Record payment",
+        "titleRefund": "Record refund",
+        "subtitle": "{code} · {staff} · {amount} still due",
+        "subtitleRefund": "{code} · {staff} · You owe {amount}",
+        "directionIn": "Money coming IN from {staff}",
+        "directionOut": "Money going OUT to {staff}",
+        "amount": "Amount",
+        "amountHelper": "{amount} still due",
+        "amountHelperRefund": "Full refund is {amount}",
+        "mode": "Payment mode",
+        "date": "Date",
+        "reference": "Reference",
+        "referencePlaceholder": "UPI ref / cheque no.",
+        "note": "Note",
+        "notePlaceholder": "Optional",
+        "resultLabel": "Pending",
+        "overpayWarning": "{paid} is more than the {due} due. The extra {extra} will show as a refund owed to {staff}.",
+        "errors": {
+          "refundExceeds": "You can only refund up to {amount} on this issue."
+        },
+        "submit": "Record payment",
+        "submitRefund": "Record refund",
+        "submitting": "Recording…",
+        "success": "Payment of {amount} recorded — {code} is now settled",
+        "successRefund": "Refund of {amount} recorded — {code} is now settled",
+        "empty": {
+          "title": "Nothing outstanding",
+          "body": "{code} is fully settled. There's nothing to collect or refund."
+        }
+      }
+    },
+    "adjustments": {
+      "title": "Stock Adjustments",
+      "subtitle": "Manual corrections to coin stock, and why each one was made",
+      "new": "New adjustment",
+      "searchPlaceholder": "Search reason, note, adjustment no…",
+      "backToTypes": "Back to coin types",
+      "columns": {
+        "date": "DATE",
+        "coinType": "COIN TYPE",
+        "reason": "REASON",
+        "coins": "COINS",
+        "value": "VALUE",
+        "note": "NOTE"
+      },
+      "chips": {
+        "increases": "Increases",
+        "decreases": "Decreases",
+        "reconciliation": "Reconciliation"
+      },
+      "reasons": {
+        "OPENING_STOCK": "Opening stock",
+        "MINTED": "New stock",
+        "PURCHASED": "Purchased",
+        "LOST": "Lost",
+        "DAMAGED": "Damaged",
+        "STOLEN": "Stolen",
+        "RECONCILIATION": "Reconciliation"
+      },
+      "empty": {
+        "title": "No stock adjustments yet",
+        "body": "Adjustments are for coins that arrive or disappear outside the normal flow — new printing, damage, or a count that didn't match. Every one needs a reason."
+      },
+      "noResults": {
+        "title": "No adjustments match your filters"
+      },
+      "error": {
+        "title": "Couldn't load adjustments",
+        "body": "The server didn't respond. Nothing has been changed.",
+        "cta": "Try again"
+      },
+      "form": {
+        "title": "New stock adjustment",
+        "subtitle": "Corrects stock outside the normal issue-and-return flow",
+        "permanence": "This writes a permanent ledger entry. It can't be edited or deleted later — only reversed.",
+        "coinType": "Coin type",
+        "coinTypePlaceholder": "Choose a coin type",
+        "stockContext": "{coins} coins in stock ({packets} packets + {loose})",
+        "date": "Date",
+        "direction": "Direction",
+        "directionIn": "In — new coins",
+        "directionOut": "Out — lost or damaged",
+        "coins": "Coins",
+        "liveResult": "= {value} · new balance {balance}",
+        "insufficient": "Only {available} {name} are in stock. You can't remove {requested}.",
+        "reason": "Reason",
+        "reasonPlaceholder": "Choose a reason",
+        "noteLabel": "What happened?",
+        "noteHelper": "Required. A stock change with no explanation can't be audited later.",
+        "notePlaceholder": "e.g. Damaged in the store room — water leak on the shelf",
+        "submit": "Record adjustment",
+        "submitting": "Recording…",
+        "successIn": "{coins} {name} added — new balance {balance} coins",
+        "successOut": "{coins} {name} removed — new balance {balance} coins"
+      },
+      "errors": {
+        "coinTypeRequired": "Choose a coin type",
+        "coinTypeInactive": "{coinTypeName} is no longer active.",
+        "directionRequired": "Choose a direction",
+        "coinsRequired": "Enter how many coins",
+        "coinsPositive": "Coins must be more than 0",
+        "wholeCoinsOnly": "Whole coins only",
+        "coinsTooLarge": "That is more coins than the plant holds",
+        "reasonRequired": "Choose a reason",
+        "reasonDirectionMismatch": "That reason doesn't match the direction you chose",
+        "noteRequired": "Explain why the stock changed — for example \"Counted 12 short at the month-end check\".",
+        "noteTooLong": "That note is too long",
+        "dateFuture": "The adjustment date can't be in the future.",
+        "insufficientStock": "Only {availableCoins} {coinTypeName} are in stock. You can't remove {requestedCoins}.",
+        "insufficientStockUnknown": "There aren't enough coins in stock for that adjustment. Open the coin type to see the current balance."
+      }
+    }
+  },
+  "partyOrders": {
+    "title": "Party Orders",
+    "subtitle": "Multi-day event bookings, their delivery schedule and their money",
+    "searchPlaceholder": "Search code, party name, phone, address…",
+    "noSchedule": "No days yet",
+    "progressTooltip": "{delivered} of {total} days delivered · {skipped} skipped · {scheduled} still scheduled",
+    "meta": {
+      "days": "{count, plural, one {# day} other {# days}}"
+    },
+    "actions": {
+      "add": "+ New Booking",
+      "calendar": "Calendar",
+      "addDay": "Add a day",
+      "recordPayment": "Record Payment",
+      "editBooking": "Edit booking",
+      "cancelBooking": "Cancel booking",
+      "more": "More actions",
+      "cancel": "Cancel",
+      "dismiss": "Dismiss"
+    },
+    "columns": {
+      "code": "CODE",
+      "party": "PARTY",
+      "address": "ADDRESS",
+      "dates": "DATES",
+      "days": "DAYS",
+      "payable": "PAYABLE",
+      "received": "RECEIVED",
+      "outstanding": "OUTSTANDING",
+      "status": "STATUS",
+      "actions": "Actions"
+    },
+    "chips": {
+      "all": "All",
+      "upcoming": "Upcoming",
+      "inProgress": "In progress",
+      "moneyPending": "Money pending",
+      "completed": "Completed"
+    },
+    "filters": {
+      "delivery": "Delivery status",
+      "payment": "Payment status",
+      "from": "From",
+      "to": "To",
+      "deliveryOptions": {
+        "all": "Any delivery status",
+        "upcoming": "Upcoming",
+        "inProgress": "In progress",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      },
+      "paymentOptions": {
+        "all": "Any payment status",
+        "unpaid": "Unpaid",
+        "partial": "Partially paid",
+        "paid": "Paid",
+        "overpaid": "Overpaid",
+        "refundDue": "Refund due"
+      }
+    },
+    "delivery": {
+      "upcoming": "Upcoming",
+      "inProgress": "In progress",
+      "completed": "Completed",
+      "skipped": "{count, plural, one {# day skipped} other {# days skipped}}",
+      "cancelled": "Cancelled"
+    },
+    "empty": {
+      "noData": {
+        "title": "No party bookings yet",
+        "body": "A party order is a calendar of deliveries — 50 jars on the 14th, nothing on the 15th, 80 on the 16th. Book the party once, then build the day-by-day schedule."
+      },
+      "noResults": {
+        "title": "No party orders match your filters",
+        "body": "No bookings match these filters. Try widening the date range or clearing the payment filter.",
+        "bodyWithQuery": "Nothing matches “{query}”. Search covers the code, the party name, the phone number and the address."
+      }
+    },
+    "error": {
+      "listTitle": "Couldn't load party orders",
+      "listBody": "The server didn't respond. Your bookings are safe — nothing has been lost.",
+      "retry": "Try again"
+    },
+    "rowActions": {
+      "menu": "More actions for {party}",
+      "view": "View booking",
+      "recordPayment": "Record payment",
+      "addDay": "Add a delivery day",
+      "edit": "Edit booking",
+      "cancel": "Cancel booking"
+    },
+    "kpis": {
+      "activeLabel": "ACTIVE PARTIES",
+      "activeBreakdown": "{starting} start this week · {days} days scheduled",
+      "activeZero": "No live bookings",
+      "todayLabel": "DELIVERIES TODAY",
+      "todayUnits": "{units} jars planned",
+      "todayZero": "Nothing going out today",
+      "revenueLabel": "PARTY REVENUE THIS MONTH",
+      "revenueBookings": "{count, plural, one {# booking} other {# bookings}}",
+      "revenueZero": "Nothing billed this month",
+      "vsPreviousMonth": "vs {month}",
+      "outstandingLabel": "PARTY OUTSTANDING",
+      "outstandingParties": "across {count, plural, one {# party} other {# parties}}",
+      "outstandingOldest": "Oldest {days} days",
+      "outstandingZero": "Everything settled"
+    },
+    "totals": {
+      "days": "Days scheduled",
+      "units": "Total units",
+      "payable": "Total payable"
+    },
+    "tabs": {
+      "schedule": "Schedule",
+      "payments": "Payments",
+      "activity": "Activity"
+    },
+    "address": {
+      "heading": "Delivery address",
+      "copy": "Copy",
+      "copied": "Address copied"
+    },
+    "banners": {
+      "cancelled": "{code} was cancelled. Its remaining days were called off and only what was delivered is billed.",
+      "refundDue": "{amount} is refundable. {party} paid {paid} and the total is now {total}."
+    },
+    "cancelBooking": {
+      "title": "Cancel {code}?",
+      "body": "{party} has {days} days still to be delivered. They'll be called off and only what has already gone out stays billed. {received} has been received since {from}.",
+      "confirm": "Cancel booking"
+    },
+    "editBooking": {
+      "title": "Edit booking",
+      "save": "Save changes",
+      "saving": "Saving…"
+    },
+    "notFound": {
+      "title": "Party order not found",
+      "body": "That booking doesn't exist, or it was permanently removed. Check the code.",
+      "cta": "Back to party orders"
+    },
+    "wizard": {
+      "title": "New Party Booking",
+      "subtitle": "Book the party, build the day-by-day schedule, take a deposit",
+      "back": "‹ Back",
+      "nextSchedule": "Next: Schedule ›",
+      "nextAdvance": "Next: Advance ›",
+      "nextReview": "Next: Review ›",
+      "book": "Book party order",
+      "booking": "Booking…",
+      "scheduleSummary": "{days} days · {amount}",
+      "advanceSummary": "{amount} advance",
+      "toast": "{code} booked · {party} · {days} days · {amount}",
+      "toastWithAdvance": "{code} booked · {advance} advance recorded · {outstanding} outstanding",
+      "discard": {
+        "title": "Discard this booking?",
+        "body": "You've entered {party} and {days} delivery days. Nothing has been saved yet.",
+        "confirm": "Discard",
+        "noName": "no party name yet"
+      },
+      "steps": {
+        "details": {
+          "title": "Party details",
+          "hint": "Name, phone, address"
+        },
+        "schedule": {
+          "title": "Schedule",
+          "hint": "Delivery days and items"
+        },
+        "advance": {
+          "title": "Advance",
+          "hint": "Optional deposit"
+        },
+        "review": {
+          "title": "Review",
+          "hint": "Confirm and book"
+        }
+      }
+    },
+    "details": {
+      "heading": "Party details",
+      "nameLabel": "Party name",
+      "nameHint": "The name you'll recognise on the day — hall, family or contact person",
+      "namePlaceholder": "e.g. Shreeji Wedding Hall",
+      "phoneLabel": "Phone",
+      "phonePlaceholder": "e.g. 9825044556",
+      "altPhoneLabel": "Alternate phone",
+      "altPhonePlaceholder": "e.g. 9909112233",
+      "addressLabel": "Delivery address",
+      "addressPlaceholder": "Plot, landmark, area, city and PIN",
+      "notesLabel": "Notes",
+      "notesHint": "Access instructions, contact person, anything useful on the day",
+      "notesPlaceholder": "Access instructions, contact person, anything useful on the day"
+    },
+    "advance": {
+      "heading": "Advance payment",
+      "intro": "Taking a deposit is optional. You can record payments any time after booking.",
+      "toggle": "Record an advance now",
+      "dateLabel": "Date",
+      "amountLabel": "Amount",
+      "modeLabel": "Mode",
+      "modes": {
+        "CASH": "Cash",
+        "UPI": "UPI",
+        "BANK_TRANSFER": "Bank transfer"
+      },
+      "reference": "Reference",
+      "upiReference": "UPI reference",
+      "bankReference": "Transaction reference",
+      "referencePlaceholder": "e.g. Paid by Bhavesh at the plant",
+      "later": "You'll be able to record payments from the booking page.",
+      "exceeds": "{amount} is more than the current total of {total}. That's fine for a deposit taken before the schedule is finished — the booking will show {refund} as a refund due until more days are added.",
+      "totalPayable": "Total payable",
+      "advanceNow": "Advance now",
+      "outstandingAfter": "Outstanding after booking"
+    },
+    "review": {
+      "partyHeading": "Party details",
+      "scheduleHeading": "Schedule · {days} days · {range}",
+      "scheduleUnits": "{units} units across the schedule",
+      "advanceHeading": "Advance",
+      "edit": "Edit",
+      "addAdvance": "Add an advance",
+      "noAdvance": "No advance taken. The full {amount} is outstanding.",
+      "totalPayable": "Total payable",
+      "advanceLine": "Advance",
+      "outstanding": "Outstanding"
+    },
+    "schedule": {
+      "summary": "{days, plural, one {# delivery day} other {# delivery days}} · {range} · {units} units",
+      "summaryEmpty": "No delivery days yet",
+      "total": "Total",
+      "addDay": "+ Add a day",
+      "repeat": "Repeat pattern",
+      "duplicate": "Duplicate a day",
+      "duplicateDisabled": "Add a day first",
+      "generatedBanner": "{count} days generated from {from} to {to}. Edit any of them individually — they're ordinary days now.",
+      "empty": {
+        "title": "No delivery days yet",
+        "body": "A party order is a calendar. Add the first day, or generate a run of days and edit them afterwards — 50 jars on the 14th, nothing on the 15th, 80 on the 16th is a perfectly normal schedule.",
+        "add": "+ Add the first day"
+      },
+      "remove": {
+        "title": "Remove {date}?",
+        "body": "{items} items worth {amount} will be removed from this schedule. Total payable goes from {from} to {to}.",
+        "confirm": "Remove day"
+      }
+    },
+    "day": {
+      "today": "Today",
+      "edit": "Edit day",
+      "duplicate": "Duplicate",
+      "duplicateTo": "Duplicate to another date",
+      "markDelivered": "Mark Delivered",
+      "markSkipped": "Mark skipped",
+      "removeDay": "Remove day",
+      "cancelDay": "Cancel day",
+      "restore": "Restore day",
+      "menu": "More actions for {date}",
+      "generated": "Generated",
+      "notAssigned": "Not assigned",
+      "deliveredAt": "delivered {time}",
+      "dayTotal": "Day total",
+      "notBilled": "Not billed",
+      "billedOnDelivered": "Billed on delivered quantities",
+      "noItems": "No items on this day yet",
+      "pastWarning": "This day is in the past and hasn't been marked delivered",
+      "rateOverride": "Rate {price} vs base {base} · {difference}/unit",
+      "status": {
+        "SCHEDULED": "Scheduled",
+        "DELIVERED": "Delivered",
+        "SKIPPED": "Skipped",
+        "CANCELLED": "Cancelled"
+      }
+    },
+    "gap": {
+      "noDelivery": "{date} — no delivery",
+      "collapsed": "{range} · {count, plural, one {# day} other {# days}} with no delivery",
+      "showDays": "Show days",
+      "hideDays": "Hide days",
+      "addDay": "+ Add day",
+      "addDayOn": "Add a delivery day on {date}"
+    },
+    "dayModal": {
+      "addTitle": "Add a delivery day",
+      "editTitle": "Edit delivery day",
+      "dateLabel": "Delivery date",
+      "statusLabel": "Status",
+      "statusLocked": "A new day always starts as Scheduled",
+      "staffLabel": "Assigned staff",
+      "staffPlaceholder": "Nobody assigned",
+      "staffSearch": "Search staff…",
+      "staffEmpty": "No staff match that.",
+      "itemsLabel": "Items",
+      "colProduct": "PRODUCT",
+      "colPlanned": "PLANNED",
+      "colDelivered": "DELIVERED",
+      "colBase": "BASE",
+      "colUnitPrice": "UNIT PRICE",
+      "colTotal": "TOTAL",
+      "productPlaceholder": "Choose a product",
+      "productSearch": "Search products…",
+      "productEmpty": "No product matches that. Check the spelling, or add it in Products.",
+      "addItem": "+ Add item",
+      "removeItem": "Remove this item",
+      "deliveredHelp": "Delivered quantities are optional — fill them in when you mark the day delivered, and billing switches to what actually went out.",
+      "billedOnDelivered": "Billed on {delivered} delivered, not {planned} planned",
+      "rateOverridden": "Rate overridden {difference}/unit · {line}",
+      "notesLabel": "Notes",
+      "notesPlaceholder": "e.g. Deliver by 10 am, mandap starts at 11",
+      "dayTotal": "Day total",
+      "bookingTotal": "Booking total",
+      "deliveredWarning": "This day is already marked delivered. Changing it will re-bill the booking and the total will move.",
+      "add": "Add day",
+      "save": "Save day",
+      "saving": "Saving…"
+    },
+    "generator": {
+      "title": "Repeat pattern",
+      "subtitle": "Generate a run of delivery days, then edit any of them afterwards",
+      "startLabel": "Start date",
+      "endLabel": "End date",
+      "repeatLabel": "Repeat",
+      "modes": {
+        "daily": "Every day",
+        "alternate": "Alternate days",
+        "custom": "Every N days"
+      },
+      "days": "days",
+      "itemsLabel": "Items for each generated day",
+      "perDayTotal": "Per-day total",
+      "staffLabel": "Assign staff (optional)",
+      "staffPlaceholder": "Same staff for every day (optional)",
+      "preview": "PREVIEW",
+      "previewCount": "{count, plural, one {# day} other {# days}}",
+      "previewEmpty": "Choose a start and an end date to preview the run.",
+      "conflict": "already scheduled, will be skipped",
+      "footerSummary": "{days, plural, one {# day} other {# days}} · {units} units will be added",
+      "generate": "Generate {count, plural, one {# day} other {# days}}",
+      "generating": "Generating…",
+      "errors": {
+        "endBeforeStart": "The end date is before the start date.",
+        "noItems": "Add at least one item — every generated day needs something to deliver.",
+        "tooManyDays": "That pattern makes {count} days. Shorten the range — a booking longer than {max} days is almost always a typo.",
+        "allConflict": "Every date in that range is already scheduled. Change the range, or edit the existing days.",
+        "noneSelected": "Tick at least one date to generate."
+      }
+    },
+    "duplicate": {
+      "title": "Duplicate {date}",
+      "body": "{items, plural, one {# item} other {# items}} · {units} units · {amount} will be copied to the date you choose.",
+      "dateLabel": "Copy to",
+      "clash": "{date} is already in this schedule. Pick another date, or edit that day instead.",
+      "copyStaff": "Also copy the assigned staff ({name})",
+      "copyNotes": "Also copy the day's notes",
+      "confirm": "Duplicate day",
+      "duplicating": "Copying…"
+    },
+    "scheduleTab": {
+      "empty": {
+        "title": "No delivery days yet",
+        "body": "This booking has no schedule. Add the days as they're confirmed.",
+        "action": "+ Add the first day"
+      }
+    },
+    "skipDay": {
+      "title": "Mark {date} as skipped?",
+      "body": "The day stays in the schedule but isn't billed. Total payable goes from {from} to {to}.",
+      "confirm": "Mark skipped"
+    },
+    "removeDay": {
+      "title": "Remove {date}?",
+      "body": "{items} items worth {amount} will be removed from this schedule. Total payable goes from {from} to {to}.",
+      "deliveredBody": "A delivered day can't be removed — billing history is preserved. It will be cancelled instead, and its total will come out of the booking.",
+      "confirm": "Remove day",
+      "cancelDay": "Cancel day"
+    },
+    "toast": {
+      "cancelled": "{code} cancelled · remaining days called off",
+      "updated": "{code} updated",
+      "actionFailed": "That didn't save. Nothing has been changed.",
+      "dayAdded": "{date} added · booking total now {total}",
+      "dayUpdated": "{date} updated · booking total now {total}",
+      "dayRemoved": "{date} removed · booking total now {total}",
+      "dayRestored": "{date} is back in the schedule",
+      "daySkipped": "{date} skipped · booking total now {total}"
+    },
+    "payment": {
+      "title": "Record payment",
+      "subtitle": "{code} · {party} · {amount} due",
+      "subtitleSettled": "{code} · {party} · paid in full",
+      "dateLabel": "Date",
+      "amountLabel": "Amount",
+      "payFull": "Pay full {amount}",
+      "modeLabel": "Mode",
+      "modes": {
+        "CASH": "Cash",
+        "UPI": "UPI",
+        "BANK_TRANSFER": "Bank transfer"
+      },
+      "reference": "Reference",
+      "upiReference": "UPI reference",
+      "bankReference": "Transaction reference",
+      "upiPlaceholder": "e.g. 421884993201",
+      "bankPlaceholder": "e.g. NEFT/HDFC/8841002",
+      "advanceLabel": "This is an advance",
+      "advanceHelp": "Marks it as a deposit in the payment history",
+      "advanceBadge": "Advance",
+      "noteLabel": "Note",
+      "notePlaceholder": "e.g. Second instalment, balance on the last day",
+      "totalPayable": "Total payable",
+      "alreadyReceived": "Already received",
+      "thisPayment": "This payment",
+      "outstandingAfter": "Outstanding after",
+      "settles": "Settles this booking",
+      "record": "Record payment",
+      "recording": "Recording…",
+      "advanceExceeds": "{amount} is more than the {outstanding} outstanding. Because this is marked as an advance, that's allowed — the booking will show {refund} as a refund due until more days are added.",
+      "overpayWarning": "{amount} is more than the {outstanding} outstanding. That's allowed — {refund} will show as a refund due. Tick “This is an advance” if more days are still to be scheduled.",
+      "toastPartial": "Payment of {amount} recorded · {outstanding} still due",
+      "toastSettles": "Payment of {amount} recorded · {code} is paid in full",
+      "toastAdvance": "Advance of {amount} recorded · {outstanding} outstanding"
+    },
+    "payments": {
+      "empty": {
+        "title": "No payments recorded yet",
+        "body": "{amount} is payable across {days} delivery days. Record an advance, a part-payment, or the full settlement — whatever actually came in."
+      },
+      "reference": "ref {reference}",
+      "reversed": "Reversed",
+      "advanceNote": "Taken at booking, before any delivery",
+      "running": "Received {paid} of {total} · {outstanding} outstanding",
+      "settled": "Paid in full · {amount} received"
+    },
+    "summary": {
+      "payable": "TOTAL PAYABLE",
+      "payableContext": "{days} days · {units} units",
+      "received": "RECEIVED",
+      "receivedContext": "{advance} advance · {payments} payments",
+      "outstanding": "OUTSTANDING",
+      "dueFrom": "due from {date}",
+      "progress": "PROGRESS",
+      "progressValue": "{delivered} of {total} days",
+      "next": "next {date}",
+      "noneScheduled": "nothing left to deliver"
+    },
+    "activity": {
+      "created": "Booking created · {days} days · {amount}",
+      "payment": "Payment recorded · {amount} {mode}",
+      "advance": "Advance recorded · {amount} {mode}",
+      "delivered": "{date} marked delivered · {units} units",
+      "empty": "Nothing has happened on this booking yet"
+    },
+    "calendar": {
+      "title": "Party Delivery Calendar",
+      "subtitle": "Every scheduled party delivery, by date",
+      "listView": "List view",
+      "today": "Today",
+      "previousMonth": "Previous month",
+      "nextMonth": "Next month",
+      "staffLabel": "Out this month:",
+      "more": "+{count} more",
+      "pillTooltip": "{party} · {items} · {staff} · {amount}",
+      "footer": "{bookings} bookings · {days} delivery days this month · {units} units · {amount}",
+      "empty": {
+        "title": "No party deliveries scheduled",
+        "body": "Nothing is booked for {month}. Deliveries appear here as soon as a booking has a schedule."
+      },
+      "error": {
+        "title": "Couldn't load the calendar",
+        "body": "The server didn't respond. Your bookings are safe.",
+        "cta": "Try again"
+      }
+    },
+    "errors": {
+      "nameRequired": "Enter the party or hall name.",
+      "nameTooLong": "That name is too long.",
+      "phoneRequired": "Enter a 10-digit mobile number.",
+      "phoneInvalid": "Enter a 10-digit mobile number.",
+      "altPhoneInvalid": "Enter a 10-digit mobile number, or leave it blank.",
+      "altPhoneSame": "The alternate number is the same as the main number.",
+      "addressRequired": "Enter the delivery address — this is what the driver reads on the day.",
+      "addressTooLong": "That address is too long.",
+      "notesTooLong": "Those notes are too long.",
+      "dateRequired": "Choose the delivery date.",
+      "dateInFuture": "The payment date can't be in the future.",
+      "duplicateDate": "That date is already in this schedule.",
+      "duplicateDateOn": "{date} is already in this schedule. Pick another date, or edit that day instead.",
+      "duplicateDateShort": "Already scheduled",
+      "noDays": "Add at least one delivery day before continuing.",
+      "tooManyDays": "That's more days than one booking can hold — a booking longer than 60 days is almost always a typo.",
+      "dayWithoutItems": "{date} has no items. Add at least one, or remove the day.",
+      "noItems": "Add at least one item — a delivery day needs something to deliver.",
+      "tooManyItems": "That's more item lines than one day can hold.",
+      "productRequired": "Choose a product.",
+      "productMissing": "One of those products no longer exists. Pick it again.",
+      "quantityRequired": "Enter a planned quantity.",
+      "quantityPositive": "Enter a planned quantity greater than 0.",
+      "quantityWhole": "Quantities are whole numbers.",
+      "quantityTooLarge": "That quantity is too large.",
+      "deliveredInvalid": "Enter the delivered quantity as a whole number.",
+      "deliveredNegative": "The delivered quantity can't be negative.",
+      "priceRequired": "Enter a unit price of ₹0.00 or more.",
+      "priceInvalid": "Enter a unit price of ₹0.00 or more.",
+      "priceNegative": "Enter a unit price of ₹0.00 or more.",
+      "priceDecimals": "Prices have at most two decimal places.",
+      "priceTooLarge": "That price is too large.",
+      "amountRequired": "Enter an amount greater than ₹0.00.",
+      "amountInvalid": "Enter an amount greater than ₹0.00.",
+      "amountPositive": "Enter an amount greater than ₹0.00.",
+      "amountDecimals": "Amounts have at most two decimal places.",
+      "amountTooLarge": "That amount is too large.",
+      "advanceAmount": "Enter an amount greater than ₹0.00, or turn off “Record an advance now”.",
+      "modeRequired": "Choose how the money came in.",
+      "referenceRequired": "Enter the reference, or switch the mode to Cash.",
+      "referenceTooLong": "That reference is too long.",
+      "nothingToUpdate": "Nothing has been changed.",
+      "couldNotSave": "This booking couldn't be saved. Nothing has been booked — your details and every day are still here.",
+      "bookingCancelled": "This booking is cancelled and can't be changed.",
+      "staleVersion": "This booking was changed while you were editing. Reload to see the current version — your changes here haven't been saved.",
+      "deliveredDayNotRemovable": "A delivered day can't be removed, only cancelled — billing history is preserved."
     }
   },
   "expenseCategories": {

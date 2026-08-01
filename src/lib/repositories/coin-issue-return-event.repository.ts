@@ -55,6 +55,61 @@ class CoinIssueReturnEventRepository extends BaseRepository<CoinIssueReturnEvent
     return { coins: Number(raw?.coins ?? 0), value: Number(raw?.value ?? 0) };
   }
 
+  /** The return history of a whole issue — every event on any of its lines. */
+  async findByItemIds(
+    coinIssueItemIds: string[],
+    em?: EntityManager,
+  ): Promise<CoinIssueReturnEvent[]> {
+    if (coinIssueItemIds.length === 0) return [];
+    const qb = await this.qb(em);
+    return qb
+      .where("cire.coinIssueItemId IN (:...coinIssueItemIds)", {
+        coinIssueItemIds,
+      })
+      .orderBy("cire.returnDate", "DESC")
+      .addOrderBy("cire.createdAt", "DESC")
+      .getMany();
+  }
+
+  /**
+   * NET coins and value per line, for MANY lines at once.
+   *
+   * The register's expanded panel needs a returned VALUE per coin type, and
+   * `coin_issue_items.coins_returned` only caches the COUNT. Recomputing the
+   * value as `coins × rate` would disagree with the header the moment a rate
+   * divides unevenly, because each event stored its own rounded credit.
+   * See MODULES/04-coins.md §8.2
+   *
+   * Grouped and summed in SQL, converted once here. Reversals carry negative
+   * quantities, so a plain SUM is already the correct answer.
+   */
+  async sumByItemIds(
+    coinIssueItemIds: string[],
+    em?: EntityManager,
+  ): Promise<Map<string, { coins: number; value: number }>> {
+    const out = new Map<string, { coins: number; value: number }>();
+    if (coinIssueItemIds.length === 0) return out;
+
+    const qb = await this.qb(em);
+    const rows = await qb
+      .select("cire.coin_issue_item_id", "item_id")
+      .addSelect("COALESCE(SUM(cire.coins_returned), 0)", "coins")
+      .addSelect("COALESCE(SUM(cire.value_credited), 0)", "value")
+      .where("cire.coinIssueItemId IN (:...coinIssueItemIds)", {
+        coinIssueItemIds,
+      })
+      .groupBy("cire.coin_issue_item_id")
+      .getRawMany<{ item_id: string; coins: string; value: string }>();
+
+    for (const row of rows) {
+      out.set(row.item_id, {
+        coins: Number(row.coins),
+        value: Number(row.value),
+      });
+    }
+    return out;
+  }
+
   /* ── Append-only guards ───────────────────────────────────────────────────
    *
    * Declared with NO parameters on purpose: a caller attempting an update or a

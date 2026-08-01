@@ -104,6 +104,15 @@ export interface PartyOrderListItemDto {
 }
 
 export interface PartyOrderDto extends PartyOrderListItemDto {
+  /**
+   * Access instructions, contact person — what the driver needs on the day.
+   *
+   * On the DETAIL shape rather than the list row: the address card and the edit
+   * form both render it, and a list of 25 bookings has no room for it. Omitting
+   * it entirely would mean the wizard captures notes that are never shown
+   * again.
+   */
+  notes: string | null;
   createdAt: string;
   updatedAt: string;
   /** Optimistic lock — the edit form sends it back. */
@@ -207,6 +216,14 @@ export interface PartyCalendarDto {
   from: string;
   to: string;
   deliveries: PartyCalendarDeliveryDto[];
+  /**
+   * One money total per date — the figure in the corner of each cell.
+   *
+   * From a grouped SQL aggregate, not a `reduce` over `deliveries`: it is money,
+   * and cell totals that disagree with the footer band are worse than none.
+   * Only dates with a non-cancelled delivery appear.
+   */
+  dayTotals: { serviceDate: string; amount: number }[];
   /** Every staff member with a delivery this month — the chip row. */
   staff: { id: string; name: string }[];
   totals: {
@@ -318,6 +335,7 @@ export function toPartyOrderDto(
 ): PartyOrderDto {
   return {
     ...toPartyOrderListItemDto(order, progress, today),
+    notes: order.notes,
     createdAt: order.createdAt.toISOString(),
     updatedAt: order.updatedAt.toISOString(),
     version: order.version,
