@@ -1,4 +1,7 @@
 import {
+  BarChart3,
+  Inbox,
+  SearchX,
   Banknote,
   CheckCircle2,
   BookOpen,
@@ -36,7 +39,7 @@ import {
  * Names follow the icon map in .claude/design/DESIGN-STANDARDS.md §17, so the
  * same concept gets the same glyph everywhere.
  */
-export const KPI_ICONS = {
+export const APP_ICONS = {
   staff: Users,
   staffActive: UserCheck,
   active: CheckCircle2,
@@ -53,8 +56,15 @@ export const KPI_ICONS = {
   jarsOut: PackageX,
   returned: PackageCheck,
   refund: RotateCcw,
+  chart: BarChart3,
+  search: SearchX,
+  inbox: Inbox,
   trendUp: TrendingUp,
   trendDown: TrendingDown,
 } as const satisfies Record<string, LucideIcon>;
 
-export type KpiIconName = keyof typeof KPI_ICONS;
+export type AppIconName = keyof typeof APP_ICONS;
+
+/** Back-compat alias — KpiCard was the first component to need this. */
+export const KPI_ICONS = APP_ICONS;
+export type KpiIconName = AppIconName;

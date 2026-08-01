@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { TrendingDown, TrendingUp } from "lucide-react";
-import { KPI_ICONS, type KpiIconName } from "./kpi-icons";
+import { KPI_ICONS, type KpiIconName } from "./icons";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { formatINR, formatINRCompact, formatQuantity } from "@/lib/money";
@@ -46,7 +46,7 @@ export interface KpiCardProps {
   /**
    * Icon NAME, not a component reference. A LucideIcon is a function and
    * cannot cross the server->client boundary, so `icon={Coins}` from a server
-   * component throws. See ./kpi-icons.ts
+   * component throws. See ./icons.ts
    */
   icon?: KpiIconName;
   value?: number | string | null;

@@ -1,7 +1,7 @@
 import "server-only";
 import { withTx } from "@/lib/db/data-source";
 import { expenseCategoryRepository } from "@/lib/repositories/expense-category.repository";
-import { AppError, NotFoundError } from "@/lib/errors";
+import { AppError, ConflictError, NotFoundError } from "@/lib/errors";
 import { logger } from "@/lib/logger";
 import {
   toExpenseCategoryDto,
@@ -182,7 +182,6 @@ export async function updateCategory(
     }
 
     if (input.isActive !== undefined) {
-      if (!input.isActive) assertDeactivatable(id);
       category.isActive = input.isActive;
     }
 
@@ -272,14 +271,21 @@ export async function reorderCategories(
   }, userId);
 }
 
-/**
- * TODO(wave-3): refuse to switch off a category that still has expenses filed
- * under it this month, or offer to move them. The count lives on
- * `expenseRepository` (a repository queries its own table only), so this check
- * becomes `await expenseRepository.countByCategory(id, em)` once the Expenses
- * module exists. Until then every category is switchable — which is harmless,
- * because switching off is reversible and touches no expense row.
+/*
+ * There is deliberately NO "cannot switch off a category in use" guard.
+ *
+ * Switching a category off removes it from the picker on NEW expenses and
+ * leaves every past expense exactly as it was — which is the whole point, and
+ * what the confirm dialog promises: "It stays on every past expense, but won't
+ * appear when you add a new one."
+ *
+ * Blocking it on usage would invert the feature. The only categories anyone
+ * ever wants to retire are the ones they have already used; a category with
+ * zero expenses can just be renamed. A guard here would mean "Coin printing"
+ * could never be switched off precisely because it once mattered.
+ *
+ * DELETE is the operation that must be blocked, and it already is: there is no
+ * hard-delete path in this service, and every expense.category_id is an
+ * ON DELETE RESTRICT foreign key.
+ * See .claude/design/MODULES/07-expenses.md §6.4
  */
-function assertDeactivatable(_categoryId: string): void {
-  // Intentionally empty until Wave 3.
-}

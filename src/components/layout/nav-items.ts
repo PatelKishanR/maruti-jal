@@ -49,7 +49,7 @@ export const navGroups: NavGroup[] = [
       { key: "deliveryOrders", href: "/orders", icon: ClipboardList, ready: false },
       { key: "coinIssues", href: "/coins/issues", icon: Coins, ready: false },
       { key: "partyOrders", href: "/party-orders", icon: PartyPopper, ready: false },
-      { key: "directSales", href: "/direct-sales", icon: Droplet, ready: false },
+      { key: "directSales", href: "/direct-sales", icon: Droplet, ready: true },
     ],
   },
   {
@@ -64,7 +64,7 @@ export const navGroups: NavGroup[] = [
   {
     labelKey: "money",
     items: [
-      { key: "expenses", href: "/expenses", icon: Receipt, ready: false },
+      { key: "expenses", href: "/expenses", icon: Receipt, ready: true },
       { key: "payments", href: "/payments", icon: Banknote, ready: false },
     ],
   },

@@ -3,6 +3,7 @@
 import * as React from "react";
 import { useTranslations } from "next-intl";
 import { AlertTriangle, Inbox, SearchX, type LucideIcon } from "lucide-react";
+import { APP_ICONS, type AppIconName } from "./icons";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -28,7 +29,14 @@ export interface EmptyStateProps {
    * The module icon (`ClipboardList`, `Coins`, …) — §17. Ignored for
    * `no-results`, which always uses `SearchX` so the two never look alike.
    */
-  icon?: LucideIcon;
+  /**
+   * Icon NAME (preferred) or component.
+   *
+   * A LucideIcon is a function and cannot cross the server->client boundary,
+   * so a server component — a detail page's not-found block, say — can only
+   * use the name form. See ./icons.ts
+   */
+  icon?: AppIconName | LucideIcon;
   /** Already translated, e.g. "No orders yet". */
   title?: string;
   /** Already translated. For `no-data`, say what happens next. */
@@ -56,7 +64,9 @@ export function EmptyState({
 }: EmptyStateProps) {
   const t = useTranslations("common");
   const noResults = variant === "no-results";
-  const Icon = noResults ? SearchX : (icon ?? Inbox);
+  const resolved =
+    typeof icon === "string" ? APP_ICONS[icon] : icon;
+  const Icon = noResults ? SearchX : (resolved ?? Inbox);
 
   return (
     <div
