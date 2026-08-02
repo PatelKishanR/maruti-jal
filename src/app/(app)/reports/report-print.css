@@ -264,7 +264,16 @@
   }
 
   .report-print__page::after {
-    content: counter(page) " of " counter(pages);
+    /*
+     * The separator arrives as a CSS custom property, not a literal.
+     *
+     * `content:` cannot read a translation, so a hardcoded " of " footered
+     * every page of a Gujarati statement as "પૃષ્ઠ 1 of 2" — a mixed-script
+     * line on the most public-facing document the app produces. The print
+     * document sets `--page-of` from the catalogue; the fallback keeps the
+     * rule valid if it is ever rendered without one.
+     */
+    content: counter(page) var(--page-of, " of ") counter(pages);
   }
 
   /* Room for the fixed footer to sit in without landing on a row. */

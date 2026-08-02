@@ -455,7 +455,7 @@ async function staffOutstanding(
 
   const staff = await staffRepository.findById(filters.staffId);
   if (!staff) {
-    throw new NotFoundError("staff.notFound", { staffId: filters.staffId });
+    throw new NotFoundError("Staff", { staffId: filters.staffId });
   }
 
   const [
@@ -773,7 +773,7 @@ async function partyStatement(
     filters.partyOrderId,
   );
   if (!order) {
-    throw new NotFoundError("partyOrders.notFound", {
+    throw new NotFoundError("Party order", {
       partyOrderId: filters.partyOrderId,
     });
   }

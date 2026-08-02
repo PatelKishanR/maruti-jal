@@ -118,7 +118,17 @@ export async function PrintFooter({ meta }: { meta: ReportMetaDto }) {
         {t("businessName")} · {meta.documentCode}
       </span>
       <span>
-        {t("pageLabel")} <span className="report-print__page" />
+        {t("pageLabel")}{" "}
+        {/*
+          * The " of " between the counters comes from the catalogue, via a CSS
+          * custom property — `content:` cannot read a translation, and a
+          * hardcoded separator printed "પૃષ્ઠ 1 of 2" on every page of a
+          * Gujarati statement.
+          */}
+        <span
+          className="report-print__page"
+          style={{ "--page-of": `" ${t("pageOf")} "` } as React.CSSProperties}
+        />
       </span>
       <span>
         {t("generated", {

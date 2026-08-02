@@ -2631,5 +2631,459 @@
       "createdToast": "{code} recorded",
       "updatedToast": "{code} updated"
     }
+  },
+  "reports": {
+    "index": {
+      "title": "Reports",
+      "subtitle": "Seven fixed reports covering the questions that come up daily",
+      "pdfBadge": "PDF",
+      "ready": "Ready to run",
+      "back": "Reports",
+      "alerts": {
+        "coinsNotTying": "{count} of {total} coin types don't tie",
+        "jarsOverdue": "{jars} jars out 7+ days with {staff} staff"
+      }
+    },
+    "error": {
+      "title": "Couldn't run this report",
+      "body": "The server didn't respond. Nothing was changed — reports only read.",
+      "cta": "Try again"
+    },
+    "export": {
+      "generated": "Generated {time} · {rows} rows",
+      "csv": "Export CSV",
+      "pdf": "Export PDF",
+      "print": "Print",
+      "noPdf": "PDF isn't offered for this report — it's a working document, not one that gets handed over.",
+      "nothingToExport": "Run a report with at least one row first."
+    },
+    "filters": {
+      "staff": "Staff",
+      "partyOrder": "Party order",
+      "coinType": "Coin type",
+      "date": "Date",
+      "from": "From",
+      "to": "To",
+      "products": "Products",
+      "allStaff": "All staff",
+      "allCoinTypes": "All coin types",
+      "allProducts": "All products",
+      "chooseParty": "Choose a party order",
+      "searchStaff": "Search staff…",
+      "searchParty": "Search party orders…",
+      "searchCoinType": "Search coin types…",
+      "noStaff": "No staff found",
+      "noParty": "No party orders found",
+      "noCoinType": "No coin types found",
+      "productsSelected": "{count} products",
+      "previousDay": "Previous day",
+      "nextDay": "Next day",
+      "run": "Run report",
+      "updating": "Updating…",
+      "changed": "Filters changed — run the report to update",
+      "preset": {
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "this-month": "This month",
+        "last-month": "Last month",
+        "last-90": "Last 90 days",
+        "this-year": "This year",
+        "custom": "Custom range"
+      }
+    },
+    "print": {
+      "businessName": "MARUTI JAL",
+      "businessLine": "Mineral Water Plant · Mehsana, Gujarat · 9876543210",
+      "period": "Period {range}",
+      "forDate": "For {date}",
+      "generated": "Generated {timestamp}",
+      "pageLabel": "Page",
+      "date": "Date",
+      "receivedBy": "Received by",
+      "issuedBy": "Issued by",
+      "forBusiness": "For Maruti Jal",
+      "amountColumn": "Amount (₹)",
+      "asAtNote": "This statement covers the period shown above and reflects the records as at the time it was generated.",
+      "column": {
+        "total": "Total (₹)",
+        "paid": "Paid (₹)",
+        "balance": "Balance (₹)",
+        "pending": "Pending (₹)"
+      },
+      "pageOf": "of"
+    },
+    "daily-collection": {
+      "title": "Daily collection sheet",
+      "description": "What came in today, from whom, and in what form",
+      "filterHint": "Date",
+      "subtitle": "Collections on {date}",
+      "swipeHint": "Swipe the table sideways to see all columns ›",
+      "subtotal": "Subtotal",
+      "total": "Total",
+      "totalCollected": "TOTAL COLLECTED",
+      "summary": {
+        "total": "TOTAL COLLECTED",
+        "cash": "CASH",
+        "coins": "COINS",
+        "drawer": "EXPECTED IN DRAWER",
+        "drawerNote": "Cash and UPI only",
+        "receipts": "{count} receipts",
+        "coinCount": "{count} coins"
+      },
+      "columns": {
+        "time": "TIME",
+        "source": "SOURCE",
+        "reference": "REFERENCE",
+        "from": "FROM",
+        "mode": "MODE",
+        "amount": "AMOUNT"
+      },
+      "groups": {
+        "DELIVERY": "Delivery order collections",
+        "PARTY": "Party payments",
+        "WALK_IN": "Walk-in sales",
+        "COIN_ISSUE": "Coin issue payments",
+        "none": "— no receipts"
+      },
+      "coins": {
+        "title": "Coins received, by type",
+        "type": "COIN TYPE",
+        "perCoin": "PER COIN",
+        "received": "COINS RECEIVED",
+        "value": "VALUE",
+        "empty": "No coins were received on this date."
+      },
+      "reconciliation": {
+        "line": "Cash {cash} + UPI and bank {other} = expected in drawer {drawer}",
+        "note": "Coins are tokens returning to stock — not cash. Counted separately above.",
+        "crossCheck": "Daily sales records {amount} collected on this date."
+      },
+      "empty": {
+        "title": "Nothing was collected",
+        "body": "Nothing was collected on {date}. Pick another date.",
+        "ordersOnly": "{count} orders were raised but nothing was collected."
+      },
+      "future": {
+        "title": "That date hasn't happened yet",
+        "body": "Pick today or an earlier date."
+      },
+      "print": {
+        "cashReconciliation": "CASH RECONCILIATION",
+        "cashCollected": "Cash collected",
+        "upiBank": "UPI / bank transfer",
+        "counted": "Counted",
+        "difference": "Difference",
+        "checkedBy": "Checked by"
+      }
+    },
+    "staff-outstanding": {
+      "title": "Staff outstanding statement",
+      "description": "Everything one staff member owes — order balances, coin dues, jars still out",
+      "filterHint": "Staff · Date range",
+      "subtitle": "Everything {name} owes as at {date}",
+      "subtitleEmpty": "Choose a staff member to run this statement",
+      "swipeHint": "Swipe the table sideways to see all columns ›",
+      "subtotal": "Subtotal",
+      "total": "Total",
+      "inactive": "{name} is marked inactive. This statement still shows what is owed.",
+      "prompt": {
+        "title": "Choose a staff member",
+        "body": "Pick who the statement is for, then run the report."
+      },
+      "summary": {
+        "totalOwed": "TOTAL OWED",
+        "openRecords": "{count} open records",
+        "orderBalances": "ORDER BALANCES",
+        "orders": "{count} orders",
+        "coinDues": "COIN DUES",
+        "issues": "{count} issues",
+        "jarsOut": "JARS OUT",
+        "overdue": "{count} out {days} days"
+      },
+      "allClear": {
+        "title": "{name} owes nothing",
+        "body": "No order balances, no coin dues, no jars out. Settled as at {date}."
+      },
+      "sectionA": {
+        "title": "Section A · Open delivery orders",
+        "meta": "{count} orders · {amount}",
+        "empty": "No open delivery orders",
+        "outOfRange": "{amount} is owed on orders outside this date range."
+      },
+      "sectionB": {
+        "title": "Section B · Open coin issues",
+        "meta": "{count} issues · {amount}",
+        "empty": "No open coin issues",
+        "outOfRange": "{amount} is pending on coin issues outside this date range."
+      },
+      "sectionC": {
+        "title": "Section C · Jars still out",
+        "meta": "{count} jars",
+        "note": "All jars currently out, regardless of the date range",
+        "empty": "No jars out"
+      },
+      "columns": {
+        "order": "ORDER",
+        "date": "DATE",
+        "items": "ITEMS",
+        "itemsValue": "{items} items · {units} units",
+        "total": "TOTAL",
+        "paid": "PAID",
+        "balance": "BALANCE",
+        "age": "AGE",
+        "ageValue": "{days} days",
+        "issue": "ISSUE",
+        "issued": "ISSUED",
+        "returned": "RETURNED",
+        "pending": "PENDING",
+        "product": "PRODUCT",
+        "fromOrder": "FROM ORDER",
+        "dateOut": "DATE OUT",
+        "qtyOut": "QTY OUT",
+        "daysOut": "DAYS OUT",
+        "status": "STATUS"
+      },
+      "status": {
+        "UNPAID": "Unpaid",
+        "PARTIAL": "Partial",
+        "PAID": "Paid",
+        "OVERPAID": "Overpaid",
+        "REFUND_DUE": "Refund due"
+      },
+      "print": {
+        "sectionA": "A · OPEN DELIVERY ORDERS",
+        "sectionB": "B · OPEN COIN ISSUES",
+        "sectionC": "C · JARS STILL OUT",
+        "sectionCNote": "(all jars out, any date)",
+        "jarsNote": "Jars still out {jars} ({overdue} out more than 7 days)",
+        "totalOwed": "TOTAL AMOUNT OWED",
+        "days": "{days} d"
+      }
+    },
+    "coin-reconciliation": {
+      "title": "Coin reconciliation",
+      "description": "Opening, issued, returned, received, adjusted, closing — per coin type",
+      "filterHint": "Coin type · Date range",
+      "subtitle": "Coin movement, {range}",
+      "swipeHint": "Swipe the table sideways to see all columns ›",
+      "total": "Total",
+      "perCoin": "{price} per coin · {packet} per packet",
+      "checkTooltip": "Computed closing {computed} · Ledger balance {ledger} · Difference {difference} coins",
+      "adjustmentsNote": "Adjustments always carry a reason. {count} adjustments in this period — view them in the ledger.",
+      "balanceNowNote": "Closing is checked against the ledger's own running balance. The live stock figure only matches when the range ends today.",
+      "banner": {
+        "title": "{name} balance doesn't match its ledger — difference {difference} coins",
+        "body": "Open the coin type's ledger to find the entry the balances diverge on."
+      },
+      "summary": {
+        "inStock": "COINS IN STOCK",
+        "types": "{count} coin types",
+        "valueInStock": "VALUE IN STOCK",
+        "outWithStaff": "OUT WITH STAFF",
+        "reconciles": "RECONCILES",
+        "allTie": "All {count} types tie",
+        "notTying": "{count} of {total} types don't tie"
+      },
+      "columns": {
+        "coinType": "COIN TYPE",
+        "opening": "OPENING",
+        "issued": "ISSUED",
+        "returned": "RETURNED",
+        "received": "RECEIVED",
+        "adjusted": "ADJUSTED",
+        "closing": "CLOSING",
+        "check": "CHECK",
+        "ties": "Ties"
+      },
+      "empty": {
+        "title": "No coin movement",
+        "body": "No coin movement in this period. Try widening the date range."
+      }
+    },
+    "party-statement": {
+      "title": "Party order statement",
+      "description": "A client-facing statement of scheduled deliveries and payments received",
+      "filterHint": "Party order",
+      "subtitle": "{name} · {code} · {range}",
+      "subtitleEmpty": "Choose a party order to run this statement",
+      "swipeHint": "Swipe the table sideways to see all columns ›",
+      "advance": "Advance",
+      "cancelled": "This party order was cancelled. The statement shows the position at cancellation.",
+      "prompt": {
+        "title": "Choose a party order",
+        "body": "Pick the event this statement is for."
+      },
+      "summary": {
+        "payable": "TOTAL PAYABLE",
+        "days": "{count} days",
+        "received": "RECEIVED",
+        "payments": "{count} payments",
+        "outstanding": "OUTSTANDING",
+        "delivered": "DAYS DELIVERED"
+      },
+      "schedule": {
+        "title": "Delivery schedule",
+        "empty": "No delivery days on this order yet."
+      },
+      "payments": {
+        "title": "Payments received",
+        "empty": "No payments received yet."
+      },
+      "columns": {
+        "day": "DAY",
+        "date": "DATE",
+        "items": "ITEMS",
+        "item": "ITEM",
+        "qty": "QTY",
+        "rate": "RATE",
+        "amount": "AMOUNT",
+        "mode": "MODE",
+        "note": "NOTE",
+        "status": "STATUS"
+      },
+      "status": {
+        "SCHEDULED": "Scheduled",
+        "DELIVERED": "Delivered",
+        "SKIPPED": "Skipped",
+        "CANCELLED": "Cancelled"
+      },
+      "totals": {
+        "payable": "Total payable",
+        "received": "Total received"
+      },
+      "closing": {
+        "line": "Total payable {payable} − Received {received}",
+        "balance": "Closing balance",
+        "fullyPaid": "Fully paid — nothing outstanding",
+        "refundDue": "Refund due"
+      },
+      "print": {
+        "totalPayable": "TOTAL PAYABLE",
+        "totalReceived": "TOTAL RECEIVED",
+        "closing": "CLOSING BALANCE",
+        "closingPaid": "CLOSING BALANCE — FULLY PAID",
+        "closingRefund": "REFUND DUE"
+      }
+    },
+    "product-movement": {
+      "title": "Product movement",
+      "description": "Units and litres sold per product, per channel",
+      "filterHint": "Date range · Product",
+      "subtitle": "Product movement, {range}",
+      "swipeHint": "Swipe the table sideways to see all columns ›",
+      "total": "Total",
+      "basePrice": "Base {price}",
+      "nonReturnable": "Non-returnable",
+      "noRevenue": "No revenue recorded",
+      "walkInTooltip": "Walk-in sales record an amount, not units, so they can't be split per product.",
+      "walkInNote": "{amount} of walk-in revenue in this period. It has no per-product split.",
+      "monthNote": "Product sales are recorded by month, so this covers {from} to {to} in full.",
+      "summary": {
+        "units": "TOTAL UNITS",
+        "litres": "TOTAL LITRES",
+        "revenue": "REVENUE",
+        "discount": "AVG DISCOUNT vs BASE",
+        "discountValue": "{amount} below base"
+      },
+      "columns": {
+        "product": "PRODUCT",
+        "delivery": "DELIVERY",
+        "party": "PARTY",
+        "walkIn": "WALK-IN",
+        "units": "UNITS",
+        "litres": "LITRES",
+        "revenue": "REVENUE",
+        "avgRate": "AVG RATE"
+      },
+      "empty": {
+        "title": "No products moved",
+        "body": "No products moved in this period. Try widening the date range."
+      }
+    },
+    "profit-loss": {
+      "title": "Profit & loss summary",
+      "description": "Income by channel minus expenses by category",
+      "filterHint": "Date range",
+      "subtitle": "{range}",
+      "banner": {
+        "expensesMissing": "Expenses haven't been recorded for this period, so the profit figure is income only.",
+        "incomeMissing": "No income recorded in this period."
+      },
+      "summary": {
+        "income": "INCOME",
+        "expenses": "EXPENSES",
+        "profit": "PROFIT",
+        "margin": "MARGIN"
+      },
+      "income": {
+        "title": "Income"
+      },
+      "expenses": {
+        "title": "Expenses",
+        "zeroNote": "{count} categories had no expenses in this period."
+      },
+      "columns": {
+        "channel": "CHANNEL",
+        "category": "CATEGORY",
+        "amount": "AMOUNT",
+        "percentOfIncome": "% OF INCOME",
+        "percentOfExpenses": "% OF EXPENSES"
+      },
+      "channels": {
+        "DELIVERY": "Delivery orders",
+        "PARTY": "Party orders",
+        "WALK_IN": "Walk-in sales"
+      },
+      "totals": {
+        "income": "Total income",
+        "expenses": "Total expenses"
+      },
+      "net": {
+        "line": "Income {income} − Expenses {expenses}",
+        "profit": "NET PROFIT",
+        "loss": "NET LOSS",
+        "context": "Margin {margin} · {days} days · {average} average per day"
+      },
+      "empty": {
+        "title": "Nothing recorded",
+        "body": "No income or expenses recorded in this period."
+      }
+    },
+    "jar-reconciliation": {
+      "title": "Jar reconciliation",
+      "description": "Issued, returned empty and filled, lost, still out",
+      "filterHint": "Date range · Staff · Product",
+      "subtitle": "Jar movement, {range}",
+      "swipeHint": "Swipe the table sideways to see all columns ›",
+      "total": "Total",
+      "allSettled": "Every jar issued in this period has been accounted for.",
+      "filledNote": "“Filled” jars came back unsold and were credited against the order total.",
+      "nowNote": "{count} jars are out across the plant right now, including any issued before this period.",
+      "banner": {
+        "writeOffs": "{count} jars were written off in this period. They're excluded from the return rate."
+      },
+      "summary": {
+        "issued": "ISSUED",
+        "returned": "RETURNED",
+        "returnedSplit": "{empty} empty · {filled} filled",
+        "writtenOff": "WRITTEN OFF",
+        "stillOut": "STILL OUT",
+        "overdue": "{count} out 7+ days",
+        "returnRate": "RETURN RATE"
+      },
+      "columns": {
+        "staffProduct": "STAFF / PRODUCT",
+        "issued": "ISSUED",
+        "empty": "EMPTY",
+        "filled": "FILLED",
+        "lost": "LOST",
+        "stillOut": "STILL OUT",
+        "returnRate": "RETURN %"
+      },
+      "empty": {
+        "title": "No jars issued",
+        "body": "No jars were issued in this period. Try widening the date range."
+      }
+    }
   }
 }
