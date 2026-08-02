@@ -2277,5 +2277,77 @@
       "nothingToUpdate": "કંઈ બદલાયું નથી",
       "couldNotSave": "આ ખર્ચ સાચવી શકાયો નહીં"
     }
+  },
+  "orders": {
+    "title": "ડિલિવરી ઓર્ડર",
+    "subtitle": "સ્ટાફને આપેલા જાર, શું પરત આવ્યું, અને શું વસૂલ થયું",
+    "searchPlaceholder": "ઓર્ડર નં, સ્ટાફનું નામ, ફોન શોધો…",
+    "itemsChip": "{lines} વસ્તુ · {units} યુનિટ",
+    "wasTooltip": "વેચાયા વગરના ભરેલા જાર પરત આવતાં {credit} જમા થયા",
+    "bandSummary": "{count} ઓર્ડર",
+    "actions": {
+      "add": "+ નવો ઓર્ડર"
+    },
+    "columns": {
+      "code": "ઓર્ડર",
+      "staff": "સ્ટાફ",
+      "items": "વસ્તુઓ",
+      "total": "કુલ",
+      "outstanding": "બાકી",
+      "date": "તારીખ",
+      "status": "સ્થિતિ"
+    },
+    "chips": {
+      "today": "આજે",
+      "moneyPending": "પૈસા બાકી",
+      "jarsOut": "જાર બહાર",
+      "settled": "પતાવટ થઈ"
+    },
+    "badges": {
+      "paid": "ચૂકવાયું",
+      "unpaid": "ચૂકવ્યું નથી",
+      "due": "{amount} બાકી",
+      "overpaid": "{amount} વધુ ચૂકવાયું",
+      "refundDue": "રિફંડ {amount}",
+      "settled": "પતાવટ થઈ",
+      "jarsOut": "{count} જાર બહાર",
+      "cancelled": "રદ કરેલ"
+    },
+    "expanded": {
+      "lines": "{count} પ્રોડક્ટ લાઇન",
+      "units": "યુનિટ",
+      "credited": "પાછા જમા",
+      "stillOut": "હજી બહાર",
+      "open": "આ ઓર્ડર ખોલો ›"
+    },
+    "kpi": {
+      "orders": "ઓર્ડર",
+      "ordersBreakdown": "{cancelled} રદ કરેલ",
+      "noOrdersYet": "હજી કોઈ ઓર્ડર નોંધાયો નથી",
+      "billed": "બિલ થયું",
+      "collected": "વસૂલ {amount}",
+      "nothingBilled": "હજી કંઈ બિલ થયું નથી",
+      "outstanding": "બાકી",
+      "acrossOrders": "{count} ઓર્ડરમાં",
+      "allCollected": "બધું વસૂલ થઈ ગયું",
+      "jarsOut": "જાર બહાર",
+      "withStaff": "{count} સ્ટાફ પાસે",
+      "allBack": "દરેક જાર પાછો આવ્યો"
+    },
+    "empty": {
+      "noData": {
+        "title": "હજી કોઈ ડિલિવરી ઓર્ડર નથી",
+        "body": "સ્ટાફ પોતાના રૂટ પર શું લઈ જાય છે તે નોંધો — જાર, નક્કી કરેલા ભાવ, અને શું વસૂલ થયું. પરત અને ચુકવણી પછીથી આની સામે નોંધાય છે.",
+        "action": "પહેલો ઓર્ડર નોંધો"
+      },
+      "noResults": {
+        "title": "તમારા ફિલ્ટર સાથે કોઈ ઓર્ડર મેળ ખાતો નથી",
+        "body": "લાગુ કરેલા ફિલ્ટર સાથે કંઈ મેળ ખાતું નથી. તારીખની શ્રેણી પહોળી કરો અથવા સ્થિતિ ફિલ્ટર સાફ કરો."
+      }
+    },
+    "error": {
+      "listTitle": "ડિલિવરી ઓર્ડર લોડ કરી શકાયા નહીં",
+      "listBody": "સર્વરે જવાબ આપ્યો નહીં. તમારા ઓર્ડર સલામત છે — કંઈ બદલાયું નથી."
+    }
   }
 }

@@ -2277,5 +2277,77 @@
       "nothingToUpdate": "Nothing has been changed",
       "couldNotSave": "This expense couldn't be saved"
     }
+  },
+  "orders": {
+    "title": "Delivery Orders",
+    "subtitle": "Jars issued to staff, what came back, and what was collected",
+    "searchPlaceholder": "Search order no, staff name, phone…",
+    "itemsChip": "{lines} items · {units} units",
+    "wasTooltip": "{credit} credited back for unsold jars returned filled",
+    "bandSummary": "{count} orders",
+    "actions": {
+      "add": "+ New Order"
+    },
+    "columns": {
+      "code": "ORDER",
+      "staff": "STAFF",
+      "items": "ITEMS",
+      "total": "TOTAL",
+      "outstanding": "OUTSTANDING",
+      "date": "DATE",
+      "status": "STATUS"
+    },
+    "chips": {
+      "today": "Today",
+      "moneyPending": "Money pending",
+      "jarsOut": "Jars out",
+      "settled": "Settled"
+    },
+    "badges": {
+      "paid": "Paid",
+      "unpaid": "Unpaid",
+      "due": "{amount} due",
+      "overpaid": "Overpaid {amount}",
+      "refundDue": "Refund {amount}",
+      "settled": "Settled",
+      "jarsOut": "{count} jars out",
+      "cancelled": "Cancelled"
+    },
+    "expanded": {
+      "lines": "{count} product lines",
+      "units": "Units",
+      "credited": "Credited back",
+      "stillOut": "Still out",
+      "open": "Open this order ›"
+    },
+    "kpi": {
+      "orders": "ORDERS",
+      "ordersBreakdown": "{cancelled} cancelled",
+      "noOrdersYet": "No orders recorded yet",
+      "billed": "BILLED",
+      "collected": "Collected {amount}",
+      "nothingBilled": "Nothing billed yet",
+      "outstanding": "OUTSTANDING",
+      "acrossOrders": "across {count} orders",
+      "allCollected": "Everything collected",
+      "jarsOut": "JARS OUT",
+      "withStaff": "with {count} staff",
+      "allBack": "Every jar is back"
+    },
+    "empty": {
+      "noData": {
+        "title": "No delivery orders yet",
+        "body": "Record what a staff member takes out on his route — the jars, the rates he agreed, and what he collects. Returns and payments get recorded against it as they come in.",
+        "action": "Record the first order"
+      },
+      "noResults": {
+        "title": "No orders match your filters",
+        "body": "Nothing matches the filters you've applied. Try widening the date range or clearing the status filter."
+      }
+    },
+    "error": {
+      "listTitle": "Couldn't load delivery orders",
+      "listBody": "The server didn't respond. Your orders are safe — nothing has been changed."
+    }
   }
 }

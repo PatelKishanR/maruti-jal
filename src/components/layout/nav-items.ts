@@ -46,7 +46,7 @@ export const navGroups: NavGroup[] = [
   {
     labelKey: "operations",
     items: [
-      { key: "deliveryOrders", href: "/orders", icon: ClipboardList, ready: false },
+      { key: "deliveryOrders", href: "/orders", icon: ClipboardList, ready: true },
       { key: "coinIssues", href: "/coins/issues", icon: Coins, ready: true },
       { key: "partyOrders", href: "/party-orders", icon: PartyPopper, ready: true },
       { key: "directSales", href: "/direct-sales", icon: Droplet, ready: true },
