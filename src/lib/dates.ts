@@ -28,6 +28,24 @@ export function todayIST(): string {
   }).format(new Date());
 }
 
+/**
+ * The hour of the day in IST, 0–23.
+ *
+ * Exists so the dashboard greeting (`Good morning` / `afternoon` / `evening`)
+ * can be chosen without a component reaching for `Intl` itself — the same rule
+ * that keeps every figure inside `lib/money.ts`. A server rendering in UTC
+ * would otherwise wish the owner good evening over his morning tea.
+ */
+export function hourIST(value: Date = new Date()): number {
+  return Number(
+    new Intl.DateTimeFormat("en-GB", {
+      timeZone: IST_TIMEZONE,
+      hour: "2-digit",
+      hour12: false,
+    }).format(value),
+  );
+}
+
 export function isBusinessDate(value: string): boolean {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
   const [y, m, d] = value.split("-").map(Number);

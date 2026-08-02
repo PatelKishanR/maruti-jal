@@ -100,6 +100,60 @@ class PaymentRepository extends BaseRepository<Payment> {
   }
 
   /**
+   * Collection for a period, split into cash, coins and everything else —
+   * the dashboard's collection-mix chart (design/MODULES/08 §3.3.4 C4).
+   *
+   * THE BUCKETING HAPPENS IN SQL, not in the service, and that is the whole
+   * point of the method: folding UPI, bank transfer and write-off into "Other"
+   * in TypeScript would mean adding three rupee figures together outside
+   * PostgreSQL. The CASE arms are literals written here — nothing user-supplied
+   * reaches the SQL text. See .claude/ARCHITECTURE.md §6.2, §9.1
+   *
+   * `SUM(SUM(...)) OVER ()` carries the grand total on every row, so the chart's
+   * denominator is also a database figure rather than a `reduce` over the
+   * buckets.
+   *
+   * IN only. A refund is a real event with its own direction, and netting it
+   * off here would quietly shrink the day's takings.
+   */
+  async collectionMixBetween(
+    from: string,
+    to: string,
+    em?: EntityManager,
+  ): Promise<
+    Array<{ bucket: "CASH" | "COIN" | "OTHER"; total: number; payments: number; grandTotal: number }>
+  > {
+    const qb = await this.qb(em);
+    const rows = await qb
+      .select(
+        "CASE WHEN p.mode = 'CASH' THEN 'CASH' WHEN p.mode = 'COIN' THEN 'COIN' ELSE 'OTHER' END",
+        "bucket",
+      )
+      .addSelect("COALESCE(SUM(p.amount), 0)", "total")
+      .addSelect("COUNT(*)", "payments")
+      .addSelect("COALESCE(SUM(SUM(p.amount)) OVER (), 0)", "grand_total")
+      .where("p.direction = :direction", { direction: "IN" })
+      .andWhere("p.paidOn BETWEEN :from AND :to", { from, to })
+      .groupBy(
+        "CASE WHEN p.mode = 'CASH' THEN 'CASH' WHEN p.mode = 'COIN' THEN 'COIN' ELSE 'OTHER' END",
+      )
+      .getRawMany<{
+        bucket: "CASH" | "COIN" | "OTHER";
+        total: string;
+        payments: string;
+        grand_total: string;
+      }>();
+
+    // numeric arrives as a string from the driver; converted once, here.
+    return rows.map((row) => ({
+      bucket: row.bucket,
+      total: Number(row.total),
+      payments: Number(row.payments),
+      grandTotal: Number(row.grand_total),
+    }));
+  }
+
+  /**
    * The idempotency check. The client mints one id per form open, so a retry
    * after a timeout carries the same value and this returns true instead of
    * the customer paying twice. See .claude/DATA-MODEL.md §10.11

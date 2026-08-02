@@ -223,7 +223,165 @@
   "dashboard": {
     "title": "ડેશબોર્ડ",
     "subtitle": "તમારો આખો વ્યવસાય, અત્યારે",
-    "comingSoon": "ડેશબોર્ડ તબક્કા 8 માં આવશે. તેને ડેટા આપતા મોડ્યુલ પહેલાં બનાવવામાં આવે છે."
+    "comingSoon": "ડેશબોર્ડ તબક્કા 8 માં આવશે. તેને ડેટા આપતા મોડ્યુલ પહેલાં બનાવવામાં આવે છે.",
+    "greeting": {
+      "morning": "સુપ્રભાત",
+      "afternoon": "નમસ્કાર",
+      "evening": "શુભ સાંજ"
+    },
+    "meta": {
+      "updated": "{time} વાગ્યે અપડેટ થયું"
+    },
+    "refresh": "ડેશબોર્ડ તાજું કરો",
+    "sections": {
+      "today": "આજે",
+      "risk": "જોખમમાં રહેલા પૈસા",
+      "riskNote": "વર્તમાન સ્થિતિ — તારીખ ફિલ્ટરથી બદલાતી નથી"
+    },
+    "period": {
+      "label": "સમયગાળો",
+      "today": "આજે",
+      "week": "આ અઠવાડિયું",
+      "month": "આ મહિનો",
+      "lastMonth": "ગયો મહિનો",
+      "custom": "પોતાનો",
+      "from": "થી",
+      "to": "સુધી",
+      "apply": "શ્રેણી લાગુ કરો",
+      "cancel": "રદ કરો",
+      "invalid": "અંતિમ તારીખ શરૂઆતની તારીખ પહેલાં ન હોઈ શકે.",
+      "showing": "{range} બતાવી રહ્યા છીએ"
+    },
+    "trend": {
+      "vsYesterday": "ગઈકાલની સરખામણીએ",
+      "vsLastWeek": "ગયા અઠવાડિયાની સરખામણીએ",
+      "vsLastMonth": "ગયા મહિનાની સરખામણીએ",
+      "vsPreviousMonth": "અગાઉના મહિનાની સરખામણીએ",
+      "vsPreviousPeriod": "અગાઉના સમયગાળાની સરખામણીએ"
+    },
+    "kpi": {
+      "revenue": "આજની આવક",
+      "collection": "આજની વસૂલાત",
+      "expenses": "આજનો ખર્ચ",
+      "net": "આજનું ચોખ્ખું",
+      "staffCash": "સ્ટાફ પાસે બાકી રોકડ",
+      "partyDues": "પાર્ટી પાસે બાકી",
+      "coinDues": "સ્ટાફ પાસે સિક્કાની બાકી",
+      "jarsOut": "કુલ જાર બહાર",
+      "revenueBreakdown": "ડિલિવરી {delivery} · પાર્ટી {party} · વોક-ઇન {walkIn}",
+      "collectionBreakdown": "રોકડ {cash} · સિક્કા {coins}",
+      "expenseBreakdown": "{count} એન્ટ્રી · ટોચ: {category} {amount}",
+      "expenseBreakdownPlain": "{count} એન્ટ્રી",
+      "netBreakdown": "વસૂલાત − ખર્ચ",
+      "acrossOrders": "{orders} ઓર્ડર · {staff} સ્ટાફમાં",
+      "acrossParties": "{count} પાર્ટી ઓર્ડરમાં",
+      "acrossIssues": "{count} ખુલ્લા ઇશ્યૂમાં",
+      "oldest": "સૌથી જૂનું {days} દિવસ",
+      "jarsBreakdown": "{orders} ઓર્ડર · {staff} સ્ટાફમાં",
+      "jarsOverdue": "{jars} સાત દિવસથી વધુ બહાર",
+      "nothingOutstanding": "કંઈ બાકી નથી",
+      "noJarsOut": "કોઈ જાર બહાર નથી",
+      "noSales": "આ સમયગાળામાં કોઈ વેચાણ નથી",
+      "noCollection": "આ સમયગાળામાં કંઈ વસૂલ થયું નથી",
+      "noExpenses": "આ સમયગાળામાં કોઈ ખર્ચ નથી"
+    },
+    "charts": {
+      "viewAsTable": "કોષ્ટક તરીકે જુઓ",
+      "viewAsChart": "ચાર્ટ તરીકે જુઓ",
+      "total": "કુલ",
+      "units": "{count} યુનિટ",
+      "margin": "માર્જિન {percent}%",
+      "ofTotal": "{total} માંથી",
+      "payments": "{count} ચુકવણી",
+      "trend": {
+        "title": "આવકનો પ્રવાહ",
+        "subtitle": "ચેનલ પ્રમાણે · {range}"
+      },
+      "months": {
+        "title": "આવક સામે ખર્ચ",
+        "subtitle": "છેલ્લા 6 મહિના · {range}"
+      },
+      "products": {
+        "title": "ટોચની 5 પ્રોડક્ટ",
+        "subtitle": "જથ્થા પ્રમાણે · {month}"
+      },
+      "mix": {
+        "title": "વસૂલાતનું મિશ્રણ",
+        "subtitle": "રોકડ સામે સિક્કા · {month}"
+      },
+      "series": {
+        "delivery": "ડિલિવરી",
+        "party": "પાર્ટી",
+        "walkIn": "વોક-ઇન",
+        "revenue": "આવક",
+        "expenses": "ખર્ચ",
+        "profit": "નફો",
+        "cash": "રોકડ",
+        "coins": "સિક્કા",
+        "other": "અન્ય"
+      },
+      "column": {
+        "date": "તારીખ",
+        "month": "મહિનો",
+        "product": "પ્રોડક્ટ",
+        "units": "યુનિટ",
+        "issued": "આપેલા",
+        "mode": "રીત",
+        "amount": "રકમ",
+        "share": "હિસ્સો"
+      },
+      "empty": {
+        "trend": "આ સમયગાળામાં કોઈ વેચાણ નોંધાયું નથી. તારીખની શ્રેણી પહોળી કરો.",
+        "months": "છેલ્લા 6 મહિનામાં કોઈ આવક કે ખર્ચ નોંધાયો નથી.",
+        "products": "આ મહિને હજી કોઈ પ્રોડક્ટ વેચાઈ નથી.",
+        "mix": "આ મહિને કોઈ વસૂલાત નોંધાઈ નથી."
+      }
+    },
+    "tables": {
+      "scoreboard": {
+        "title": "સ્ટાફ સ્કોરબોર્ડ",
+        "subtitle": "વર્તમાન સ્થિતિ",
+        "viewAll": "બધા સ્ટાફ જુઓ ›",
+        "staff": "સ્ટાફ",
+        "orders": "ઓર્ડર",
+        "cashOut": "બાકી રોકડ",
+        "jarsOut": "જાર બહાર",
+        "coinDues": "સિક્કાની બાકી",
+        "note": "બાકી રોકડ પ્રમાણે ટોચના 8 · આખી યાદી માટે બધા સ્ટાફ જુઓ",
+        "empty": "કોઈની પાસે રોકડ કે જાર બાકી નથી."
+      },
+      "coins": {
+        "title": "સિક્કાની સ્થિતિ",
+        "subtitle": "વર્તમાન સ્ટોક",
+        "viewAll": "બધા જુઓ ›",
+        "type": "સિક્કા પ્રકાર",
+        "inStock": "સ્ટોકમાં",
+        "out": "સ્ટાફ પાસે",
+        "value": "સ્ટોકનું મૂલ્ય",
+        "perPacket": "પેકેટ દીઠ {count} · દરેક {price}",
+        "packets": "{count} પેકેટ",
+        "empty": "હજી કોઈ સિક્કા પ્રકાર નથી."
+      },
+      "attention": {
+        "title": "ધ્યાન જરૂરી",
+        "showAll": "બધા {count} બતાવો ›",
+        "emptyTitle": "કંઈ ધ્યાન માંગતું નથી",
+        "emptyBody": "કોઈ મુદત વીતી ગયેલી ચુકવણી નથી, અઠવાડિયાથી વધુ કોઈ જાર બહાર નથી, કોઈ સિક્કા ઇશ્યૂ બાકી નથી.",
+        "cash": "{name} · {amount} ચૂકવ્યા નથી",
+        "coins": "{name} · {amount} સિક્કાની બાકી",
+        "jars": "{name} પાસે {jars} જાર બહાર",
+        "party": "{name} · આજે {amount} નિર્ધારિત",
+        "orders": "{count} ઓર્ડર",
+        "issues": "{count} ખુલ્લા ઇશ્યૂ",
+        "age": "{days} દિવસ પહેલાં",
+        "today": "આજે"
+      }
+    },
+    "error": {
+      "title": "ડેશબોર્ડ લોડ કરી શકાયું નહીં",
+      "body": "સર્વરે જવાબ આપ્યો નહીં. તમારો ડેટા સલામત છે — કંઈ ખોવાયું નથી.",
+      "retry": "ફરી પ્રયાસ કરો"
+    }
   },
   "table": {
     "showing": "{total} માંથી {from}–{to} બતાવી રહ્યા છીએ",

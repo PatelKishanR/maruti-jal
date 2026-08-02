@@ -603,35 +603,75 @@ Full-width inside the content area, 12px radius, 16px padding, semantic tint, 1p
 
 Recharts, styled to the system.
 
-### 12.1 Palette — validated for colour vision deficiency
+### 12.1 Palette — computed, not judged
 
-| Property | Value |
+**Three categorical hues. Not five.**
+
+| | Light (on `#FFFFFF`) | Dark (on `#1E293B`) |
+|---|---|---|
+| 1 | Nova Blue `#2563EB` | `#3B82F6` |
+| 2 | Spark Orange `#F97316` | `#EA580C` |
+| 3 | Teal `#14B8A6` | `#0D9488` |
+
+Both sets **pass every check across ALL pairs**, not merely adjacent ones:
+lightness band, chroma floor, CVD separation under protanopia and deuteranopia,
+the normal-vision floor, and contrast against the surface.
+
+#### Why three, and why these
+
+The earlier five-hue palette in this document was described as validated. It
+was not — it had been reasoned about, not computed. Running the validator over
+all pairs fails it twice, and neither failure can be fixed by reordering:
+
+| Pair | ΔE | Verdict |
+|---|---|---|
+| Purple `#8B5CF6` ↔ Blue `#2563EB` | **2.3** protan, 12.7 normal | Indistinguishable. Purple is unusable alongside blue at any position |
+| Green `#22C55E` ↔ Teal `#14B8A6` | 10.4 deutan, **11.3 normal** | Below the 15 floor — hard to tell apart *with full colour vision* |
+
+A five-hue categorical set cannot be built from this brand's hues. Rather than
+ship one that fails, the set is three — which is **all this app ever needs**:
+
+| Chart | Series |
 |---|---|
-| Categorical, light | Nova Blue `#2563EB` → Spark Orange `#F97316` → Teal `#14B8A6` → Spark Green `#22C55E` → Purple `#8B5CF6` |
-| Categorical, dark | `#3B82F6` → `#FB923C` → `#2DD4BF` → **`#34D399`** → `#A78BFA` |
-| Semantic series | Revenue = Nova Blue · Expenses = Spark Orange · Profit = Spark Green · Outstanding = Spark Red |
-| Two-series money splits (cash vs coins) | **Blue `#2563EB` + Teal `#14B8A6`** |
+| Revenue by channel | 3 — delivery, party, walk-in |
+| Revenue vs expenses | 2, plus a profit line |
+| Collection mix | 2 — cash, coins |
+| Top 5 products | **1** — a ranked bar, single hue |
 
-Three pairings were tested and two failed:
+**Green is semantic only** — profit, success, settled. It is never a categorical
+slot, which is precisely what put it next to teal and broke the palette.
 
-| Pair | Verdict |
-|---|---|
-| Purple `#8B5CF6` ↔ Nova Blue `#2563EB` | ❌ **Fails outright** — ΔE 2.3 under protanopia, and only 12.7 with normal vision. Never use these adjacently. This is why cash-vs-coins is blue + teal |
-| Naive dark green `#4ADE80` ↔ orange `#FB923C` | ❌ ΔE 7.1 under deuteranopia. **Dark-mode green is `#34D399`**, which clears at 10.5. The dark palette is *selected*, not a lightened copy of the light one |
-| Orange `#F97316` ↔ green `#22C55E`, light mode | ⚠️ ΔE 6.2 under deuteranopia — a floor-band pair. Usable, but only with the safeguards below |
+**A fourth concurrent series is not a new hue.** Facet into small multiples, or
+fold the tail into "Other". Generating a fourth colour is how a palette that
+passed becomes one that does not.
 
-### 12.2 Mandatory safeguards where orange, green or teal appear together
+#### Contrast: a WARN that is not dismissable
 
-Not optional, because all three fall below 3:1 contrast on white:
+On light, orange and teal fall below 3:1 against white. The validator warns
+rather than fails, but relief is **obligatory**, not optional:
 
-- **2px surface-coloured gaps** between adjacent bars or stacked segments, so shape separates what colour doesn't
-- **Direct labels** on the series where space allows, rather than relying on the legend
-- **A legend always present** when direct labels don't fit
-- **A `View as table` toggle** on every chart — the guaranteed-accessible fallback, and genuinely useful when the owner wants the exact figure
+- **direct labels** on the series wherever they fit
+- a **legend** whenever they do not
+- a **`View as table` toggle on every chart** — the guaranteed-accessible
+  fallback, and genuinely useful when the owner wants the exact figure
+- **2px surface-coloured gaps** between adjacent bars and stacked segments, so
+  shape separates what colour does not
 
-**Semantic assignments override the categorical sequence.** Cash and Revenue are always Nova Blue, Coins always Teal, Profit always Green, Outstanding always Red — regardless of what position they occupy in a given chart. A colour that means one thing on the dashboard must not mean something else in a report.
+#### Semantic assignments override the sequence
 
-**Ranked bar charts use a single hue.** "Top 5 products by volume" is five bars with five direct labels — colour is carrying nothing, so it should not pretend to. Use Nova Blue throughout with the labels doing the work. Reserve the categorical palette for series that **recur across charts**, where a consistent colour genuinely aids recognition. This also sidesteps the 5-series problem, where blue and purple would otherwise have to coexist.
+Revenue and cash are always blue, expenses and party always orange, coins
+always teal, profit always green, outstanding always red — whatever position
+they occupy in a given chart. A colour that means one thing on the dashboard
+must not mean something else in a report.
+
+#### Re-validate before changing any of this
+
+```
+node scripts/validate_palette.js "#2563EB,#F97316,#14B8A6" --mode light --pairs all
+node scripts/validate_palette.js "#3B82F6,#EA580C,#0D9488" --mode dark --surface "#1E293B" --pairs all
+```
+
+Do not reason about ΔE. Run it.
 
 ### 12.3 Chart styling
 | Grid | 1px horizontal only, border colour, no vertical lines |

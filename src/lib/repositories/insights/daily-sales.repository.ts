@@ -48,6 +48,22 @@ export interface PeriodProfitRow {
   profit: string;
 }
 
+/**
+ * What was RECEIVED in a period, less what was spent — the dashboard's
+ * `TODAY'S NET` card (design/MODULES/08 §3.3.2 card 4).
+ *
+ * Deliberately a different row type from `PeriodProfitRow`: profit is an
+ * accrual question (revenue − expenses) and net is a cash one (collection −
+ * expenses). An order billed on the 2nd and paid on the 9th belongs to
+ * different days in the two figures, so sharing one shape would invite the
+ * wrong one being read.
+ */
+export interface PeriodNetRow {
+  collection: string;
+  expenses: string;
+  net: string;
+}
+
 const COLUMNS = `business_date, channel, revenue, collection, doc_count`;
 
 class DailySalesRepository {
@@ -161,6 +177,34 @@ class DailySalesRepository {
     );
 
     return rows[0] ?? { income: "0", expenses: expenseTotal, profit: "0" };
+  }
+
+  /**
+   * Collection for a period, less the same period's spend.
+   *
+   * Identical reasoning to `profitBetween`, and it exists for the same reason:
+   * the subtraction is money, so PostgreSQL does it. The alternative —
+   * `collection - expenses` in the service — is the first crack in DATA-MODEL
+   * D-4, and the dashboard is exactly where a rupee derived in JavaScript would
+   * be read aloud to a bank.
+   */
+  async netBetween(
+    from: string,
+    to: string,
+    expenseTotal: string,
+    em?: EntityManager,
+  ): Promise<PeriodNetRow> {
+    const rows = await this.run<PeriodNetRow>(
+      `SELECT COALESCE(SUM(collection), 0)::numeric(12,2) AS collection,
+              $3::numeric(12,2)                           AS expenses,
+              (COALESCE(SUM(collection), 0) - $3::numeric)::numeric(12,2) AS net
+         FROM v_daily_sales
+        WHERE business_date BETWEEN $1 AND $2`,
+      [from, to, expenseTotal],
+      em,
+    );
+
+    return rows[0] ?? { collection: "0", expenses: expenseTotal, net: "0" };
   }
 }
 

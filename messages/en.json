@@ -223,7 +223,165 @@
   "dashboard": {
     "title": "Dashboard",
     "subtitle": "Your whole business, right now",
-    "comingSoon": "Dashboard arrives in Phase 8. The modules that feed it are built first."
+    "comingSoon": "Dashboard arrives in Phase 8. The modules that feed it are built first.",
+    "greeting": {
+      "morning": "Good morning",
+      "afternoon": "Good afternoon",
+      "evening": "Good evening"
+    },
+    "meta": {
+      "updated": "Updated {time}"
+    },
+    "refresh": "Refresh dashboard",
+    "sections": {
+      "today": "TODAY",
+      "risk": "MONEY AT RISK",
+      "riskNote": "Current position — not affected by the date filter"
+    },
+    "period": {
+      "label": "Period",
+      "today": "Today",
+      "week": "This week",
+      "month": "This month",
+      "lastMonth": "Last month",
+      "custom": "Custom",
+      "from": "From",
+      "to": "To",
+      "apply": "Apply range",
+      "cancel": "Cancel",
+      "invalid": "The end date can't be before the start date.",
+      "showing": "Showing {range}"
+    },
+    "trend": {
+      "vsYesterday": "vs yesterday",
+      "vsLastWeek": "vs last week",
+      "vsLastMonth": "vs last month",
+      "vsPreviousMonth": "vs previous month",
+      "vsPreviousPeriod": "vs previous period"
+    },
+    "kpi": {
+      "revenue": "TODAY'S REVENUE",
+      "collection": "TODAY'S COLLECTION",
+      "expenses": "TODAY'S EXPENSES",
+      "net": "TODAY'S NET",
+      "staffCash": "CASH OUTSTANDING FROM STAFF",
+      "partyDues": "OUTSTANDING FROM PARTIES",
+      "coinDues": "COIN DUES FROM STAFF",
+      "jarsOut": "TOTAL JARS OUT",
+      "revenueBreakdown": "Delivery {delivery} · Party {party} · Walk-in {walkIn}",
+      "collectionBreakdown": "Cash {cash} · Coins {coins}",
+      "expenseBreakdown": "{count} entries · Top: {category} {amount}",
+      "expenseBreakdownPlain": "{count} entries",
+      "netBreakdown": "Collection − expenses",
+      "acrossOrders": "Across {orders} orders · {staff} staff",
+      "acrossParties": "Across {count} party orders",
+      "acrossIssues": "Across {count} open issues",
+      "oldest": "Oldest {days} days",
+      "jarsBreakdown": "Across {orders} orders · {staff} staff",
+      "jarsOverdue": "{jars} out 7+ days",
+      "nothingOutstanding": "Nothing outstanding",
+      "noJarsOut": "No jars out",
+      "noSales": "No sales in this period",
+      "noCollection": "Nothing collected in this period",
+      "noExpenses": "No expenses in this period"
+    },
+    "charts": {
+      "viewAsTable": "View as table",
+      "viewAsChart": "View as chart",
+      "total": "Total",
+      "units": "{count} units",
+      "margin": "Margin {percent}%",
+      "ofTotal": "of {total}",
+      "payments": "{count} payments",
+      "trend": {
+        "title": "Revenue trend",
+        "subtitle": "By channel · {range}"
+      },
+      "months": {
+        "title": "Revenue vs expenses",
+        "subtitle": "Last 6 months · {range}"
+      },
+      "products": {
+        "title": "Top 5 products",
+        "subtitle": "By volume · {month}"
+      },
+      "mix": {
+        "title": "Collection mix",
+        "subtitle": "Cash vs coins · {month}"
+      },
+      "series": {
+        "delivery": "Delivery",
+        "party": "Party",
+        "walkIn": "Walk-in",
+        "revenue": "Revenue",
+        "expenses": "Expenses",
+        "profit": "Profit",
+        "cash": "Cash",
+        "coins": "Coins",
+        "other": "Other"
+      },
+      "column": {
+        "date": "Date",
+        "month": "Month",
+        "product": "Product",
+        "units": "Units",
+        "issued": "Issued",
+        "mode": "Mode",
+        "amount": "Amount",
+        "share": "Share"
+      },
+      "empty": {
+        "trend": "No sales recorded in this period. Try widening the date range.",
+        "months": "No revenue or expenses recorded in the last 6 months.",
+        "products": "No products sold this month yet.",
+        "mix": "No collections recorded this month."
+      }
+    },
+    "tables": {
+      "scoreboard": {
+        "title": "Staff scoreboard",
+        "subtitle": "Live position",
+        "viewAll": "View all staff ›",
+        "staff": "STAFF",
+        "orders": "ORDERS",
+        "cashOut": "CASH OUT",
+        "jarsOut": "JARS OUT",
+        "coinDues": "COIN DUES",
+        "note": "Top 8 by cash outstanding · View all staff for the full list",
+        "empty": "Nobody is holding cash or jars."
+      },
+      "coins": {
+        "title": "Coin position",
+        "subtitle": "Live stock",
+        "viewAll": "View all ›",
+        "type": "COIN TYPE",
+        "inStock": "IN STOCK",
+        "out": "OUT WITH STAFF",
+        "value": "VALUE IN STOCK",
+        "perPacket": "{count} per packet · {price} each",
+        "packets": "{count} packets",
+        "empty": "No coin types yet."
+      },
+      "attention": {
+        "title": "Attention needed",
+        "showAll": "Show all {count} ›",
+        "emptyTitle": "Nothing needs attention",
+        "emptyBody": "No overdue payments, no jars out past a week, no unsettled coin issues.",
+        "cash": "{name} · {amount} unpaid",
+        "coins": "{name} · {amount} in coin dues",
+        "jars": "{jars} jars out with {name}",
+        "party": "{name} · {amount} scheduled today",
+        "orders": "{count} orders",
+        "issues": "{count} open issues",
+        "age": "{days} days ago",
+        "today": "Today"
+      }
+    },
+    "error": {
+      "title": "Couldn't load the dashboard",
+      "body": "The server didn't respond. Your data is safe — nothing was lost.",
+      "retry": "Try again"
+    }
   },
   "table": {
     "showing": "Showing {from}–{to} of {total}",

@@ -76,14 +76,20 @@
   --sidebar-width-icon: 4rem; /* 64px */
   --topbar-height: 4rem; /* 64px */
 
-  /* Charts — validated for colour vision deficiency, DESIGN-STANDARDS §12.1.
-     Order matters: purple is LAST because against Nova Blue it separates by
-     only ΔE 2.3 under protanopia. */
-  --chart-1: #2563eb;
-  --chart-2: #f97316;
-  --chart-3: #14b8a6;
-  --chart-4: #22c55e;
-  --chart-5: #8b5cf6;
+  /* Charts — COMPUTED, not judged. DESIGN-STANDARDS §12.1
+     Three categorical hues, passing every check across ALL pairs. There is no
+     4th or 5th: purple sits at ΔE 2.3 from blue under protanopia, and green at
+     11.3 from teal in NORMAL vision. A fourth series facets; it never gets a
+     generated hue.
+     Re-run before changing:
+       validate_palette.js "#2563EB,#F97316,#14B8A6" --mode light --pairs all */
+  --chart-1: #2563eb; /* revenue · cash */
+  --chart-2: #f97316; /* expenses · party */
+  --chart-3: #14b8a6; /* coins */
+  /* Semantic only — never a categorical slot. Green next to teal is what
+     broke the five-hue set. */
+  --chart-profit: #22c55e;
+  --chart-outstanding: #ef4444;
 }
 
 .dark {
@@ -133,14 +139,15 @@
   --sidebar-border: #334155;
   --sidebar-ring: #3b82f6;
 
-  /* Selected dark palette, not a lightened copy. Green is emerald #34D399
-     rather than #4ADE80: against orange the naive lift separates by only
-     ΔE 7.1 under deuteranopia; emerald clears at 10.5. */
+  /* Dark is SELECTED, not a lightened copy — and it is stepped DOWN, not up:
+     orange-400 and teal-400 sit above the dark lightness band (L 0.48–0.67),
+     so the 600 weights are used. Passes all pairs on the #1E293B card surface.
+       validate_palette.js "#3B82F6,#EA580C,#0D9488" --mode dark --surface "#1E293B" --pairs all */
   --chart-1: #3b82f6;
-  --chart-2: #fb923c;
-  --chart-3: #2dd4bf;
-  --chart-4: #34d399;
-  --chart-5: #a78bfa;
+  --chart-2: #ea580c;
+  --chart-3: #0d9488;
+  --chart-profit: #4ade80;
+  --chart-outstanding: #f87171;
 }
 
 @theme inline {
@@ -179,8 +186,8 @@
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
+  --color-chart-profit: var(--chart-profit);
+  --color-chart-outstanding: var(--chart-outstanding);
 
   /* Fonts. Noto Sans Gujarati sits AFTER Inter: browsers fall back per
      character, so a line mixing "Ramesh" and "રમેશ" renders correctly in one

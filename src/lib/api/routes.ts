@@ -42,4 +42,21 @@ export const apiRoutes = {
     summary: (period: string = "today") =>
       `/api/dashboard/summary?period=${encodeURIComponent(period)}`,
   },
+  insights: {
+    /** `v_exec_summary` on its own — takes no parameters by design. */
+    summary: "/api/insights/summary",
+    /**
+     * The whole executive dashboard in one response. `from`/`to` are only read
+     * when `period=custom`; anything else is resolved server-side so the URL
+     * and the figures cannot disagree.
+     */
+    dashboard: (params?: { period?: string; from?: string; to?: string }) => {
+      const search = new URLSearchParams();
+      if (params?.period) search.set("period", params.period);
+      if (params?.from) search.set("from", params.from);
+      if (params?.to) search.set("to", params.to);
+      const qs = search.toString();
+      return `/api/insights/dashboard${qs ? `?${qs}` : ""}`;
+    },
+  },
 } as const;
