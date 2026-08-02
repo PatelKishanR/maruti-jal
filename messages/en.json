@@ -230,7 +230,9 @@
     "rowsPerPage": "Rows",
     "pagination": "Pagination",
     "previous": "Previous page",
-    "next": "Next page"
+    "next": "Next page",
+    "expandRow": "Show details",
+    "collapseRow": "Hide details"
   },
   "staff": {
     "title": "Staff",

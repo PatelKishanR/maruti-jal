@@ -230,7 +230,9 @@
     "rowsPerPage": "પંક્તિઓ",
     "pagination": "પેજિનેશન",
     "previous": "પાછલું પૃષ્ઠ",
-    "next": "આગલું પૃષ્ઠ"
+    "next": "આગલું પૃષ્ઠ",
+    "expandRow": "વિગતો બતાવો",
+    "collapseRow": "વિગતો છુપાવો"
   },
   "staff": {
     "title": "સ્ટાફ",
