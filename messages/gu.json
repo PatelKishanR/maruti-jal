@@ -2432,6 +2432,46 @@
       "submit": "ચુકવણી નોંધો",
       "submitting": "નોંધાઈ રહ્યું છે…",
       "success": "{amount} ની ચુકવણી નોંધાઈ"
+    },
+    "create": {
+      "title": "નવો ઓર્ડર",
+      "subtitle": "સ્ટાફ પોતાના રૂટ પર શું લઈ જાય છે તે નોંધો"
+    },
+    "edit": {
+      "title": "{code} સંપાદિત કરો",
+      "subtitle": "લાઇન, ભાવ કે ડિસ્કાઉન્ટ બદલો",
+      "subtitleWithHistory": "આ ઓર્ડર સામે પહેલેથી પરત કે ચુકવણી નોંધાઈ છે. જથ્થો કે ભાવ બદલવાથી બાકી રકમ ફરી ગણાશે."
+    },
+    "form": {
+      "staffLabel": "સ્ટાફ",
+      "staffPlaceholder": "કોણ ડિલિવરી કરે છે તે પસંદ કરો",
+      "staffSearch": "નામ કે ફોન શોધો…",
+      "staffEmpty": "કોઈ સ્ટાફ મેળ ખાતો નથી",
+      "dateLabel": "ઓર્ડરની તારીખ",
+      "itemsHeading": "વસ્તુઓ",
+      "cols": {
+        "product": "પ્રોડક્ટ",
+        "qty": "જથ્થો",
+        "base": "મૂળ ભાવ",
+        "charged": "લીધેલો ભાવ",
+        "total": "કુલ"
+      },
+      "productPlaceholder": "પ્રોડક્ટ પસંદ કરો",
+      "productSearch": "પ્રોડક્ટ શોધો…",
+      "productEmpty": "કોઈ પ્રોડક્ટ મેળ ખાતી નથી",
+      "bargainedDown": "ભાવ ઘટાડ્યો −{amount}",
+      "bargainedUp": "યાદી કરતાં વધુ +{amount}",
+      "removeLine": "આ લાઇન દૂર કરો",
+      "addLine": "વસ્તુ ઉમેરો",
+      "subtotal": "પેટા કુલ",
+      "discount": "ડિસ્કાઉન્ટ",
+      "total": "કુલ",
+      "notesLabel": "નોંધ",
+      "notesPlaceholder": "દા.ત. સાંજનો રૂટ, સેક્ટર 7",
+      "submitCreate": "ઓર્ડર સાચવો",
+      "submitEdit": "ફેરફાર સાચવો",
+      "createdToast": "{code} નોંધાયો",
+      "updatedToast": "{code} અપડેટ થયો"
     }
   }
 }

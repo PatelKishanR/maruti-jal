@@ -2432,6 +2432,46 @@
       "submit": "Record payment",
       "submitting": "Recording…",
       "success": "Payment of {amount} recorded"
+    },
+    "create": {
+      "title": "New Order",
+      "subtitle": "Record what a staff member is taking out on his route"
+    },
+    "edit": {
+      "title": "Edit {code}",
+      "subtitle": "Change the lines, rates or discount",
+      "subtitleWithHistory": "This order already has returns or payments against it. Changing quantities or rates will recalculate the balance."
+    },
+    "form": {
+      "staffLabel": "Staff",
+      "staffPlaceholder": "Choose who is delivering",
+      "staffSearch": "Search name or phone…",
+      "staffEmpty": "No staff match that",
+      "dateLabel": "Order date",
+      "itemsHeading": "Items",
+      "cols": {
+        "product": "PRODUCT",
+        "qty": "QTY",
+        "base": "BASE",
+        "charged": "CHARGED",
+        "total": "TOTAL"
+      },
+      "productPlaceholder": "Choose a product",
+      "productSearch": "Search products…",
+      "productEmpty": "No product matches that",
+      "bargainedDown": "Bargained −{amount}",
+      "bargainedUp": "Above list +{amount}",
+      "removeLine": "Remove this line",
+      "addLine": "Add item",
+      "subtotal": "Subtotal",
+      "discount": "Discount",
+      "total": "Total",
+      "notesLabel": "Notes",
+      "notesPlaceholder": "e.g. Evening route, Sector 7",
+      "submitCreate": "Save order",
+      "submitEdit": "Save changes",
+      "createdToast": "{code} recorded",
+      "updatedToast": "{code} updated"
     }
   }
 }
