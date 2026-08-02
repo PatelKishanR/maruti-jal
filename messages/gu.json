@@ -2286,7 +2286,9 @@
     "wasTooltip": "વેચાયા વગરના ભરેલા જાર પરત આવતાં {credit} જમા થયા",
     "bandSummary": "{count} ઓર્ડર",
     "actions": {
-      "add": "+ નવો ઓર્ડર"
+      "add": "+ નવો ઓર્ડર",
+      "recordReturn": "પરત નોંધો",
+      "recordPayment": "ચુકવણી નોંધો"
     },
     "columns": {
       "code": "ઓર્ડર",
@@ -2348,6 +2350,88 @@
     "error": {
       "listTitle": "ડિલિવરી ઓર્ડર લોડ કરી શકાયા નહીં",
       "listBody": "સર્વરે જવાબ આપ્યો નહીં. તમારા ઓર્ડર સલામત છે — કંઈ બદલાયું નથી."
+    },
+    "detail": {
+      "back": "ડિલિવરી ઓર્ડર",
+      "meta": "{staff} · {date}",
+      "cancelledBanner": "આ ઓર્ડર રદ કરાયો છે. હવે તેની સામે કંઈ નોંધી શકાશે નહીં.",
+      "summary": {
+        "billed": "બિલ થયું",
+        "collected": "વસૂલ થયું",
+        "outstanding": "બાકી",
+        "refundDue": "રિફંડ બાકી",
+        "jars": "જાર બહાર",
+        "ofIssued": "{total} માંથી"
+      },
+      "tabs": {
+        "items": "વસ્તુઓ",
+        "returns": "પરત",
+        "payments": "ચુકવણી"
+      },
+      "cols": {
+        "product": "પ્રોડક્ટ",
+        "qty": "જથ્થો",
+        "rate": "ભાવ",
+        "returned": "પરત",
+        "pending": "બાકી",
+        "total": "કુલ"
+      },
+      "goodsIssued": "આપેલો માલ",
+      "filledCredit": "વેચાયા વગરના જાર પાછા જમા",
+      "discount": "ડિસ્કાઉન્ટ",
+      "billed": "બિલ થયું",
+      "bargained": "ભાવ ઘટાડ્યો {delta}",
+      "returnedSplit": "{empty} ખાલી · {filled} ભરેલા",
+      "returnedLine": "{product} — {empty} ખાલી, {filled} ભરેલા પાછા",
+      "lost": "{count} ખોવાયા",
+      "paid": "ચૂકવાયું",
+      "refunded": "રિફંડ થયું",
+      "coinsNote": "{count} સિક્કા",
+      "modes": {
+        "CASH": "રોકડ",
+        "COIN": "સિક્કા",
+        "UPI": "UPI",
+        "BANK_TRANSFER": "બેંક ટ્રાન્સફર",
+        "WRITE_OFF": "માંડવાળ"
+      },
+      "noReturns": "હજી કંઈ પાછું આવ્યું નથી.",
+      "noPayments": "આ ઓર્ડર સામે કોઈ ચુકવણી નોંધાઈ નથી.",
+      "notFound": {
+        "title": "તે ઓર્ડર અસ્તિત્વમાં નથી",
+        "body": "તે દૂર કરાયો હોઈ શકે. તમે જે શોધો છો તે માટે રજિસ્ટર પર પાછા જાઓ.",
+        "cta": "ઓર્ડર પર પાછા જાઓ"
+      }
+    },
+    "returnModal": {
+      "title": "પરત નોંધો",
+      "subtitle": "{code} · {staff}",
+      "dateLabel": "પરતની તારીખ",
+      "cols": {
+        "product": "પ્રોડક્ટ",
+        "out": "હજી બહાર",
+        "empty": "ખાલી હવે",
+        "filled": "ભરેલા હવે",
+        "lost": "ખોવાયા હવે",
+        "stillOut": "બાકી"
+      },
+      "overReturn": "{product} ના ફક્ત {remaining} હજી બહાર છે. જથ્થો ઘટાડો.",
+      "creditNotice": "વેચાયા વગર પાછા આવેલા જાર માટે {credit} આ ઓર્ડરમાંથી ઓછા થાય છે — કુલ {from} થી {to} થશે.",
+      "submit": "પરત નોંધો",
+      "submitting": "નોંધાઈ રહ્યું છે…",
+      "success": "પરત નોંધાયું"
+    },
+    "paymentModal": {
+      "title": "ચુકવણી નોંધો",
+      "subtitle": "{code} · {staff} · {amount} બાકી",
+      "dateLabel": "તારીખ",
+      "amountLabel": "રકમ",
+      "orderTotal": "ઓર્ડર કુલ",
+      "alreadyCollected": "પહેલેથી વસૂલ",
+      "thisPayment": "આ ચુકવણી",
+      "balanceAfter": "પછીની બાકી",
+      "submit": "ચુકવણી નોંધો",
+      "submitting": "નોંધાઈ રહ્યું છે…",
+      "success": "{amount} ની ચુકવણી નોંધાઈ"
     }
   }
 }

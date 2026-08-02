@@ -1,3 +1,4 @@
+import * as React from "react";
 import { cn } from "@/lib/utils";
 
 /**
@@ -12,7 +13,12 @@ export function PageHeader({
   actions,
   className,
 }: {
-  title: string;
+  /**
+   * `ReactNode`, not `string`: every detail page puts status badges inline
+   * with the title (DESIGN-STANDARDS §9), and a document code is set in mono
+   * while its subtitle is not.
+   */
+  title: React.ReactNode;
   subtitle: string;
   actions?: React.ReactNode;
   className?: string;

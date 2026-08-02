@@ -2286,7 +2286,9 @@
     "wasTooltip": "{credit} credited back for unsold jars returned filled",
     "bandSummary": "{count} orders",
     "actions": {
-      "add": "+ New Order"
+      "add": "+ New Order",
+      "recordReturn": "Record Return",
+      "recordPayment": "Record Payment"
     },
     "columns": {
       "code": "ORDER",
@@ -2348,6 +2350,88 @@
     "error": {
       "listTitle": "Couldn't load delivery orders",
       "listBody": "The server didn't respond. Your orders are safe — nothing has been changed."
+    },
+    "detail": {
+      "back": "Delivery Orders",
+      "meta": "{staff} · {date}",
+      "cancelledBanner": "This order was cancelled. Nothing more can be recorded against it.",
+      "summary": {
+        "billed": "BILLED",
+        "collected": "COLLECTED",
+        "outstanding": "OUTSTANDING",
+        "refundDue": "REFUND DUE",
+        "jars": "JARS OUT",
+        "ofIssued": "of {total} issued"
+      },
+      "tabs": {
+        "items": "Items",
+        "returns": "Returns",
+        "payments": "Payments"
+      },
+      "cols": {
+        "product": "PRODUCT",
+        "qty": "QTY",
+        "rate": "RATE",
+        "returned": "RETURNED",
+        "pending": "PENDING",
+        "total": "TOTAL"
+      },
+      "goodsIssued": "Goods issued",
+      "filledCredit": "Unsold jars credited back",
+      "discount": "Discount",
+      "billed": "Billed",
+      "bargained": "Bargained {delta}",
+      "returnedSplit": "{empty} empty · {filled} filled",
+      "returnedLine": "{product} — {empty} empty, {filled} filled back",
+      "lost": "{count} lost",
+      "paid": "Paid",
+      "refunded": "Refunded",
+      "coinsNote": "{count} coins",
+      "modes": {
+        "CASH": "Cash",
+        "COIN": "Coins",
+        "UPI": "UPI",
+        "BANK_TRANSFER": "Bank transfer",
+        "WRITE_OFF": "Write-off"
+      },
+      "noReturns": "Nothing has come back yet.",
+      "noPayments": "No payments recorded against this order.",
+      "notFound": {
+        "title": "That order doesn't exist",
+        "body": "It may have been removed. Go back to the register to find what you're looking for.",
+        "cta": "Back to orders"
+      }
+    },
+    "returnModal": {
+      "title": "Record return",
+      "subtitle": "{code} · {staff}",
+      "dateLabel": "Return date",
+      "cols": {
+        "product": "PRODUCT",
+        "out": "STILL OUT",
+        "empty": "EMPTY NOW",
+        "filled": "FILLED NOW",
+        "lost": "LOST NOW",
+        "stillOut": "REMAINING"
+      },
+      "overReturn": "Only {remaining} of {product} are still out. Reduce the quantity.",
+      "creditNotice": "{credit} comes off this order for jars returned unsold — the total goes from {from} to {to}.",
+      "submit": "Record return",
+      "submitting": "Recording…",
+      "success": "Return recorded"
+    },
+    "paymentModal": {
+      "title": "Record payment",
+      "subtitle": "{code} · {staff} · {amount} due",
+      "dateLabel": "Date",
+      "amountLabel": "Amount",
+      "orderTotal": "Order total",
+      "alreadyCollected": "Already collected",
+      "thisPayment": "This payment",
+      "balanceAfter": "Balance after",
+      "submit": "Record payment",
+      "submitting": "Recording…",
+      "success": "Payment of {amount} recorded"
     }
   }
 }
