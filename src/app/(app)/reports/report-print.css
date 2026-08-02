@@ -1,0 +1,281 @@
+/*
+ * The A4 document. Spec: design/MODULES/09-reports.md §12 · DESIGN-STANDARDS §19
+ *
+ * THIS IS NOT A STYLED SCREENSHOT. The screen and the page are two different
+ * designs of the same figures, and both are in the DOM at once: everything the
+ * screen owns carries Tailwind's `print:hidden`, and the document carries
+ * `hidden print:block`. `@media print` then swaps which one exists. That is why
+ * there is no `/reports/…/print` route — a second route would be a second place
+ * the figures were assembled, and two assemblies of one statement eventually
+ * disagree.
+ *
+ * LOADED ONLY UNDER /reports. It is imported by `reports/layout.tsx`, so the
+ * broad element selectors below (`aside`, `header`) cannot reach any other
+ * screen in the app. That is what lets this file hide the application shell
+ * without editing the shell — `src/components/**` is shared by nine modules.
+ *
+ * BLACK ON WHITE. Status prints as a WORD, never as a colour: a badge tint is
+ * invisible on a mono laser printer, and these three documents are handed to
+ * people. Only two greys survive, both structural — the table header fill and
+ * the total-row fill — and they are the sole users of `print-color-adjust`.
+ */
+
+@media print {
+  /* ── The page ────────────────────────────────────────────────────────── */
+
+  @page {
+    size: A4 portrait;
+    /* 20mm all round → a 170 × 257mm live area. §12.1 */
+    margin: 20mm;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    /* Inter 10pt / 14pt leading. Figures stay JetBrains Mono at the same size. */
+    font-size: 10pt !important;
+    line-height: 1.4 !important;
+  }
+
+  /* ── The application shell leaves ────────────────────────────────────── */
+
+  aside,
+  header.sticky,
+  [data-sonner-toaster],
+  [data-radix-popper-content-wrapper] {
+    display: none !important;
+  }
+
+  /* `main` is the centred, padded, max-width content column. On paper the page
+     margin IS the padding, so it gives all of it back. */
+  main {
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* ── Typography ──────────────────────────────────────────────────────── */
+
+  .report-print {
+    color: #000000;
+    font-size: 10pt;
+    line-height: 1.4;
+  }
+
+  .report-print h1 {
+    /* Business name — 16pt 700 uppercase, letter-spaced. §12.1 */
+    font-size: 16pt;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+
+  .report-print h2 {
+    /* Document title — 12pt 600 uppercase. */
+    font-size: 12pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+  }
+
+  .report-print h3 {
+    /* Section heading — A · OPEN DELIVERY ORDERS */
+    font-size: 10pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .report-print .caption {
+    font-size: 8pt;
+    line-height: 1.375;
+  }
+
+  .report-print .subject {
+    font-size: 10pt;
+  }
+
+  .report-print .period {
+    font-size: 9pt;
+  }
+
+  .report-print .figure {
+    font-family: var(--font-jetbrains-mono), var(--font-noto-gujarati), monospace;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  /*
+   * GUJARATI SURVIVES THE PRINT STYLESHEET.
+   *
+   * `--font-sans` and `--font-mono` both end in Noto Sans Gujarati, and nothing
+   * above re-declares `font-family` on a text element — the only override is
+   * `.figure`, which repeats the Gujarati fallback rather than dropping it.
+   * That matters more here than anywhere: a `font-family: Inter, sans-serif`
+   * written carelessly in a print block turns every Gujarati name into tofu,
+   * and nobody notices until the document has been handed over.
+   *
+   * Matras sit above and below the baseline, so Gujarati lines get 16pt leading
+   * against the document's 14pt. §12.1
+   */
+  .report-print :lang(gu),
+  .report-print .gu {
+    line-height: 1.6;
+  }
+
+  /* ── Tables ──────────────────────────────────────────────────────────── */
+
+  .report-print table {
+    width: 100%;
+    border-collapse: collapse;
+    /* No vertical rules anywhere on the page. §12.1 */
+    border-spacing: 0;
+  }
+
+  /* The header repeats on every page — a column of figures with no headings on
+     page 2 is unreadable. §12.1 */
+  .report-print thead {
+    display: table-header-group;
+  }
+
+  .report-print tfoot {
+    display: table-footer-group;
+  }
+
+  .report-print thead th {
+    font-size: 8pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    text-align: left;
+    padding: 1.5mm 3mm;
+    background: #f2f2f2 !important;
+    border-bottom: 0.5pt solid #000000;
+    /* One of exactly two places colour is forced through. */
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .report-print thead th.num {
+    text-align: right;
+  }
+
+  .report-print tbody td {
+    padding: 1.5mm 3mm;
+    border-bottom: 0.5pt solid rgba(0, 0, 0, 0.6);
+    vertical-align: top;
+  }
+
+  /* Never split a row across a page break, and never orphan a heading. §12.1 */
+  .report-print tr,
+  .report-print .avoid-break {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .report-print h3,
+  .report-print .section-heading {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /* A borderless cell — the right-aligned summary list is a layout table, not
+     a data table, and hairlines under every line would make it read as one. */
+  .report-print td.plain,
+  .report-print th.plain {
+    border: none !important;
+    padding: 0.5mm 0 0.5mm 3mm;
+  }
+
+  .report-print tr.rule-top td {
+    border-top: 1pt solid #000000 !important;
+    border-bottom: none !important;
+    font-weight: 600;
+    padding-top: 1.5mm;
+  }
+
+  /* A group heading spanning the full width — the collection sheet's four
+     bands. 9pt uppercase semibold on the same grey as the table header. §12.4 */
+  .report-print td.group-head {
+    font-size: 9pt;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    background: #f2f2f2 !important;
+    border-bottom: 0.5pt solid #000000;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .report-print .subtotal td {
+    font-weight: 600;
+    border-top: 1pt solid #000000;
+    border-bottom: none;
+  }
+
+  .report-print .grand-total td {
+    font-weight: 700;
+    border-top: 1.5pt solid #000000;
+    border-bottom: none;
+    background: #f2f2f2 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .report-print .section {
+    margin-top: 6mm;
+  }
+
+  /* ── Signature and handwriting blocks ────────────────────────────────── */
+
+  .report-print .sign-rule {
+    border-bottom: 0.5pt solid #000000;
+    min-width: 40mm;
+    display: inline-block;
+    height: 5mm;
+  }
+
+  /* ── The running footer ──────────────────────────────────────────────── */
+
+  /*
+   * `Page n of m`, on every page, without JavaScript.
+   *
+   * A fixed element in paged media repeats on each sheet, and `counter(page)` /
+   * `counter(pages)` are only defined there — which is exactly why the footer
+   * cannot be rendered as ordinary React content. The document code and the
+   * generated timestamp ride along, so a printout found in six months names
+   * itself and its age. §12.1
+   */
+  .report-print__footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 4mm;
+    font-size: 8pt;
+    padding-top: 1.5mm;
+    border-top: 0.5pt solid #000000;
+  }
+
+  .report-print__page::after {
+    content: counter(page) " of " counter(pages);
+  }
+
+  /* Room for the fixed footer to sit in without landing on a row. */
+  .report-print {
+    padding-bottom: 12mm;
+  }
+
+  /* ── Nothing lifts, nothing rounds, nothing shadows ──────────────────── */
+
+  .report-print * {
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+}

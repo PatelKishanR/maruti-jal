@@ -274,6 +274,133 @@ class DeliveryOrderRepository extends BaseRepository<DeliveryOrder> {
       .getMany();
   }
 
+  /* ── Reports ───────────────────────────────────────────────────────────
+   * Section A of the staff outstanding statement. design/MODULES/09 §6.3
+   */
+
+  /**
+   * Orders with money still on them for one staff member, inside a date window.
+   *
+   * `outstanding_amount <> 0` rather than `> 0`: an OVERPAID order means the
+   * company is holding the staff member's money, and a settlement statement
+   * that omitted it would ask him for a balance he has already covered.
+   * DATA-MODEL §10.4
+   */
+  async findOutstandingByStaffBetween(
+    staffId: string,
+    from: string,
+    to: string,
+    em?: EntityManager,
+  ): Promise<DeliveryOrder[]> {
+    const qb = await this.qb(em);
+    return qb
+      .where("o.staffId = :staffId", { staffId })
+      .andWhere("o.deletedAt IS NULL")
+      .andWhere("o.status <> :cancelled", { cancelled: "CANCELLED" })
+      .andWhere("o.outstandingAmount <> 0")
+      .andWhere("o.orderDate BETWEEN :from AND :to", { from, to })
+      .orderBy("o.orderDate", "ASC")
+      .addOrderBy("o.orderNo", "ASC")
+      .getMany();
+  }
+
+  /**
+   * Section A's subtotal AND the figure it fails to reach.
+   *
+   * The statement's summary band is the ALL-TIME position off
+   * `v_staff_outstanding` — the same row `/staff` reads — while Section A is
+   * range-scoped. When the range excludes an old unpaid order the two disagree,
+   * and a settlement document that does not add up is worthless. So both are
+   * computed here, in ONE pass, with the difference subtracted by PostgreSQL:
+   * the report prints the subtotal, the band, and a line naming the gap.
+   *
+   * Deriving that gap in TypeScript would be the second place a rupee was
+   * computed, and the two would eventually disagree. See DATA-MODEL D-4.
+   */
+  async statementTotalsForStaff(
+    staffId: string,
+    from: string,
+    to: string,
+    em?: EntityManager,
+  ): Promise<{
+    total: number;
+    paid: number;
+    balance: number;
+    count: number;
+    allBalance: number;
+    outOfRangeBalance: number;
+  }> {
+    const qb = await this.qb(em);
+    const row = await qb
+      .select(
+        "COALESCE(SUM(o.totalAmount) FILTER (WHERE o.orderDate BETWEEN :from AND :to), 0)",
+        "total",
+      )
+      .addSelect(
+        "COALESCE(SUM(o.paidTotalAmount - o.refundedAmount) FILTER (WHERE o.orderDate BETWEEN :from AND :to), 0)",
+        "paid",
+      )
+      .addSelect(
+        "COALESCE(SUM(o.outstandingAmount) FILTER (WHERE o.orderDate BETWEEN :from AND :to), 0)",
+        "balance",
+      )
+      .addSelect(
+        "COUNT(*) FILTER (WHERE o.orderDate BETWEEN :from AND :to AND o.outstandingAmount <> 0)",
+        "count",
+      )
+      .addSelect("COALESCE(SUM(o.outstandingAmount), 0)", "allBalance")
+      .addSelect(
+        "COALESCE(SUM(o.outstandingAmount), 0) " +
+          "- COALESCE(SUM(o.outstandingAmount) FILTER (WHERE o.orderDate BETWEEN :from AND :to), 0)",
+        "outOfRangeBalance",
+      )
+      .where("o.staffId = :staffId", { staffId })
+      .andWhere("o.deletedAt IS NULL")
+      .andWhere("o.status <> :cancelled", { cancelled: "CANCELLED" })
+      .setParameters({ staffId, from, to, cancelled: "CANCELLED" })
+      .getRawOne<{
+        total: string;
+        paid: string;
+        balance: string;
+        count: string;
+        allBalance: string;
+        outOfRangeBalance: string;
+      }>();
+
+    return {
+      total: Number(row?.total ?? 0),
+      paid: Number(row?.paid ?? 0),
+      balance: Number(row?.balance ?? 0),
+      count: Number(row?.count ?? 0),
+      allBalance: Number(row?.allBalance ?? 0),
+      outOfRangeBalance: Number(row?.outOfRangeBalance ?? 0),
+    };
+  }
+
+  /**
+   * A batch of orders by id — what a payment row's `ORD-000131` reference and
+   * its staff member are resolved from on the collection sheet, in one query
+   * rather than one per receipt.
+   */
+  async findManyByIds(
+    ids: readonly string[],
+    em?: EntityManager,
+  ): Promise<DeliveryOrder[]> {
+    if (ids.length === 0) return [];
+    const qb = await this.qb(em);
+    return qb.where("o.id IN (:...ids)", { ids: [...ids] }).getMany();
+  }
+
+  /** How many orders were raised on a date — the collection sheet's §5.5 note. */
+  async countRaisedOn(date: string, em?: EntityManager): Promise<number> {
+    const qb = await this.qb(em);
+    return qb
+      .where("o.orderDate = :date", { date })
+      .andWhere("o.deletedAt IS NULL")
+      .andWhere("o.status <> :cancelled", { cancelled: "CANCELLED" })
+      .getCount();
+  }
+
   /**
    * Counts grouped by one status dimension — the list page's KPI strip and
    * filter-chip badges in a single round trip.

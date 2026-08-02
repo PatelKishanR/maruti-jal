@@ -181,6 +181,37 @@ class DirectSaleRepository extends BaseRepository<DirectSale> {
     return { total: Number(row?.total ?? 0), count: Number(row?.count ?? 0) };
   }
 
+  /**
+   * The walk-in receipts of a window, in the order they were rung up — the
+   * "Walk-in sales" group of the daily collection sheet. §5.3
+   *
+   * A walk-in has NO payment row: `direct_sales` is constrained to `mode =
+   * 'CASH'` with no status, because the owner said they are always paid in full
+   * on the spot (DATA-MODEL §5.18). So this group cannot come from the payment
+   * repository, and the sheet composes the two sources — which is the honest
+   * shape rather than a fiction that gives walk-ins phantom payment rows.
+   *
+   * Voided rows are excluded: they stay in the register so the receipt
+   * numbering is provably untampered, but they were never collected.
+   */
+  async findBetween(
+    fromDate: string,
+    toDate: string,
+    em?: EntityManager,
+  ): Promise<DirectSale[]> {
+    const qb = await this.qb(em);
+    return qb
+      .where("ds.deletedAt IS NULL")
+      .andWhere("ds.isVoided = false")
+      .andWhere("ds.saleDate BETWEEN :fromDate AND :toDate", {
+        fromDate,
+        toDate,
+      })
+      .orderBy("ds.soldAt", "ASC")
+      .addOrderBy("ds.saleNo", "ASC")
+      .getMany();
+  }
+
   /** Same rules as sumForDate, over an inclusive range — the sales report. */
   async sumBetween(
     fromDate: string,

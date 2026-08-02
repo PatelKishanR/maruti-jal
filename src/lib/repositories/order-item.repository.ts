@@ -4,6 +4,26 @@ import type { EntityManager, EntityTarget } from "typeorm";
 import { BaseRepository } from "./base.repository";
 import { OrderItem } from "@/lib/db/entities/order-item.entity";
 
+/**
+ * One staff × product cell of the jar reconciliation, aggregated by PostgreSQL.
+ * `productTitle` is the line SNAPSHOT, used only when the product row itself
+ * has gone; the report prefers the live title so a renamed product still reads
+ * correctly.
+ */
+export interface JarMovementAggregateRow {
+  staffId: string;
+  productId: string;
+  productTitle: string;
+  issued: number;
+  empty: number;
+  filled: number;
+  lost: number;
+  stillOut: number;
+  oldestDays: number;
+  /** `(empty + filled) / issued`, to one decimal. Null when nothing issued. */
+  returnRatePercent: number | null;
+}
+
 export interface OpenLineFilters {
   /** Ignore lines belonging to this order — the caller is already showing it. */
   excludeOrderId?: string;
@@ -76,6 +96,177 @@ class OrderItemRepository extends BaseRepository<OrderItem> {
       .addOrderBy("o.orderNo", "DESC")
       .addOrderBy("oi.lineNo", "ASC")
       .getMany();
+  }
+
+  /* ── Reports ───────────────────────────────────────────────────────────
+   * Jar reconciliation (§11) and Section C of the staff statement (§6.3).
+   */
+
+  /**
+   * Jar movement per staff member per product — the whole jar reconciliation
+   * table, in one grouped aggregate.
+   *
+   * GROUPING BY THE PARENT'S `staff_id` is the one thing here worth flagging.
+   * This repository's contract is "reach `delivery_orders` only to filter and
+   * sort by it"; grouping is a third verb. It is allowed because there is no
+   * alternative that respects the other rules: `order_items` carries no staff
+   * column, a view for it does not exist, and the alternative — pulling every
+   * line into the service and folding them there — would be re-deriving the
+   * plant's jar position in TypeScript, one row at a time.
+   *
+   * NON-RETURNABLE LINES ARE EXCLUDED. A disposable bottle is never "out", and
+   * `is_returnable` is a SNAPSHOT, so reclassifying a product today cannot
+   * retroactively put last month's bottles into the jar count.
+   *
+   * `oldest_days` ages the ORDER, not the individual jar — the same basis
+   * `v_staff_jar_balance.oldest_pending_days` uses, so the two agree. Today is
+   * the IST business day, matching `todayIST()`.
+   *
+   * The return rate is a RATIO of counts, not money, and it is still computed
+   * in SQL so that the row, the group and the grand total are all divisions of
+   * SQL sums rather than averages of averages. §11.3
+   */
+  async jarMovementByStaffProduct(
+    filters: {
+      from: string;
+      to: string;
+      staffId?: string | null;
+      productIds?: readonly string[];
+    },
+    em?: EntityManager,
+  ): Promise<JarMovementAggregateRow[]> {
+    const qb = await this.qb(em);
+    qb.innerJoin("oi.order", "o")
+      .where("o.deletedAt IS NULL")
+      .andWhere("o.status <> :cancelled", { cancelled: "CANCELLED" })
+      .andWhere("oi.isReturnable = true")
+      .andWhere("o.orderDate BETWEEN :from AND :to", {
+        from: filters.from,
+        to: filters.to,
+      });
+
+    if (filters.staffId) {
+      qb.andWhere("o.staffId = :staffId", { staffId: filters.staffId });
+    }
+    if (filters.productIds && filters.productIds.length > 0) {
+      qb.andWhere("oi.productId IN (:...productIds)", {
+        productIds: [...filters.productIds],
+      });
+    }
+
+    const rows = await qb
+      .select("o.staff_id", "staffId")
+      .addSelect("oi.product_id", "productId")
+      .addSelect("MIN(oi.product_title)", "productTitle")
+      .addSelect("COALESCE(SUM(oi.quantity), 0)", "issued")
+      .addSelect("COALESCE(SUM(oi.returned_empty_qty), 0)", "empty")
+      .addSelect("COALESCE(SUM(oi.returned_filled_qty), 0)", "filled")
+      .addSelect("COALESCE(SUM(oi.lost_qty), 0)", "lost")
+      .addSelect("COALESCE(SUM(oi.pending_qty), 0)", "stillOut")
+      .addSelect(
+        "COALESCE(MAX((now() AT TIME ZONE 'Asia/Kolkata')::date - o.order_date) " +
+          "FILTER (WHERE oi.pending_qty > 0), 0)",
+        "oldestDays",
+      )
+      .addSelect(
+        "CASE WHEN COALESCE(SUM(oi.quantity), 0) > 0 " +
+          "THEN round(100.0 * (COALESCE(SUM(oi.returned_empty_qty), 0) " +
+          "+ COALESCE(SUM(oi.returned_filled_qty), 0)) " +
+          "/ SUM(oi.quantity), 1) END",
+        "returnRate",
+      )
+      .groupBy("o.staff_id")
+      .addGroupBy("oi.product_id")
+      .orderBy("COALESCE(SUM(oi.pending_qty), 0)", "DESC")
+      .getRawMany<{
+        staffId: string;
+        productId: string;
+        productTitle: string;
+        issued: string;
+        empty: string;
+        filled: string;
+        lost: string;
+        stillOut: string;
+        oldestDays: string;
+        returnRate: string | null;
+      }>();
+
+    return rows.map((row) => ({
+      staffId: row.staffId,
+      productId: row.productId,
+      productTitle: row.productTitle,
+      issued: Number(row.issued),
+      empty: Number(row.empty),
+      filled: Number(row.filled),
+      lost: Number(row.lost),
+      stillOut: Number(row.stillOut),
+      oldestDays: Number(row.oldestDays),
+      returnRatePercent: row.returnRate === null ? null : Number(row.returnRate),
+    }));
+  }
+
+  /**
+   * Section C's total: jars still out with one staff member, and how many of
+   * them sit behind an order older than a week.
+   *
+   * NO DATE RANGE. A jar out since June is still out today, and scoping this to
+   * the report's range would print a smaller number than the one the owner is
+   * about to count at the gate. §6.3 says so explicitly.
+   */
+  async sumOpenJarsByStaff(
+    staffId: string,
+    overdueDays: number,
+    em?: EntityManager,
+  ): Promise<{ qty: number; overdueQty: number; lineCount: number }> {
+    const qb = await this.qb(em);
+    const row = await qb
+      .innerJoin("oi.order", "o")
+      .select("COALESCE(SUM(oi.pending_qty), 0)", "qty")
+      .addSelect(
+        "COALESCE(SUM(oi.pending_qty) FILTER (" +
+          "WHERE (now() AT TIME ZONE 'Asia/Kolkata')::date - o.order_date >= :overdueDays" +
+          "), 0)",
+        "overdueQty",
+      )
+      .addSelect("COUNT(*)", "lineCount")
+      .where("o.staffId = :staffId", { staffId })
+      .andWhere("o.deletedAt IS NULL")
+      .andWhere("o.status <> :cancelled", { cancelled: "CANCELLED" })
+      .andWhere("oi.isReturnable = true")
+      .andWhere("oi.pendingQty > 0")
+      .setParameters({ staffId, overdueDays, cancelled: "CANCELLED" })
+      .getRawOne<{ qty: string; overdueQty: string; lineCount: string }>();
+
+    return {
+      qty: Number(row?.qty ?? 0),
+      overdueQty: Number(row?.overdueQty ?? 0),
+      lineCount: Number(row?.lineCount ?? 0),
+    };
+  }
+
+  /**
+   * Item counts and quantities for a batch of orders — the `3 items · 62 units`
+   * cell on Section A, without one query per row.
+   */
+  async summariseByOrderIds(
+    orderIds: readonly string[],
+    em?: EntityManager,
+  ): Promise<Array<{ orderId: string; itemCount: number; quantity: number }>> {
+    if (orderIds.length === 0) return [];
+    const qb = await this.qb(em);
+    const rows = await qb
+      .select("oi.order_id", "orderId")
+      .addSelect("COUNT(*)", "itemCount")
+      .addSelect("COALESCE(SUM(oi.quantity), 0)", "quantity")
+      .where("oi.orderId IN (:...orderIds)", { orderIds: [...orderIds] })
+      .groupBy("oi.order_id")
+      .getRawMany<{ orderId: string; itemCount: string; quantity: string }>();
+
+    return rows.map((row) => ({
+      orderId: row.orderId,
+      itemCount: Number(row.itemCount),
+      quantity: Number(row.quantity),
+    }));
   }
 
   /**

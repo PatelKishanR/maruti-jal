@@ -272,6 +272,105 @@ class CoinIssueRepository extends BaseRepository<CoinIssue> {
       .addOrderBy("ci.issueNo", "DESC")
       .getMany();
   }
+
+  /* ── Reports ───────────────────────────────────────────────────────────
+   * Section B of the staff outstanding statement. design/MODULES/09 §6.3
+   */
+
+  /**
+   * Handovers with money still on them, inside a window.
+   *
+   * `outstanding_amount <> 0`, matching `idx_ci_pending` and the predicate
+   * `v_staff_outstanding` counts on: a refund the company still owes is an open
+   * item too, and `> 0` would hide it from the settlement conversation.
+   */
+  async findOutstandingByStaffBetween(
+    staffId: string,
+    from: string,
+    to: string,
+    em?: EntityManager,
+  ): Promise<CoinIssue[]> {
+    const qb = await this.qb(em);
+    return qb
+      .where("ci.staffId = :staffId", { staffId })
+      .andWhere("ci.deletedAt IS NULL")
+      .andWhere("ci.status <> :cancelled", { cancelled: "CANCELLED" })
+      .andWhere("ci.outstandingAmount <> 0")
+      .andWhere("ci.issueDate BETWEEN :from AND :to", { from, to })
+      .orderBy("ci.issueDate", "ASC")
+      .addOrderBy("ci.issueNo", "ASC")
+      .getMany();
+  }
+
+  /**
+   * Section B's subtotal and the balance the range leaves behind — the same
+   * contract as `deliveryOrderRepository.statementTotalsForStaff`, and for the
+   * same reason: the summary band is all-time and the section is not, so the
+   * gap between them is stated rather than left for the reader to discover.
+   * Both figures and their difference are computed by PostgreSQL.
+   */
+  async statementTotalsForStaff(
+    staffId: string,
+    from: string,
+    to: string,
+    em?: EntityManager,
+  ): Promise<{
+    pending: number;
+    paid: number;
+    count: number;
+    allPending: number;
+    outOfRangePending: number;
+  }> {
+    const qb = await this.qb(em);
+    const row = await qb
+      .select(
+        "COALESCE(SUM(ci.outstandingAmount) FILTER (WHERE ci.issueDate BETWEEN :from AND :to), 0)",
+        "pending",
+      )
+      .addSelect(
+        "COALESCE(SUM(ci.paidAmount - ci.refundedAmount) FILTER (WHERE ci.issueDate BETWEEN :from AND :to), 0)",
+        "paid",
+      )
+      .addSelect(
+        "COUNT(*) FILTER (WHERE ci.issueDate BETWEEN :from AND :to AND ci.outstandingAmount <> 0)",
+        "count",
+      )
+      .addSelect("COALESCE(SUM(ci.outstandingAmount), 0)", "allPending")
+      .addSelect(
+        "COALESCE(SUM(ci.outstandingAmount), 0) " +
+          "- COALESCE(SUM(ci.outstandingAmount) FILTER (WHERE ci.issueDate BETWEEN :from AND :to), 0)",
+        "outOfRangePending",
+      )
+      .where("ci.staffId = :staffId", { staffId })
+      .andWhere("ci.deletedAt IS NULL")
+      .andWhere("ci.status <> :cancelled", { cancelled: "CANCELLED" })
+      .setParameters({ staffId, from, to, cancelled: "CANCELLED" })
+      .getRawOne<{
+        pending: string;
+        paid: string;
+        count: string;
+        allPending: string;
+        outOfRangePending: string;
+      }>();
+
+    return {
+      pending: Number(row?.pending ?? 0),
+      paid: Number(row?.paid ?? 0),
+      count: Number(row?.count ?? 0),
+      allPending: Number(row?.allPending ?? 0),
+      outOfRangePending: Number(row?.outOfRangePending ?? 0),
+    };
+  }
+
+  /** A batch by id — resolving `CIS-000045` on a payment row, in one query. */
+  async findManyByIds(
+    ids: readonly string[],
+    em?: EntityManager,
+  ): Promise<CoinIssue[]> {
+    if (ids.length === 0) return [];
+    const qb = await this.qb(em);
+    return qb.where("ci.id IN (:...ids)", { ids: [...ids] }).getMany();
+  }
 }
 
 export const coinIssueRepository = new CoinIssueRepository();

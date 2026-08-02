@@ -49,6 +49,17 @@ export interface PeriodProfitRow {
 }
 
 /**
+ * The same three figures plus the two the P&L net card prints beside them —
+ * margin and the daily average — so neither is derived outside PostgreSQL.
+ */
+export interface PeriodProfitSummaryRow extends PeriodProfitRow {
+  /** numeric(6,1). Null when there was no income to take a percentage of. */
+  margin_percent: string | null;
+  /** numeric(12,2) — profit ÷ days. */
+  average_per_day: string;
+}
+
+/**
  * What was RECEIVED in a period, less what was spent — the dashboard's
  * `TODAY'S NET` card (design/MODULES/08 §3.3.2 card 4).
  *
@@ -177,6 +188,58 @@ class DailySalesRepository {
     );
 
     return rows[0] ?? { income: "0", expenses: expenseTotal, profit: "0" };
+  }
+
+  /**
+   * The profit & loss report's net card, in one query. §10
+   *
+   * Income, spend, the difference, the margin AND the daily average — every one
+   * of them computed by PostgreSQL. `profitBetween` already does the first
+   * three; this exists because the net card also prints `Margin 60.6% · 14
+   * days · ₹53,450.00 average per day`, and dividing a rupee figure by a day
+   * count in TypeScript is still deriving money in TypeScript. The day count is
+   * bound rather than derived from the window so it always matches the period
+   * length the page prints beside it.
+   *
+   * `expenseTotal` is a STRING for the same reason the money transformer writes
+   * strings: `(1234.55).toString()` is fine today and a float artefact the day
+   * the figure gets large enough. See `profitBetween` for the full rationale on
+   * why the expense side arrives as a parameter.
+   */
+  async profitSummaryBetween(
+    from: string,
+    to: string,
+    expenseTotal: string,
+    days: number,
+    em?: EntityManager,
+  ): Promise<PeriodProfitSummaryRow> {
+    const rows = await this.run<PeriodProfitSummaryRow>(
+      `SELECT COALESCE(SUM(revenue), 0)::numeric(12,2)  AS income,
+              $3::numeric(12,2)                         AS expenses,
+              (COALESCE(SUM(revenue), 0) - $3::numeric)::numeric(12,2) AS profit,
+              (CASE WHEN COALESCE(SUM(revenue), 0) > 0
+                    THEN round(100.0 * (COALESCE(SUM(revenue), 0) - $3::numeric)
+                               / COALESCE(SUM(revenue), 0), 1)
+               END)::numeric(6,1)                       AS margin_percent,
+              (CASE WHEN $4::integer > 0
+                    THEN round((COALESCE(SUM(revenue), 0) - $3::numeric) / $4::integer, 2)
+                    ELSE 0
+               END)::numeric(12,2)                      AS average_per_day
+         FROM v_daily_sales
+        WHERE business_date BETWEEN $1 AND $2`,
+      [from, to, expenseTotal, days],
+      em,
+    );
+
+    return (
+      rows[0] ?? {
+        income: "0",
+        expenses: expenseTotal,
+        profit: "0",
+        margin_percent: null,
+        average_per_day: "0",
+      }
+    );
   }
 
   /**

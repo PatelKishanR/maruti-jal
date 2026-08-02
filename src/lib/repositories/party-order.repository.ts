@@ -282,6 +282,19 @@ class PartyOrderRepository extends BaseRepository<PartyOrder> {
       .getMany();
   }
 
+  /**
+   * A batch by id — resolving `PTY-000012` and the party's name on a payment
+   * row of the daily collection sheet, in one query rather than one per receipt.
+   */
+  async findManyByIds(
+    ids: readonly string[],
+    em?: EntityManager,
+  ): Promise<PartyOrder[]> {
+    if (ids.length === 0) return [];
+    const qb = await this.qb(em);
+    return qb.where("po.id IN (:...ids)", { ids: [...ids] }).getMany();
+  }
+
   async sumOutstanding(em?: EntityManager): Promise<PartyOutstandingTotals> {
     const qb = await this.qb(em);
     const row = await qb

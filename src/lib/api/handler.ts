@@ -62,6 +62,21 @@ interface CreateApiHandlerOptions<
   params?: PS;
   /** HTTP status on success. Defaults to 200. */
   status?: number;
+  /**
+   * The handler returns a `Response` to be sent AS IS, skipping the JSON
+   * envelope.
+   *
+   * For file downloads only. A CSV export has to arrive with
+   * `Content-Disposition: attachment` and a real body — wrapping it in
+   * `{ ok, data }` would mean the browser downloading JSON, and assembling the
+   * file client-side instead would let the export drift from the figures the
+   * server actually computed. Everything before this point — authentication,
+   * the role check, Zod on body, query and params — still runs unchanged, which
+   * is the whole reason this is a flag here rather than a hand-rolled route.
+   *
+   * Errors still take the JSON envelope: a failure is not a file.
+   */
+  raw?: boolean;
   handler: (
     args: HandlerArgs<
       BS extends ZodAny ? z.infer<BS> : undefined,
@@ -235,6 +250,12 @@ export function createApiHandler<
         },
         "api ok",
       );
+
+      // A file download leaves as it was built. See `raw` above.
+      if (opts.raw && data instanceof Response) {
+        data.headers.set("x-request-id", requestId);
+        return data as unknown as NextResponse;
+      }
 
       return NextResponse.json(
         { ok: true, data } satisfies ApiSuccess<R>,

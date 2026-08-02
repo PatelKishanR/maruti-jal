@@ -71,7 +71,7 @@ export const navGroups: NavGroup[] = [
   {
     labelKey: "insights",
     items: [
-      { key: "reports", href: "/reports", icon: FileBarChart, ready: false },
+      { key: "reports", href: "/reports", icon: FileBarChart, ready: true },
       /* The coin ledger is a tab on each coin type, not a standalone route —
          a top-level link here would 404. Stock adjustments is the real page. */
       { key: "coinAdjustments", href: "/coins/adjustments", icon: BookOpen, ready: true },

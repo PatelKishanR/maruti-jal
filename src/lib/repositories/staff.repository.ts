@@ -124,6 +124,27 @@ class StaffRepository extends BaseRepository<Staff> {
   }
 
   /**
+   * A batch by id — the names beside the receipts on a collection sheet, and
+   * the staff group headings on the jar reconciliation, in one query.
+   *
+   * Soft-deleted rows are INCLUDED deliberately: a report over last quarter
+   * must still name the person who drove, and dropping them would leave a
+   * blank cell where a name belongs.
+   */
+  async findManyByIds(
+    ids: readonly string[],
+    em?: EntityManager,
+  ): Promise<Staff[]> {
+    if (ids.length === 0) return [];
+    const qb = await this.qb(em);
+    return qb
+      .withDeleted()
+      .where("s.id IN (:...ids)", { ids: [...ids] })
+      .orderBy("s.name", "ASC")
+      .getMany();
+  }
+
+  /**
    * Phone is unique among NON-DELETED rows only — when someone leaves their
    * number frees up for the next person (§10.15) — so this check must exclude
    * soft-deleted rows or the number would stay locked forever.

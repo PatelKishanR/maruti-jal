@@ -61,6 +61,39 @@ export interface ProductSalesLifetimeRow {
   last_month: string | null;
 }
 
+/**
+ * One product's whole movement over a MONTH RANGE, with the channel split
+ * pivoted into columns — the product movement report's row. §9
+ */
+export interface ProductMovementRow {
+  product_id: string;
+  product_code: string;
+  product_title: string;
+  current_base_price: string;
+  delivery_qty: number;
+  party_qty: number;
+  qty_issued: number;
+  qty_billed: number;
+  revenue: string;
+  base_value: string;
+  discount_value: string;
+  avg_realised_price: string | null;
+  avg_base_price: string | null;
+  line_count: number;
+  document_count: number;
+}
+
+export interface ProductMovementTotalsRow {
+  delivery_qty: number;
+  party_qty: number;
+  qty_billed: number;
+  revenue: string;
+  base_value: string;
+  discount_value: string;
+  /** numeric(6,1) — how far below list the period ran, as a percentage. */
+  discount_percent: string | null;
+}
+
 /** One row of the top-by-X KPI cards. */
 export interface ProductSalesLeaderRow {
   product_id: string;
@@ -199,6 +232,112 @@ class ProductSalesRepository {
     ]);
 
     return { byVolume: volume[0] ?? null, byRevenue: revenue[0] ?? null };
+  }
+
+  /**
+   * The product movement report: every product that moved between two months,
+   * with its channel split folded into columns. §9
+   *
+   * THE VIEW KEYS ON THE MONTH, so both bounds are the FIRST DAY of a month and
+   * the caller must snap its date range to whole months before calling. A range
+   * of 05–20 Aug therefore reports the whole of August. That is stated on the
+   * report rather than hidden, because silently widening a period is how a
+   * figure gets quoted for the wrong fortnight.
+   *
+   * `qty_billed`, not `qty_issued`, is what pairs with revenue and the average
+   * price — a filled jar handed straight back was never sold (decision D5), and
+   * dividing revenue by issued quantity understates the realised rate on every
+   * route that took stock back.
+   *
+   * WALK-INS ARE STRUCTURALLY ABSENT. `direct_sales` records an amount and no
+   * quantity, so the view has no walk-in branch and this query cannot invent
+   * one. Walk-in revenue is read separately from `v_daily_sales`.
+   *
+   * The averages are recomputed from the SUMS, never averaged across months —
+   * `avg(avg)` is wrong, and a wrong average printed with two decimals is worse
+   * than none.
+   */
+  async findBetweenMonths(
+    fromMonth: string,
+    toMonth: string,
+    productIds?: readonly string[] | null,
+    em?: EntityManager,
+  ): Promise<ProductMovementRow[]> {
+    const ids = productIds && productIds.length > 0 ? [...productIds] : null;
+
+    return this.run<ProductMovementRow>(
+      `SELECT product_id,
+              MIN(product_code)  AS product_code,
+              MIN(product_title) AS product_title,
+              MAX(current_base_price)::numeric(12,2) AS current_base_price,
+              COALESCE(SUM(qty_billed) FILTER (WHERE channel = 'DELIVERY'), 0)::integer AS delivery_qty,
+              COALESCE(SUM(qty_billed) FILTER (WHERE channel = 'PARTY'), 0)::integer    AS party_qty,
+              COALESCE(SUM(qty_issued), 0)::integer      AS qty_issued,
+              COALESCE(SUM(qty_billed), 0)::integer      AS qty_billed,
+              COALESCE(SUM(revenue), 0)::numeric(12,2)   AS revenue,
+              COALESCE(SUM(base_value), 0)::numeric(12,2) AS base_value,
+              (COALESCE(SUM(base_value), 0) - COALESCE(SUM(revenue), 0))::numeric(12,2) AS discount_value,
+              (CASE WHEN SUM(qty_billed) > 0
+                    THEN round(SUM(revenue) / SUM(qty_billed), 6) END)::numeric(14,6)   AS avg_realised_price,
+              (CASE WHEN SUM(qty_billed) > 0
+                    THEN round(SUM(base_value) / SUM(qty_billed), 6) END)::numeric(14,6) AS avg_base_price,
+              COALESCE(SUM(line_count), 0)::integer      AS line_count,
+              COALESCE(SUM(document_count), 0)::integer  AS document_count
+         FROM v_product_sales
+        WHERE month BETWEEN $1::date AND $2::date
+          AND ($3::uuid[] IS NULL OR product_id = ANY($3::uuid[]))
+        GROUP BY product_id
+        ORDER BY COALESCE(SUM(qty_billed), 0) DESC,
+                 COALESCE(SUM(revenue), 0) DESC,
+                 MIN(product_title) ASC`,
+      [fromMonth, toMonth, ids],
+      em,
+    );
+  }
+
+  /**
+   * The summary band's four cells, aggregated across every product at once.
+   *
+   * A separate query rather than a fold over the rows above, for the reason
+   * every total in this codebase is: summing rupees in TypeScript is how the
+   * band and the table start disagreeing by a paisa.
+   */
+  async totalsBetweenMonths(
+    fromMonth: string,
+    toMonth: string,
+    productIds?: readonly string[] | null,
+    em?: EntityManager,
+  ): Promise<ProductMovementTotalsRow> {
+    const ids = productIds && productIds.length > 0 ? [...productIds] : null;
+
+    const rows = await this.run<ProductMovementTotalsRow>(
+      `SELECT COALESCE(SUM(qty_billed) FILTER (WHERE channel = 'DELIVERY'), 0)::integer AS delivery_qty,
+              COALESCE(SUM(qty_billed) FILTER (WHERE channel = 'PARTY'), 0)::integer    AS party_qty,
+              COALESCE(SUM(qty_billed), 0)::integer      AS qty_billed,
+              COALESCE(SUM(revenue), 0)::numeric(12,2)   AS revenue,
+              COALESCE(SUM(base_value), 0)::numeric(12,2) AS base_value,
+              (COALESCE(SUM(base_value), 0) - COALESCE(SUM(revenue), 0))::numeric(12,2) AS discount_value,
+              (CASE WHEN SUM(base_value) > 0
+                    THEN round(100.0 * (SUM(base_value) - SUM(revenue)) / SUM(base_value), 1)
+               END)::numeric(6,1) AS discount_percent
+         FROM v_product_sales
+        WHERE month BETWEEN $1::date AND $2::date
+          AND ($3::uuid[] IS NULL OR product_id = ANY($3::uuid[]))`,
+      [fromMonth, toMonth, ids],
+      em,
+    );
+
+    return (
+      rows[0] ?? {
+        delivery_qty: 0,
+        party_qty: 0,
+        qty_billed: 0,
+        revenue: "0",
+        base_value: "0",
+        discount_value: "0",
+        discount_percent: null,
+      }
+    );
   }
 
   /** Does this month have any movement at all? Drives `movementAvailable`. */
