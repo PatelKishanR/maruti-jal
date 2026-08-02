@@ -4,9 +4,10 @@ import { withTx } from "@/lib/db/data-source";
 import { productRepository } from "@/lib/repositories/product.repository";
 import { productTagRepository } from "@/lib/repositories/product-tag.repository";
 import { productFilterTypeRepository } from "@/lib/repositories/product-filter-type.repository";
+import { productSalesRepository } from "@/lib/repositories/insights/product-sales.repository";
 import { NotFoundError, ValidationError } from "@/lib/errors";
 import { logger } from "@/lib/logger";
-import { todayIST } from "@/lib/dates";
+import { monthBounds, todayIST } from "@/lib/dates";
 import { formatINR, formatLitres } from "@/lib/money";
 import { productTableConfig } from "@/lib/table/configs/product";
 import type {
@@ -26,8 +27,16 @@ import {
   type ProductDto,
   type ProductListResponseDto,
   type ProductLookupsDto,
+  type ProductMovementDto,
   type ProductOptionDto,
 } from "@/lib/dto/product.dto";
+import {
+  toProductSalesDto,
+  toProductSalesLeaderDto,
+  toProductSalesLifetimeDto,
+  type ProductSalesDto,
+  type ProductSalesLifetimeDto,
+} from "@/lib/dto/insights.dto";
 
 /**
  * Business rules for the catalogue.
@@ -111,6 +120,18 @@ function currentMonth(): string {
 }
 
 /**
+ * `YYYY-MM` → `YYYY-MM-01`.
+ *
+ * `v_product_sales.month` is `date_trunc('month', …)::date`, so its key is the
+ * first day of the month rather than the `YYYY-MM` string the rest of this
+ * application speaks. The conversion happens here, once, rather than at each
+ * call site where it would eventually be got wrong.
+ */
+function monthStart(month: string): string {
+  return monthBounds(`${month}-01`).from;
+}
+
+/**
  * The catalogue list, plus the KPI strip above it.
  *
  * Both come from one call because the KPI figures are counts of the same table
@@ -130,7 +151,9 @@ export async function listProducts(
     ? query.sort
     : productTableConfig.defaultSort.key;
 
-  const [labels, [rows, total], totalProducts, activeProducts] =
+  const month = currentMonth();
+
+  const [labels, [rows, total], totalProducts, activeProducts, leaders] =
     await Promise.all([
       loadLookupLabels(),
       productRepository.searchPaginated({
@@ -147,7 +170,24 @@ export async function listProducts(
       }),
       productRepository.count(),
       productRepository.count({ isActive: true }),
+      /**
+       * The two leader cards, ranked by `v_product_sales` for this month.
+       *
+       * NOT joined from `productRepository` — that repository queries the
+       * `products` table and nothing else (ARCHITECTURE §4.1 rule 4). The
+       * ranking is a cross-module aggregate over order and party lines, which
+       * is exactly what the view exists to hold, so it gets its own repository
+       * and this service calls both.
+       */
+      productSalesRepository.leadersForMonth(monthStart(month)),
     ]);
+
+  const byVolume = leaders.byVolume
+    ? toProductSalesLeaderDto(leaders.byVolume)
+    : null;
+  const byRevenue = leaders.byRevenue
+    ? toProductSalesLeaderDto(leaders.byRevenue)
+    : null;
 
   const kpis: ProductCatalogueKpisDto = {
     totalProducts,
@@ -157,13 +197,35 @@ export async function listProducts(
       totalProducts === 0
         ? null
         : Math.round((activeProducts / totalProducts) * 100),
-    // TODO(wave-4): rank by order-line volume and revenue for `month` once
-    // orders exist. Deliberately NOT joined from productRepository — one
-    // repository per entity, so this becomes an order-line repository call.
-    topByVolume: null,
-    topByRevenue: null,
-    month: currentMonth(),
-    movementAvailable: false,
+
+    /**
+     * Two cards because they are genuinely different products often enough to
+     * be worth the space: the plain jar wins on volume while the chilled one
+     * wins on revenue, and knowing which is which is the point.
+     *
+     * `figure` is UNITS for volume and RUPEES for revenue. Units means
+     * `qty_billed` — what was charged for — not `qty_issued`, so the leader
+     * board and the money agree. A route that carried fifty jars out and
+     * brought forty back sold ten.
+     */
+    topByVolume: byVolume
+      ? {
+          productId: byVolume.productId,
+          title: byVolume.productTitle,
+          figure: byVolume.qtyBilled,
+        }
+      : null,
+    topByRevenue: byRevenue
+      ? {
+          productId: byRevenue.productId,
+          title: byRevenue.productTitle,
+          figure: byRevenue.revenue,
+        }
+      : null,
+    month,
+    // A month with no movement is a real answer, and different from "we cannot
+    // compute this" — which is what the flag existed to distinguish.
+    movementAvailable: byVolume !== null || byRevenue !== null,
   };
 
   return {
@@ -180,21 +242,86 @@ export async function listProducts(
 
 /** One product, with everything the detail page renders. */
 export async function getProduct(id: string): Promise<ProductDetailDto> {
-  const [product, labels] = await Promise.all([
+  const month = currentMonth();
+
+  const [product, labels, monthRow, lifetimeRow] = await Promise.all([
     productRepository.findById(id),
     loadLookupLabels(),
+    productSalesRepository.findByProductAndMonth(id, monthStart(month)),
+    productSalesRepository.lifetimeForProduct(id),
   ]);
 
   if (!product) throw new NotFoundError("Product", { id });
 
+  const thisMonth = monthRow ? toProductSalesDto(monthRow) : null;
+  const lifetime = toProductSalesLifetimeDto(lifetimeRow);
+
   return {
     ...toProductDto(product, labels),
-    // TODO(wave-4): aggregate order lines by channel for the selected month,
-    // and derive the price history from document revisions. Both belong to
-    // their own repositories — this service calls them, it does not join here.
-    movement: emptyMovement(currentMonth()),
+    movement: movementFrom(month, thisMonth, lifetime),
+
+    /**
+     * How many live order lines reference this product — the meta line under
+     * the edit form ("used on 214 order lines"), which is what makes a price
+     * change feel consequential.
+     *
+     * `v_product_sales` excludes cancelled orders and skipped party days, so
+     * this counts lines that still stand rather than every row ever written.
+     * That is the number the sentence means.
+     */
+    usageCount: lifetime.lineCount,
+
+    /**
+     * NOT WIRED — and not from any view.
+     *
+     * Price history is the `document_revisions` / audit trail for this product,
+     * which is history rather than an aggregate; no view in the dashboard
+     * migration carries it. It needs a revision-log repository read, the same
+     * change as the two `TODO(wave-5)` audit-history markers elsewhere.
+     */
     priceHistory: [],
-    usageCount: 0,
+  };
+}
+
+/**
+ * The movement panel, from `v_product_sales`.
+ *
+ * ── THE PER-CHANNEL ROWS ARE NULL, AND THAT IS THE HONEST ANSWER ────────────
+ *
+ * `v_product_sales` UNIONs delivery lines and party lines and then groups by
+ * product and month. It keeps no discriminator column, so delivery and party
+ * cannot be told apart downstream — and walk-ins are absent from it by
+ * construction, because `direct_sales` carries an amount but no quantity and no
+ * unit price, so it can contribute nothing to a per-product quantity figure.
+ *
+ * Splitting the totals would therefore mean inventing a split. `null` is the
+ * DTO's documented "no figure" and renders as an em dash; a fabricated zero
+ * against DELIVERY would read as "this product never goes out on a van", which
+ * is a different and false statement. Per-channel figures need a `channel`
+ * column added to the view — a migration, not a service change.
+ *
+ * The TOTALS underneath are real, and units are `qtyBilled` throughout so that
+ * units × avg price reconciles with revenue.
+ */
+function movementFrom(
+  month: string,
+  thisMonth: ProductSalesDto | null,
+  lifetime: ProductSalesLifetimeDto,
+): ProductMovementDto {
+  return {
+    ...emptyMovement(month),
+    totalUnits: thisMonth?.qtyBilled ?? 0,
+    totalRevenue: thisMonth?.revenue ?? 0,
+    avgRealisedPrice: thisMonth?.avgRealisedPrice ?? null,
+    lifetimeUnits: lifetime.qtyBilled,
+    /**
+     * The view aggregates by MONTH, so the finest "last sold" it can express is
+     * a month, not the `YYYY-MM-DD` this field promises. A first-of-the-month
+     * date would be a date the product may well not have sold on.
+     */
+    lastSoldOn: null,
+    // The aggregate is live now: zero means nothing sold, not "unknown".
+    available: true,
   };
 }
 

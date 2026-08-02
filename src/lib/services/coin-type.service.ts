@@ -6,6 +6,7 @@ import { withTx } from "@/lib/db/data-source";
 import { coinTypeRepository } from "@/lib/repositories/coin-type.repository";
 import { coinLedgerEntryRepository } from "@/lib/repositories/coin-ledger-entry.repository";
 import { coinAdjustmentRepository } from "@/lib/repositories/coin-adjustment.repository";
+import { coinCirculationRepository } from "@/lib/repositories/insights/coin-circulation.repository";
 import { ConflictError, NotFoundError } from "@/lib/errors";
 import { logger } from "@/lib/logger";
 import { todayIST } from "@/lib/dates";
@@ -30,6 +31,10 @@ import {
   type DeactivateBlocker,
   type LedgerEntryDto,
 } from "@/lib/dto/coin-type.dto";
+import {
+  toCoinCirculationDto,
+  toCoinCirculationTotalsDto,
+} from "@/lib/dto/insights.dto";
 import type {
   CoinLedgerQuery,
   CoinTypeListQuery,
@@ -119,12 +124,22 @@ function deactivateBlockers(
 /**
  * Coins issued to staff and not yet returned or redeemed.
  *
- * TODO(wave-3): aggregate `coin_issues` / `coin_issue_items` less returns.
- * Zero until coin issues ship — there is no table to aggregate yet, and
- * inventing a figure would be worse than showing none.
+ * `v_coins_in_circulation` already does the aggregate — issues less returns
+ * less redemptions, per coin type. It gets its own repository because a view is
+ * a single relation, which keeps "one repository per entity" intact for a
+ * figure that spans `coin_issues`, `coin_issue_items` and their return events.
+ * `coinTypeRepository` must not reach across to them.
+ *
+ * A coin type nobody has ever been issued has no row constraint to worry about:
+ * the view drives from `coin_types`, so it returns a row of zeros rather than
+ * nothing. `?? 0` covers a type created inside the current transaction.
  */
-function coinsOutWithStaff(_coinTypeId: string): number {
-  return 0;
+async function coinsOutWithStaff(
+  coinTypeId: string,
+  em?: EntityManager,
+): Promise<number> {
+  const row = await coinCirculationRepository.findByCoinTypeId(coinTypeId, em);
+  return row ? toCoinCirculationDto(row).coinsInCirculation : 0;
 }
 
 /* ── Reads ──────────────────────────────────────────────────────────────── */
@@ -148,7 +163,7 @@ export async function listCoinTypes(
   );
   const status = query.filters.status;
 
-  const [{ rows, total }, totals] = await Promise.all([
+  const [{ rows, total }, totals, floatRow] = await Promise.all([
     coinTypeRepository.searchPaginated({
       search: query.q || undefined,
       isActive:
@@ -159,7 +174,11 @@ export async function listCoinTypes(
       sortDir: query.sort.dir === "asc" ? "ASC" : "DESC",
     }),
     coinTypeRepository.summary(),
+    // The float across every coin type, summed by PostgreSQL over the view.
+    coinCirculationRepository.totals(),
   ]);
+
+  const float = toCoinCirculationTotalsDto(floatRow);
 
   return {
     rows: rows.map(toCoinTypeListItemDto),
@@ -175,9 +194,17 @@ export async function listCoinTypes(
       valueInStock: totals.valueInStock,
       packetsInStock: totals.packetsInStock,
       looseCoinsInStock: totals.looseCoinsInStock,
-      // TODO(wave-3): both come from `coin_issues`.
-      coinsOutWithStaff: 0,
-      valueOutWithStaff: 0,
+      /**
+       * The other half of the coin position: stock is what is in the cupboard,
+       * this is what is out on the vans. Both are needed before "how many coins
+       * do we have" has an answer.
+       *
+       * `valueOutWithStaff` is the view's own per-type rounded value summed in
+       * SQL, so it reconciles exactly with the rows in the table rather than
+       * being re-derived from coins × price here.
+       */
+      coinsOutWithStaff: float.coinsInCirculation,
+      valueOutWithStaff: float.valueInCirculation,
     },
   };
 }
@@ -186,8 +213,10 @@ export async function getCoinType(id: string): Promise<CoinTypeDetailDto> {
   const coinType = await coinTypeRepository.findById(id);
   if (!coinType) throw new NotFoundError("Coin type", { id });
 
-  const totals = await coinLedgerEntryRepository.sumMovements(id);
-  const out = coinsOutWithStaff(id);
+  const [totals, out] = await Promise.all([
+    coinLedgerEntryRepository.sumMovements(id),
+    coinsOutWithStaff(id),
+  ]);
 
   return toCoinTypeDetailDto(
     coinType,
@@ -440,7 +469,7 @@ export async function updateCoinType(
     // Turning the toggle off is a deactivation, so it obeys the same guards as
     // the explicit action — otherwise the form becomes a way around them.
     if (coinType.isActive && !input.isActive) {
-      assertDeactivatable(coinType);
+      await assertDeactivatable(coinType, em);
     }
 
     coinType.name = input.name;
@@ -466,10 +495,16 @@ export async function updateCoinType(
   }, userId);
 }
 
-function assertDeactivatable(coinType: CoinType): void {
+async function assertDeactivatable(
+  coinType: CoinType,
+  em?: EntityManager,
+): Promise<void> {
+  // Read inside the caller's transaction when there is one: the guard must see
+  // the same snapshot as the row lock it is protecting, or a return committing
+  // in the gap lets a deactivation through against coins still out.
   const blockers = deactivateBlockers(
     coinType,
-    coinsOutWithStaff(coinType.id),
+    await coinsOutWithStaff(coinType.id, em),
   );
   if (blockers.length === 0) return;
 
@@ -513,7 +548,7 @@ export async function deactivateCoinType(
     // a double-click must not produce one.
     if (!coinType.isActive) return toCoinTypeDto(coinType);
 
-    assertDeactivatable(coinType);
+    await assertDeactivatable(coinType, em);
 
     coinType.isActive = false;
     coinType.updatedById = userId;

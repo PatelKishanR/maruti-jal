@@ -20,6 +20,21 @@ export type { StaffSortKey };
 export interface StaffSearchQuery {
   search?: string;
   isActive?: boolean;
+  /**
+   * Restrict to a known set of staff ids.
+   *
+   * This is how the `?hasBalance=1` and `?hasJars=1` filters work. Those
+   * predicates live on `v_staff_outstanding` and `v_staff_jar_balance`, which
+   * this repository must not query — one repository per entity
+   * (ARCHITECTURE §4.1 rule 4). The service asks the view repositories WHO
+   * qualifies and passes the answer down here, so search, sort and pagination
+   * still happen in one round trip against `staff`.
+   *
+   * An EMPTY ARRAY MEANS "nobody" and must return zero rows. It is not the same
+   * as `undefined`, which means "no id restriction" — collapsing the two would
+   * turn "nobody owes anything" into "here is the entire roster".
+   */
+  ids?: string[];
   sort?: string;
   dir?: "ASC" | "DESC";
   skip?: number;
@@ -63,6 +78,17 @@ class StaffRepository extends BaseRepository<Staff> {
 
     if (query.isActive !== undefined) {
       qb.andWhere("s.isActive = :isActive", { isActive: query.isActive });
+    }
+
+    if (query.ids !== undefined) {
+      // `IN ()` is a syntax error in PostgreSQL and TypeORM would emit exactly
+      // that for an empty array, so the empty case is answered without a query
+      // to the database rather than left to blow up at runtime.
+      if (query.ids.length === 0) {
+        qb.andWhere("1 = 0");
+      } else {
+        qb.andWhere("s.id IN (:...ids)", { ids: query.ids });
+      }
     }
 
     const term = query.search?.trim();

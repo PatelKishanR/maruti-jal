@@ -300,10 +300,10 @@ export function toExpenseDto(
 /**
  * Profit with the income half absent.
  *
- * Delivery orders are Wave 4, and party orders and walk-ins are being built
- * right now, so there is nothing honest to add up yet. The SHAPE is real and
- * the card renders its "figures arrive once orders exist" state from it — when
- * the three order modules land, only the service body changes.
+ * Kept as the honest fallback for a caller that cannot reach `v_daily_sales`.
+ * The live path no longer uses it: `expense.service` reads income from the view
+ * and lets PostgreSQL do the subtraction, so `available` is now true and both
+ * halves of the card carry real figures.
  */
 export function pendingProfit(
   month: string,

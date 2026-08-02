@@ -4,6 +4,7 @@ import { withTx } from "@/lib/db/data-source";
 import { expenseRepository } from "@/lib/repositories/expense.repository";
 import { expenseCategoryRepository } from "@/lib/repositories/expense-category.repository";
 import { staffRepository } from "@/lib/repositories/staff.repository";
+import { dailySalesRepository } from "@/lib/repositories/insights/daily-sales.repository";
 import { NotFoundError, ValidationError } from "@/lib/errors";
 import { logger } from "@/lib/logger";
 import { monthBounds, todayIST } from "@/lib/dates";
@@ -15,8 +16,8 @@ import type {
   UpdateExpenseInput,
 } from "@/lib/validation/expense";
 import type { ExpenseSearchQuery } from "@/lib/repositories/expense.repository";
+import { toPeriodProfitDto } from "@/lib/dto/insights.dto";
 import {
-  pendingProfit,
   toExpenseDto,
   toExpenseListItemDto,
   type ExpenseCategoryChipDto,
@@ -226,6 +227,32 @@ export async function listExpenses(
       ? null
       : Math.round((amount / comparison.current) * 1000) / 10;
 
+  /**
+   * The profit card: what came in this month, less what went out.
+   *
+   * Income is `v_daily_sales` across all three channels — delivery, party and
+   * walk-in — over the same month bounds the expense figures use, so the two
+   * halves of the card cover the same days.
+   *
+   * REVENUE, NOT COLLECTION. Profit is an accrual question: what the month
+   * EARNED against what it SPENT. Collection is when the cash physically
+   * arrived, which for a delivery billed on the 2nd and paid on the 9th is a
+   * different month entirely at a month boundary.
+   *
+   * THE SUBTRACTION HAPPENS IN POSTGRESQL. Income lives in a view and spend
+   * lives in `expenses`, so no single relation can subtract them — but that is
+   * an argument for passing the expense total down as a bound `numeric`, not
+   * for deriving a rupee figure in JavaScript. See DATA-MODEL D-4 and
+   * `dailySalesRepository.profitBetween`.
+   */
+  const profit = toPeriodProfitDto(
+    await dailySalesRepository.profitBetween(
+      bounds.from,
+      bounds.to,
+      comparison.current.toFixed(2),
+    ),
+  );
+
   // `sumByCategoryBetween` already orders by total DESC, so the biggest is the
   // first row. Sorting again here would be a second opinion on a settled fact.
   const leader = byCategory[0];
@@ -254,14 +281,15 @@ export async function listExpenses(
         : Math.round((comparison.delta / comparison.previous) * 1000) / 10,
     trend: direction(comparison.delta),
     biggestCategory,
-    /**
-     * TODO(wave-4): income is the sum of delivery orders (Wave 4), party orders
-     * and walk-in direct sales for `month`. Each owns its own repository, so
-     * this becomes three repository calls zipped here — it must NOT be joined
-     * from `expenseRepository`, which queries the `expenses` table and nothing
-     * else. See .claude/ARCHITECTURE.md §4.1 rule 4
-     */
-    profit: pendingProfit(month, comparison.current),
+    profit: {
+      month,
+      income: profit.income,
+      expenses: profit.expenses,
+      profit: profit.profit,
+      // The aggregate is live. A zero income month is now a fact about the
+      // month, not an admission that the figure cannot be computed.
+      available: true,
+    },
   };
 
   // Every active category gets a chip, plus any retired one that still has

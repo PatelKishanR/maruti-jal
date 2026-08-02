@@ -106,7 +106,8 @@ export interface CoinTypeDetailDto extends CoinTypeDto {
   ledgerEntryCount: number;
   /**
    * Coins issued to staff and not yet returned or redeemed.
-   * TODO(wave-3): aggregate `coin_issues`; always 0 until issues ship.
+   * Issues less returns less redemptions, aggregated by
+   * `v_coins_in_circulation`.
    */
   coinsOutWithStaff: number;
   reconciliation: CoinReconciliationDto;
@@ -131,7 +132,11 @@ export interface CoinTypeSummaryDto {
   /** The same stock read the way it is physically counted. */
   packetsInStock: number;
   looseCoinsInStock: number;
-  /** TODO(wave-3): aggregate `coin_issues`. */
+  /**
+   * The float: coins out with staff across every type, and what it is worth.
+   * Summed in SQL over `v_coins_in_circulation`, whose per-type values are
+   * already rounded — so this total reconciles with the rows beneath it.
+   */
   coinsOutWithStaff: number;
   valueOutWithStaff: number;
 }
