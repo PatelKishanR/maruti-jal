@@ -114,6 +114,97 @@ class OrderItemRepository extends BaseRepository<OrderItem> {
       .getMany();
   }
 
+  /**
+   * The list's `3 items / 62 units` chip AND the header's half of the D5
+   * explanation, for a whole page of orders in ONE grouped query.
+   *
+   * `grossAmount` is what the order was raised at; `filledReturnCredit` is what
+   * came off it when unsold jars came home. `delivery_orders.subtotal_amount`
+   * — trigger-maintained — is their difference, and that identity is the whole
+   * point: the screen can say "₹1,400 issued − ₹70 unsold returned = ₹1,330"
+   * without ever adding rupees in TypeScript.
+   * See .claude/MODULES/03-delivery-orders.md §9 · ARCHITECTURE.md §9.1
+   *
+   * `unitCount` counts EVERY line; `delivery_orders.qty_issued` counts only the
+   * returnable ones. Both are wanted, and on an order carrying disposable
+   * bottles they legitimately differ.
+   */
+  async aggregateByOrderIds(
+    orderIds: string[],
+    em?: EntityManager,
+  ): Promise<
+    Map<
+      string,
+      {
+        lineCount: number;
+        unitCount: number;
+        grossAmount: number;
+        filledReturnCredit: number;
+      }
+    >
+  > {
+    const out = new Map<
+      string,
+      {
+        lineCount: number;
+        unitCount: number;
+        grossAmount: number;
+        filledReturnCredit: number;
+      }
+    >();
+    if (orderIds.length === 0) return out;
+
+    const qb = await this.qb(em);
+    const rows = await qb
+      .select("oi.order_id", "order_id")
+      .addSelect("COUNT(*)", "line_count")
+      .addSelect("COALESCE(SUM(oi.quantity), 0)", "unit_count")
+      // round() per line, then SUM — the same order of operations the generated
+      // `line_total` column uses, so the two can never disagree by a paisa.
+      .addSelect(
+        "COALESCE(SUM(round(oi.quantity::numeric * oi.unit_price, 2)), 0)",
+        "gross_amount",
+      )
+      .addSelect(
+        "COALESCE(SUM(round(oi.returned_filled_qty::numeric * oi.unit_price, 2)), 0)",
+        "filled_credit",
+      )
+      .where("oi.orderId IN (:...orderIds)", { orderIds })
+      .groupBy("oi.order_id")
+      .getRawMany<Record<string, string | number>>();
+
+    for (const row of rows) {
+      // SUM over numeric returns a string from the driver; this is the boundary
+      // where converting it once is legitimate.
+      out.set(String(row.order_id), {
+        lineCount: Number(row.line_count ?? 0),
+        unitCount: Number(row.unit_count ?? 0),
+        grossAmount: Number(row.gross_amount ?? 0),
+        filledReturnCredit: Number(row.filled_credit ?? 0),
+      });
+    }
+
+    return out;
+  }
+
+  /**
+   * A HARD delete, and the exception proves the rule: line items extend
+   * `LineItemBase` and have no `deleted_at`, because they are children of an
+   * aggregate rather than independently owned rows. Removing a line from an
+   * order is recorded as a `document_revisions` diff on the ORDER, not as a
+   * tombstone. See .claude/DATA-MODEL.md §4, §9
+   *
+   * CALLERS MUST CHECK FOR RETURN HISTORY FIRST. `order_item_return_events`
+   * is `ON DELETE CASCADE`, so deleting a line that has ever had jars come back
+   * against it would silently destroy append-only history — the one thing this
+   * schema exists to make impossible. `updateDeliveryOrder` refuses that case
+   * with a 409 naming the line.
+   */
+  async deleteById(id: string, em?: EntityManager): Promise<void> {
+    const repo = await this.repo(em);
+    await repo.delete({ id });
+  }
+
   /** Next free line number, so appending a line never collides on the unique key. */
   async nextLineNo(orderId: string, em?: EntityManager): Promise<number> {
     const qb = await this.qb(em);

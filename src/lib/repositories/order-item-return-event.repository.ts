@@ -52,6 +52,27 @@ class OrderItemReturnEventRepository extends BaseRepository<OrderItemReturnEvent
   }
 
   /**
+   * The whole order's returns timeline in ONE query.
+   *
+   * The detail page has one timeline, not one per line, and issuing a query per
+   * line to build it is an N+1 on the busiest screen in the module. Sorted
+   * identically to `findByOrderItemId`, so a single-line view and the whole-order
+   * view agree about what "newest" means.
+   */
+  async findByOrderItemIds(
+    orderItemIds: string[],
+    em?: EntityManager,
+  ): Promise<OrderItemReturnEvent[]> {
+    if (orderItemIds.length === 0) return [];
+    const qb = await this.qb(em);
+    return qb
+      .where("re.orderItemId IN (:...orderItemIds)", { orderItemIds })
+      .orderBy("re.returnDate", "DESC")
+      .addOrderBy("re.createdAt", "DESC")
+      .getMany();
+  }
+
+  /**
    * The three counters recomputed from the events themselves.
    *
    * `order_items` caches exactly these figures, maintained by a trigger. This

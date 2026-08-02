@@ -118,6 +118,106 @@ class DeliveryOrderRepository extends BaseRepository<DeliveryOrder> {
   }
 
   /**
+   * The §7.3 KPI strip, over the SAME filters as the list minus pagination.
+   *
+   * Summed IN SQL. Adding rupee values with `reduce` in TypeScript reintroduces
+   * exactly the float error the `numeric` schema exists to prevent, and a card
+   * that disagrees with the table under it is worse than no card.
+   * See .claude/ARCHITECTURE.md §9.1
+   *
+   * CANCELLED ORDERS ARE EXCLUDED FROM EVERY MONEY AND JAR FIGURE, and only
+   * from those. `fn_recompute_delivery_order` has no opinion about status, so a
+   * cancelled order keeps whatever `outstanding_amount` its lines imply — and
+   * cancelling requires payments and returns to be reversed first, which means
+   * that figure is always the full total. Counting it would permanently inflate
+   * the chase list with money nobody will ever collect.
+   */
+  async summary(
+    filters: DeliveryOrderFilters = {},
+    em?: EntityManager,
+  ): Promise<{
+    orderCount: number;
+    cancelledCount: number;
+    totalAmount: number;
+    collectedAmount: number;
+    refundedAmount: number;
+    outstandingAmount: number;
+    overpaidAmount: number;
+    ordersWithMoneyPending: number;
+    jarsOut: number;
+    ordersWithJarsOut: number;
+    staffWithJarsOut: number;
+  }> {
+    const qb = await this.qb(em);
+    // Joined but not selected — `applyFilters` may reference the staff alias.
+    qb.leftJoin("o.staff", "s");
+    this.applyFilters(qb, filters);
+
+    const LIVE = "o.status <> 'CANCELLED'";
+
+    const raw = await qb
+      .select("COUNT(*)", "order_count")
+      .addSelect("COUNT(*) FILTER (WHERE o.status = 'CANCELLED')", "cancelled")
+      .addSelect(
+        `COALESCE(SUM(o.total_amount) FILTER (WHERE ${LIVE}), 0)`,
+        "total_amount",
+      )
+      .addSelect(
+        `COALESCE(SUM(o.paid_total_amount) FILTER (WHERE ${LIVE}), 0)`,
+        "collected",
+      )
+      .addSelect(
+        `COALESCE(SUM(o.refunded_amount) FILTER (WHERE ${LIVE}), 0)`,
+        "refunded",
+      )
+      .addSelect(
+        `COALESCE(SUM(o.outstanding_amount) FILTER (WHERE ${LIVE} AND o.outstanding_amount > 0), 0)`,
+        "outstanding",
+      )
+      // Negated inside the SUM so the card reads as a positive magnitude — the
+      // direction is carried by which card it lands on, never by a sign.
+      .addSelect(
+        `COALESCE(SUM(-o.outstanding_amount) FILTER (WHERE ${LIVE} AND o.outstanding_amount < 0), 0)`,
+        "overpaid",
+      )
+      .addSelect(
+        `COUNT(*) FILTER (WHERE ${LIVE} AND o.outstanding_amount <> 0)`,
+        "orders_money_pending",
+      )
+      .addSelect(
+        `COALESCE(SUM(o.qty_pending) FILTER (WHERE ${LIVE}), 0)`,
+        "jars_out",
+      )
+      .addSelect(
+        `COUNT(*) FILTER (WHERE ${LIVE} AND o.qty_pending > 0)`,
+        "orders_jars_out",
+      )
+      .addSelect(
+        `COUNT(DISTINCT o.staff_id) FILTER (WHERE ${LIVE} AND o.qty_pending > 0)`,
+        "staff_jars_out",
+      )
+      .getRawOne<Record<string, string | number>>();
+
+    // SUM over numeric comes back as a string from the driver; this is the
+    // boundary where converting it once is legitimate.
+    const num = (key: string) => Number(raw?.[key] ?? 0);
+
+    return {
+      orderCount: num("order_count"),
+      cancelledCount: num("cancelled"),
+      totalAmount: num("total_amount"),
+      collectedAmount: num("collected"),
+      refundedAmount: num("refunded"),
+      outstandingAmount: num("outstanding"),
+      overpaidAmount: num("overpaid"),
+      ordersWithMoneyPending: num("orders_money_pending"),
+      jarsOut: num("jars_out"),
+      ordersWithJarsOut: num("orders_jars_out"),
+      staffWithJarsOut: num("staff_jars_out"),
+    };
+  }
+
+  /**
    * The detail page aggregate.
    *
    * Items are NOT joined to `products`: every value the screen displays comes
