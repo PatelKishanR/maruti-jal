@@ -13,6 +13,25 @@ import type { NextAuthConfig } from 'next-auth';
  * See .claude/ARCHITECTURE.md §10.3
  */
 export const authConfig = {
+  /**
+   * Trust the Host header.
+   *
+   * Auth.js v5 refuses to build callback URLs from an unrecognised Host in
+   * production and throws `UntrustedHost`, which the client sees as the opaque
+   * `?error=Configuration` — the same message a missing AUTH_SECRET produces,
+   * which is what makes it slow to diagnose.
+   *
+   * It is only inferred automatically when AUTH_URL is set or a known platform
+   * is detected, so a proxied or self-hosted deployment fails at the first
+   * sign-in. Safe here because every deployment sits behind a proxy that sets
+   * Host itself; if this app is ever served directly off the open internet,
+   * pin AUTH_URL instead and drop this.
+   *
+   * Reproduce without deploying: `npm run build && npm start`, then sign in.
+   * `npm run dev` does NOT catch it — the check only runs in production.
+   */
+  trustHost: true,
+
   pages: {
     signIn: '/login',
     error: '/login',
