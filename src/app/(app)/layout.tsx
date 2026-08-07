@@ -2,7 +2,8 @@ import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { AppSidebar } from "@/components/layout/app-sidebar";
 import { Topbar } from "@/components/layout/topbar";
-import { api } from "@/lib/api/client";
+import { api, ApiError } from "@/lib/api/client";
+import { logger } from "@/lib/logger";
 import type { SessionStateDto } from "@/lib/dto/dashboard.dto";
 
 /**
@@ -38,9 +39,36 @@ export default async function AppLayout({
    * Costs one indexed lookup per page load. Acceptable for a single-user tool;
    * revisit if the app ever serves many concurrent users.
    */
-  const { valid } = await api
-    .get<SessionStateDto>("/api/auth/session-state")
-    .catch(() => ({ valid: false }));
+  /**
+   * ONLY an explicit `valid: false` signs anyone out.
+   *
+   * This previously read `.catch(() => ({ valid: false }))`, which conflated
+   * two entirely different things: "your token has been revoked" and "the call
+   * did not complete". The second is an outage, and answering an outage by
+   * destroying the session produces an unbreakable loop — sign in, get bounced
+   * to force-signout, sign in again — with no way through, because signing in
+   * again cannot fix a broken fetch.
+   *
+   * Failing open here costs almost nothing: a revoked session still returns
+   * `valid: false` from a working API, and if the API is NOT working then every
+   * page inside this layout fetches through the same client and fails loudly on
+   * its own. The alternative locks the only user out of the whole application.
+   */
+  let sessionValid = true;
+  try {
+    const state = await api.get<SessionStateDto>("/api/auth/session-state");
+    sessionValid = state.valid;
+  } catch (error) {
+    logger.error(
+      {
+        userId: session.user.id,
+        status: error instanceof ApiError ? error.status : undefined,
+        code: error instanceof ApiError ? error.code : undefined,
+        err: String(error),
+      },
+      "session-state unreachable — allowing the request rather than signing out",
+    );
+  }
 
   /**
    * Redirect to force-signout, NOT to /login.
@@ -49,8 +77,11 @@ export default async function AppLayout({
    * the user as signed in and bounce them straight back here — an infinite
    * loop. force-signout clears the cookie first, which is what makes
    * middleware and this layout agree again. See that route for the full note.
+   *
+   * Outside the try/catch above on purpose — `redirect()` signals by throwing,
+   * so a catch around it would swallow the redirect it is meant to perform.
    */
-  if (!valid) redirect("/api/auth/force-signout");
+  if (!sessionValid) redirect("/api/auth/force-signout");
 
   return (
     <div className="flex min-h-dvh">

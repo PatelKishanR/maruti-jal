@@ -29,13 +29,49 @@ export class ApiError extends Error {
  *
  * Client-side, a relative path is fine. Server-side, `fetch` has no notion of
  * "this site", so an absolute origin is required.
+ *
+ * WHICH origin matters more than it looks. `VERCEL_URL` is the PER-DEPLOYMENT
+ * hostname (`maruti-jal-a1b2c3-scope.vercel.app`), and Vercel's Deployment
+ * Protection covers those generated URLs while exempting the assigned
+ * production domain. A server component fetching its own API through
+ * `VERCEL_URL` therefore gets Vercel's SSO page — HTML, status 401 — rather
+ * than this app's JSON. `VERCEL_PROJECT_PRODUCTION_URL` is the exempt domain,
+ * so it is preferred whenever we are actually serving production.
  */
 function baseUrl(): string {
   if (typeof window !== "undefined") return "";
 
-  if (process.env.NEXT_PUBLIC_APP_URL) return process.env.NEXT_PUBLIC_APP_URL;
+  const explicit = process.env.NEXT_PUBLIC_APP_URL;
+  if (explicit && !(onVercel() && isLoopback(explicit))) return normaliseOrigin(explicit);
+
+  if (explicit) {
+    // Almost always `.env.local` copied wholesale into the Vercel dashboard.
+    // Honouring it would make every server-side fetch ECONNREFUSED inside the
+    // function, which surfaces as "signed out immediately after signing in".
+    console.warn(
+      `[api] Ignoring NEXT_PUBLIC_APP_URL=${explicit} — a loopback address cannot be reached from a Vercel function.`,
+    );
+  }
+
+  if (process.env.VERCEL_ENV === "production" && process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  }
   if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
   return `http://localhost:${process.env.PORT ?? 3000}`;
+}
+
+function onVercel(): boolean {
+  return !!process.env.VERCEL;
+}
+
+function isLoopback(url: string): boolean {
+  return /^(https?:\/\/)?(localhost|127\.0\.0\.1|\[::1\])(:|\/|$)/i.test(url);
+}
+
+/** Tolerate `example.com`, `https://example.com/` and everything between. */
+function normaliseOrigin(value: string): string {
+  const withScheme = /^https?:\/\//i.test(value) ? value : `https://${value}`;
+  return withScheme.replace(/\/+$/, "");
 }
 
 /**
@@ -51,7 +87,20 @@ async function serverHeaders(): Promise<HeadersInit> {
   const { headers } = await import("next/headers");
   const incoming = await headers();
   const cookie = incoming.get("cookie");
-  return cookie ? { cookie } : {};
+
+  const out: Record<string, string> = {};
+  if (cookie) out.cookie = cookie;
+
+  /**
+   * Vercel's sanctioned way past Deployment Protection for machine callers.
+   * Only present when "Protection Bypass for Automation" is switched on; it is
+   * the belt to `baseUrl()`'s braces, and covers preview deployments, where the
+   * production domain is not the right target.
+   */
+  const bypass = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
+  if (bypass) out["x-vercel-protection-bypass"] = bypass;
+
+  return out;
 }
 
 async function request<T>(
